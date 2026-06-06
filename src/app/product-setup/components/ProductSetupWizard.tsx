@@ -181,6 +181,10 @@ export default function ProductSetupWizard() {
     }
   };
 
+  const handleSkip = () => {
+    setCurrentStep(s => s + 1);
+  };
+
   const handleBack = () => setCurrentStep(s => s - 1);
 
   const handleSubmit = form.handleSubmit(async (data) => {
@@ -273,16 +277,17 @@ export default function ProductSetupWizard() {
             <React.Fragment key={step.key}>
               <div className="flex items-center gap-3">
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold transition-all duration-200"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold transition-all duration-200 cursor-pointer"
                   style={{
                     background: i < currentStep ? '#ededed' : i === currentStep ? '#ededed' : '#1f1f1f',
                     color: i <= currentStep ? '#0a0a0a' : '#8a8a8a',
                     boxShadow: i === currentStep ? '0 0 0 4px rgba(237,237,237,0.1)' : 'none',
                   }}
+                  onClick={() => setCurrentStep(i)}
                 >
                   {i < currentStep ? <Check size={13} /> : i + 1}
                 </div>
-                <div className="hidden sm:block">
+                <div className="hidden sm:block cursor-pointer" onClick={() => setCurrentStep(i)}>
                   <p className="text-[12px] font-semibold" style={{ color: i <= currentStep ? '#ededed' : '#8a8a8a' }}>{step.label}</p>
                   <p className="text-[11px]" style={{ color: '#8a8a8a' }}>{step.description}</p>
                 </div>
@@ -325,9 +330,19 @@ export default function ProductSetupWizard() {
         <div className="flex items-center gap-2">
           <span className="text-[11px]" style={{ color: '#8a8a8a' }}>Step {currentStep + 1} of {steps.length}</span>
           {currentStep < steps.length - 1 ? (
-            <button type="button" onClick={handleNext} className="btn-primary text-[13px] flex items-center gap-2">
-              Continue <ChevronRight size={14} />
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleSkip}
+                className="btn-ghost text-[13px] flex items-center gap-1"
+                style={{ color: '#8a8a8a' }}
+              >
+                Skip
+              </button>
+              <button type="button" onClick={handleNext} className="btn-primary text-[13px] flex items-center gap-2">
+                Continue <ChevronRight size={14} />
+              </button>
+            </div>
           ) : (
             <button
               type="button"
