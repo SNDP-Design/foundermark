@@ -91,6 +91,62 @@ export default function ContentLibraryView() {
     loadLibrary();
   }, [user]);
 
+  // Real-time sync
+  useEffect(() => {
+    if (!user) return;
+
+    const channel = supabase
+      .channel('library_items_realtime')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'library_items', filter: `user_id=eq.${user.id}` },
+        (payload) => {
+          if (payload.eventType === 'INSERT') {
+            const row = payload.new as any;
+            const newItem: LibraryItem = {
+              id: row.id,
+              type: row.content_type as LibraryItem['type'],
+              channel: row.channel as LibraryItem['channel'],
+              channelLabel: row.channel_label,
+              text: row.text,
+              createdAt: formatDate(row.created_at),
+              favorited: row.favorited,
+              product: row.product || '',
+            };
+            setItems(prev => {
+              if (prev.some(i => i.id === newItem.id)) return prev;
+              return [newItem, ...prev];
+            });
+          } else if (payload.eventType === 'UPDATE') {
+            const row = payload.new as any;
+            setItems(prev =>
+              prev.map(i =>
+                i.id === row.id
+                  ? {
+                      ...i,
+                      type: row.content_type as LibraryItem['type'],
+                      channel: row.channel as LibraryItem['channel'],
+                      channelLabel: row.channel_label,
+                      text: row.text,
+                      favorited: row.favorited,
+                      product: row.product || '',
+                    }
+                  : i
+              )
+            );
+          } else if (payload.eventType === 'DELETE') {
+            const oldRow = payload.old as any;
+            setItems(prev => prev.filter(i => i.id !== oldRow.id));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+
   const filtered = useMemo(() => {
     let result = items;
     if (search.trim()) {
