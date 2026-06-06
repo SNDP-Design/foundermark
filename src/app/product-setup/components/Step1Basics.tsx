@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useFormReturn } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 import { ProductFormData } from './ProductSetupWizard';
 
 const industries = [
@@ -17,7 +17,7 @@ const industries = [
 ];
 
 interface Props {
-  form: useFormReturn<ProductFormData>;
+  form: UseFormReturn<ProductFormData>;
 }
 
 export default function Step1Basics({ form }: Props) {
@@ -45,16 +45,16 @@ export default function Step1Basics({ form }: Props) {
       </div>
 
       <div>
-        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="tagline">
-          One-line tagline <span style={{ color: '#f87171' }}>*</span>
+        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="description">
+          Product description <span style={{ color: '#f87171' }}>*</span>
         </label>
-        <p className="text-[11px] mb-[6px]" style={{ color: '#8a8a8a' }}>How do you describe your product in a single sentence?</p>
-        <input
-          id="tagline" type="text" className="input-base"
-          placeholder="e.g. Ship your SaaS in days, not months"
-          {...register('tagline', { required: 'Tagline is required', maxLength: { value: 120, message: 'Keep it under 120 characters' } })}
+        <p className="text-[11px] mb-[6px]" style={{ color: '#8a8a8a' }}>2–4 sentences about what your product does and who it's for</p>
+        <textarea
+          id="description" rows={4} className="input-base resize-none"
+          placeholder="BuildFast is a boilerplate toolkit that lets indie developers launch a production-ready SaaS in days…"
+          {...register('description', { required: 'Description is required', minLength: { value: 50, message: 'Please write at least 50 characters' } })}
         />
-        {errors.tagline && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{errors.tagline.message}</p>}
+        {errors.description && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{errors.description.message}</p>}
       </div>
 
       <div>
@@ -80,19 +80,6 @@ export default function Step1Basics({ form }: Props) {
           ))}
         </div>
         {errors.industry && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{errors.industry.message}</p>}
-      </div>
-
-      <div>
-        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="description">
-          Product description <span style={{ color: '#f87171' }}>*</span>
-        </label>
-        <p className="text-[11px] mb-[6px]" style={{ color: '#8a8a8a' }}>2–4 sentences about what your product does and who it’s for</p>
-        <textarea
-          id="description" rows={4} className="input-base resize-none"
-          placeholder="BuildFast is a boilerplate toolkit that lets indie developers launch a production-ready SaaS in days…"
-          {...register('description', { required: 'Description is required', minLength: { value: 50, message: 'Please write at least 50 characters' } })}
-        />
-        {errors.description && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{errors.description.message}</p>}
       </div>
     </div>
   );
