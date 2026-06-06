@@ -20,6 +20,99 @@ export type LibraryItem = {
   product: string;
 };
 
+const SAMPLE_ITEMS: LibraryItem[] = [
+  {
+    id: 'sample-1',
+    type: 'social-post',
+    channel: 'linkedin',
+    channelLabel: 'LinkedIn',
+    text: "Excited to share that we've just crossed 10,000 users on our platform! 🎉 Building in public has been one of the best decisions we made as founders. Every piece of feedback has shaped our product into something we're truly proud of. Thank you to every early adopter who believed in us. The journey is just beginning. #StartupLife #BuildInPublic #Milestone",
+    createdAt: 'Jun 5, 2026',
+    favorited: true,
+    product: 'FounderMark',
+  },
+  {
+    id: 'sample-2',
+    type: 'ad-copy',
+    channel: 'facebook',
+    channelLabel: 'Facebook Ads',
+    text: "Stop wasting hours writing marketing copy from scratch. FounderMark generates high-converting social posts, ad copy, and email subjects in seconds — trained on what actually works for B2B SaaS. Try it free for 14 days. No credit card required.",
+    createdAt: 'Jun 4, 2026',
+    favorited: false,
+    product: 'FounderMark',
+  },
+  {
+    id: 'sample-3',
+    type: 'email-subject',
+    channel: 'email',
+    channelLabel: 'Email',
+    text: "Your competitors are already using AI to write copy — here's how to catch up",
+    createdAt: 'Jun 4, 2026',
+    favorited: true,
+    product: 'FounderMark',
+  },
+  {
+    id: 'sample-4',
+    type: 'tagline',
+    channel: 'twitter',
+    channelLabel: 'Twitter / X',
+    text: "Marketing copy that converts — generated in seconds, not hours.",
+    createdAt: 'Jun 3, 2026',
+    favorited: false,
+    product: 'FounderMark',
+  },
+  {
+    id: 'sample-5',
+    type: 'social-post',
+    channel: 'instagram',
+    channelLabel: 'Instagram',
+    text: "The secret to consistent content? A system, not willpower. 💡 We built FounderMark so founders can focus on building — not staring at a blank page. Drop your product name and audience, and we'll handle the rest. Link in bio to try it free. ✨ #ContentMarketing #Founders #SaaS #MarketingTips",
+    createdAt: 'Jun 3, 2026',
+    favorited: false,
+    product: 'FounderMark',
+  },
+  {
+    id: 'sample-6',
+    type: 'blog-intro',
+    channel: 'linkedin',
+    channelLabel: 'LinkedIn',
+    text: "Most early-stage founders spend 40% of their week on marketing tasks that could be automated. In this post, I'll break down the exact AI-powered workflow we use at FounderMark to produce a week's worth of content in under 30 minutes — and how you can replicate it for your own startup.",
+    createdAt: 'Jun 2, 2026',
+    favorited: true,
+    product: 'FounderMark',
+  },
+  {
+    id: 'sample-7',
+    type: 'ad-copy',
+    channel: 'twitter',
+    channelLabel: 'Twitter / X',
+    text: "Founders: your product is great. Your copy shouldn't be the reason people don't buy. FounderMark writes the words that sell — so you can focus on what you do best. Start free →",
+    createdAt: 'Jun 1, 2026',
+    favorited: false,
+    product: 'FounderMark',
+  },
+  {
+    id: 'sample-8',
+    type: 'email-subject',
+    channel: 'email',
+    channelLabel: 'Email',
+    text: "We analyzed 500 SaaS landing pages — here's what the best ones have in common",
+    createdAt: 'Jun 1, 2026',
+    favorited: false,
+    product: 'FounderMark',
+  },
+  {
+    id: 'sample-9',
+    type: 'social-post',
+    channel: 'linkedin',
+    channelLabel: 'LinkedIn',
+    text: "Hot take: most startup marketing fails not because of budget, but because of inconsistency. Posting once a week when you feel inspired won't build an audience. What works: a repeatable system that produces quality content daily. That's exactly what we built FounderMark to solve. What's your biggest content challenge right now? 👇",
+    createdAt: 'May 31, 2026',
+    favorited: true,
+    product: 'FounderMark',
+  },
+];
+
 const typeFilters = [
   { key: 'filter-all', value: 'all', label: 'All Types' },
   { key: 'filter-social', value: 'social-post', label: 'Social Post' },
@@ -62,7 +155,11 @@ export default function ContentLibraryView() {
 
   useEffect(() => {
     const loadLibrary = async () => {
-      if (!user) { setIsLoading(false); return; }
+      if (!user) {
+        setItems(SAMPLE_ITEMS);
+        setIsLoading(false);
+        return;
+      }
       try {
         const { data, error } = await supabase
           .from('library_items')
@@ -80,10 +177,11 @@ export default function ContentLibraryView() {
             favorited: row.favorited,
             product: row.product || '',
           }));
-          setItems(mapped);
+          setItems(mapped.length > 0 ? mapped : SAMPLE_ITEMS);
         }
       } catch (err: any) {
         console.log('Library load error:', err.message);
+        setItems(SAMPLE_ITEMS);
       } finally {
         setIsLoading(false);
       }
