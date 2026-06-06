@@ -75,26 +75,28 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
       </div>
 
       {/* Channel */}
-      <div>
-        <label className="block text-[11px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>Channel / Platform</label>
-        <div className="flex flex-wrap gap-2">
-          {channels.map((ch) => (
-            <button
-              key={ch.key}
-              type="button"
-              onClick={() => set('channel', ch.value)}
-              className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
-              style={{
-                background: config.channel === ch.value ? '#ededed' : '#161616',
-                color: config.channel === ch.value ? '#0a0a0a' : '#8a8a8a',
-                border: `1px solid ${config.channel === ch.value ? '#ededed' : '#1f1f1f'}`,
-              }}
-            >
-              {ch.label}
-            </button>
-          ))}
+      {config.contentType === 'social-post' && (
+        <div>
+          <label className="block text-[11px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>Channel / Platform</label>
+          <div className="flex flex-wrap gap-2">
+            {channels.map((ch) => (
+              <button
+                key={ch.key}
+                type="button"
+                onClick={() => set('channel', ch.value)}
+                className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
+                style={{
+                  background: config.channel === ch.value ? '#ededed' : '#161616',
+                  color: config.channel === ch.value ? '#0a0a0a' : '#8a8a8a',
+                  border: `1px solid ${config.channel === ch.value ? '#ededed' : '#1f1f1f'}`,
+                }}
+              >
+                {ch.label}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Brief */}
       <div>
