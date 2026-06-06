@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { useFormReturn } from 'react-hook-form';
 import { ProductFormData } from './ProductSetupWizard';
 import { Check } from 'lucide-react';
 
@@ -31,7 +31,7 @@ const contentGoals = [
 ];
 
 interface Props {
-  form: UseFormReturn<ProductFormData>;
+  form: useFormReturn<ProductFormData>;
 }
 
 export default function Step3Voice({ form }: Props) {
@@ -51,7 +51,6 @@ export default function Step3Voice({ form }: Props) {
     <div className="space-y-7">
       <div>
         <h2 className="text-[17px] font-bold mb-[4px]" style={{ color: '#ededed' }}>Tone of voice & channels</h2>
-        <p className="text-[13px]" style={{ color: '#8a8a8a' }}>Choose how the AI should sound and where you plan to publish.</p>
       </div>
 
       {/* Tone selector */}
@@ -59,7 +58,6 @@ export default function Step3Voice({ form }: Props) {
         <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>
           Tone of voice <span style={{ color: '#f87171' }}>*</span>
         </label>
-        <p className="text-[11px] mb-3" style={{ color: '#8a8a8a' }}>This shapes the writing style for ALL generated content</p>
         <div className="space-y-2">
           {tones.map((tone) => {
             const selected = watch('tone') === tone.value;
@@ -99,7 +97,6 @@ export default function Step3Voice({ form }: Props) {
       {/* Channel preferences */}
       <div>
         <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }}>Primary channels</label>
-        <p className="text-[11px] mb-2" style={{ color: '#8a8a8a' }}>Where do you plan to publish most of your content? Select all that apply.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {channels.map((ch) => {
             const active = selectedChannels.includes(ch.value);
@@ -126,7 +123,6 @@ export default function Step3Voice({ form }: Props) {
       {/* Content goal */}
       <div>
         <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }}>Primary content goal</label>
-        <p className="text-[11px] mb-2" style={{ color: '#8a8a8a' }}>What outcome are you trying to drive with your marketing content right now?</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {contentGoals.map((goal) => (
             <label key={goal.key} className="cursor-pointer">
