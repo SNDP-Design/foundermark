@@ -68,6 +68,12 @@ export default function GeneratorOutput({
     }
     setSavingIds(prev => { const next = new Set(prev); next.add(id); return next; });
     try {
+      // Ensure user profile exists (required by FK constraint)
+      await supabase.from('user_profiles').upsert(
+        { id: user.id, email: user.email ?? '', full_name: user.user_metadata?.full_name ?? '' },
+        { onConflict: 'id', ignoreDuplicates: true }
+      );
+
       const { error } = await supabase.from('library_items').insert({
         user_id: user.id,
         content_type: contentType,
@@ -77,9 +83,14 @@ export default function GeneratorOutput({
         product: '',
         favorited: false,
       });
-      if (!error) {
+      if (error) {
+        toast.error('Failed to save to library. Please try again.');
+      } else {
         setSavedIds(prev => { const next = new Set(prev); next.add(id); return next; });
+        toast.success('Saved to library!');
       }
+    } catch {
+      toast.error('Something went wrong. Please try again.');
     } finally {
       setSavingIds(prev => { const next = new Set(prev); next.delete(id); return next; });
     }
@@ -89,6 +100,12 @@ export default function GeneratorOutput({
     if (!user || !variants || isSavingAll || allSaved) return;
     setIsSavingAll(true);
     try {
+      // Ensure user profile exists (required by FK constraint)
+      await supabase.from('user_profiles').upsert(
+        { id: user.id, email: user.email ?? '', full_name: user.user_metadata?.full_name ?? '' },
+        { onConflict: 'id', ignoreDuplicates: true }
+      );
+
       const rows = variants.map((variant) => ({
         user_id: user.id,
         content_type: contentType,
