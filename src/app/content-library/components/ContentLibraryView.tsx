@@ -287,24 +287,6 @@ export default function ContentLibraryView() {
 
   return (
     <>
-      {/* Stats bar */}
-      <div className="grid grid-cols-3 gap-3 mb-5">
-        {[
-          { label: 'Total Saved', value: items.length },
-          { label: 'Favorites', value: items.filter(i => i.favorited).length },
-          { label: 'This Week', value: items.filter(i => i.createdAt.includes('Jun')).length },
-        ].map((stat) => (
-          <div
-            key={stat.label}
-            className="rounded-[12px] px-4 py-3 flex items-center justify-between"
-            style={{ background: '#0d0d0d', border: '1px solid #1f1f1f' }}
-          >
-            <span className="text-[12px]" style={{ color: '#8a8a8a' }}>{stat.label}</span>
-            <span className="text-[18px] font-bold tracking-tight" style={{ color: '#ededed' }}>{stat.value}</span>
-          </div>
-        ))}
-      </div>
-
       {/* Search + controls row */}
       <div className="flex items-center gap-2 mb-3">
         {/* Search */}
