@@ -33,25 +33,31 @@ export default function Modal({ open, onClose, title, children, size = 'md' }: M
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop"
-      style={{ backgroundColor: 'rgba(0,0,0,0.45)' }}
+      style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-label={title}
     >
       <div
-        className={`bg-card rounded-2xl shadow-modal w-full ${sizeClasses[size]} modal-content`}
+        className={`w-full ${sizeClasses[size]} modal-content rounded-[16px] overflow-hidden`}
+        style={{
+          background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)',
+          border: '1px solid #2a2a2a',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.7)',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-            <h2 className="text-base font-semibold text-foreground">{title}</h2>
+          <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid #1f1f1f' }}>
+            <h2 className="text-[15px] font-semibold" style={{ color: '#ededed' }}>{title}</h2>
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted transition-colors"
+              className="w-8 h-8 rounded-[8px] flex items-center justify-center transition-colors"
+              style={{ background: '#161616', border: '1px solid #1f1f1f', color: '#8a8a8a' }}
               aria-label="Close modal"
             >
-              <X size={16} className="text-muted-foreground" />
+              <X size={14} />
             </button>
           </div>
         )}

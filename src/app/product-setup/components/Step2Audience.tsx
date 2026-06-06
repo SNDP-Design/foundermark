@@ -33,112 +33,91 @@ export default function Step2Audience({ form }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-bold text-foreground mb-0.5">Who are you building for?</h2>
-        <p className="text-sm text-muted-foreground">Knowing your audience helps the AI write copy that speaks directly to the right people.</p>
+        <h2 className="text-[17px] font-bold mb-[4px]" style={{ color: '#ededed' }}>Who are you building for?</h2>
+        <p className="text-[13px]" style={{ color: '#8a8a8a' }}>Knowing your audience helps the AI write copy that speaks directly to the right people.</p>
       </div>
 
-      {/* Target audience description */}
       <div>
-        <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="targetAudience">
-          Target audience <span className="text-rose-500">*</span>
+        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="targetAudience">
+          Target audience <span style={{ color: '#f87171' }}>*</span>
         </label>
-        <p className="text-xs text-muted-foreground mb-1.5">Describe who your ideal customer is in 1–2 sentences</p>
+        <p className="text-[11px] mb-[6px]" style={{ color: '#8a8a8a' }}>Describe who your ideal customer is in 1–2 sentences</p>
         <textarea
-          id="targetAudience"
-          rows={3}
-          className="input-base resize-none"
-          placeholder="Indie developers and small teams (1–5 people) who want to launch a SaaS product quickly without spending weeks on boilerplate infrastructure…"
-          {...register('targetAudience', {
-            required: 'Target audience is required',
-            minLength: { value: 20, message: 'Please be more specific — at least 20 characters' },
-          })}
+          id="targetAudience" rows={3} className="input-base resize-none"
+          placeholder="Indie developers and small teams (1–5 people) who want to launch a SaaS product quickly…"
+          {...register('targetAudience', { required: 'Target audience is required', minLength: { value: 20, message: 'Please be more specific — at least 20 characters' } })}
         />
-        {errors.targetAudience && <p className="text-xs text-rose-500 mt-1.5">{errors.targetAudience.message}</p>}
+        {errors.targetAudience && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{errors.targetAudience.message}</p>}
       </div>
 
-      {/* Audience role */}
       <div>
-        <label className="block text-sm font-semibold text-foreground mb-2">
-          Primary audience role <span className="text-rose-500">*</span>
+        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>
+          Primary audience role <span style={{ color: '#f87171' }}>*</span>
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {audienceRoles.map((role) => (
             <label key={role.key} className="cursor-pointer">
-              <input
-                type="radio"
-                value={role.value}
-                className="sr-only"
-                {...register('audienceRole', { required: 'Select a primary role' })}
-              />
-              <span className={`block px-3 py-2.5 rounded-xl border text-sm font-medium text-center transition-all duration-150 ${
-                form.watch('audienceRole') === role.value
-                  ? 'border-primary bg-secondary text-secondary-foreground' :'border-border hover:border-violet-200 hover:bg-violet-50/40 text-muted-foreground'
-              }`}>
+              <input type="radio" value={role.value} className="sr-only" {...register('audienceRole', { required: 'Select a primary role' })} />
+              <span
+                className="block px-3 py-2.5 rounded-[8px] text-[12px] font-medium text-center transition-all duration-150"
+                style={{
+                  border: `1px solid ${form.watch('audienceRole') === role.value ? '#5a5a5a' : '#1f1f1f'}`,
+                  background: form.watch('audienceRole') === role.value ? '#1c1c1c' : '#161616',
+                  color: form.watch('audienceRole') === role.value ? '#ededed' : '#8a8a8a',
+                }}
+              >
                 {role.label}
               </span>
             </label>
           ))}
         </div>
-        {errors.audienceRole && <p className="text-xs text-rose-500 mt-1.5">{errors.audienceRole.message}</p>}
+        {errors.audienceRole && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{errors.audienceRole.message}</p>}
       </div>
 
-      {/* Product stage */}
       <div>
-        <label className="block text-sm font-semibold text-foreground mb-1.5">
-          Current product stage <span className="text-rose-500">*</span>
+        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }}>
+          Current product stage <span style={{ color: '#f87171' }}>*</span>
         </label>
-        <p className="text-xs text-muted-foreground mb-2">The AI adjusts urgency and messaging based on your stage</p>
+        <p className="text-[11px] mb-2" style={{ color: '#8a8a8a' }}>The AI adjusts urgency and messaging based on your stage</p>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
           {stages.map((stage) => (
             <label key={stage.key} className="cursor-pointer">
-              <input
-                type="radio"
-                value={stage.value}
-                className="sr-only"
-                {...register('stage', { required: 'Select your current stage' })}
-              />
-              <span className={`block px-3 py-3 rounded-xl border text-center transition-all duration-150 ${
-                form.watch('stage') === stage.value
-                  ? 'border-primary bg-secondary' :'border-border hover:border-violet-200 hover:bg-violet-50/40'
-              }`}>
-                <span className={`block text-sm font-semibold ${
-                  form.watch('stage') === stage.value ? 'text-secondary-foreground' : 'text-foreground'
-                }`}>{stage.label}</span>
-                <span className="block text-xs text-muted-foreground mt-0.5">{stage.description}</span>
+              <input type="radio" value={stage.value} className="sr-only" {...register('stage', { required: 'Select your current stage' })} />
+              <span
+                className="block px-3 py-3 rounded-[8px] text-center transition-all duration-150"
+                style={{
+                  border: `1px solid ${form.watch('stage') === stage.value ? '#5a5a5a' : '#1f1f1f'}`,
+                  background: form.watch('stage') === stage.value ? '#1c1c1c' : '#161616',
+                }}
+              >
+                <span className="block text-[12px] font-semibold" style={{ color: form.watch('stage') === stage.value ? '#ededed' : '#8a8a8a' }}>{stage.label}</span>
+                <span className="block text-[10px] mt-0.5" style={{ color: '#8a8a8a' }}>{stage.description}</span>
               </span>
             </label>
           ))}
         </div>
-        {errors.stage && <p className="text-xs text-rose-500 mt-1.5">{errors.stage.message}</p>}
+        {errors.stage && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{errors.stage.message}</p>}
       </div>
 
-      {/* Key differentiators */}
       <div>
-        <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="differentiators">
-          Key differentiators <span className="text-rose-500">*</span>
+        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="differentiators">
+          Key differentiators <span style={{ color: '#f87171' }}>*</span>
         </label>
-        <p className="text-xs text-muted-foreground mb-1.5">What makes your product different from alternatives? List 2–3 things.</p>
+        <p className="text-[11px] mb-[6px]" style={{ color: '#8a8a8a' }}>What makes your product different from alternatives? List 2–3 things.</p>
         <textarea
-          id="differentiators"
-          rows={3}
-          className="input-base resize-none"
-          placeholder="1. Pre-wired auth + payments out of the box. 2. Opinionated stack so you don't have to make decisions. 3. Built for solo founders, not enterprise teams."
+          id="differentiators" rows={3} className="input-base resize-none"
+          placeholder="1. Pre-wired auth + payments out of the box. 2. Opinionated stack. 3. Built for solo founders."
           {...register('differentiators', { required: 'Key differentiators are required' })}
         />
-        {errors.differentiators && <p className="text-xs text-rose-500 mt-1.5">{errors.differentiators.message}</p>}
+        {errors.differentiators && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{errors.differentiators.message}</p>}
       </div>
 
-      {/* Pain points */}
       <div>
-        <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="painPoints">
-          Pain points you solve
-        </label>
-        <p className="text-xs text-muted-foreground mb-1.5">What frustrations or problems does your product eliminate for your audience?</p>
+        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="painPoints">Pain points you solve</label>
+        <p className="text-[11px] mb-[6px]" style={{ color: '#8a8a8a' }}>What frustrations or problems does your product eliminate?</p>
         <textarea
-          id="painPoints"
-          rows={3}
-          className="input-base resize-none"
-          placeholder="Founders waste 2–4 weeks setting up authentication, payment infrastructure, and email before they can start building their actual product…"
+          id="painPoints" rows={3} className="input-base resize-none"
+          placeholder="Founders waste 2–4 weeks setting up authentication, payment infrastructure, and email…"
           {...register('painPoints')}
         />
       </div>

@@ -46,26 +46,27 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
   const set = (key: keyof ConfigType, value: string) => onChange({ ...config, [key]: value });
 
   return (
-    <div className="card-base p-6 space-y-6 sticky top-6">
+    <div className="rounded-[14px] p-6 space-y-6 sticky top-6" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
       <div>
-        <h2 className="text-sm font-bold text-foreground mb-0.5">What do you want to create?</h2>
-        <p className="text-xs text-muted-foreground">Configure your content below, then generate.</p>
+        <h2 className="text-[15px] font-bold tracking-[-0.2px] mb-[4px]" style={{ color: '#ededed' }}>What do you want to create?</h2>
+        <p className="text-[12px]" style={{ color: '#8a8a8a' }}>Configure your content below, then generate.</p>
       </div>
 
       {/* Content type */}
       <div>
-        <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">Content Type</label>
+        <label className="block text-[11px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>Content Type</label>
         <div className="flex flex-wrap gap-2">
           {contentTypes.map((ct) => (
             <button
               key={ct.key}
               type="button"
               onClick={() => set('contentType', ct.value)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 ${
-                config.contentType === ct.value
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground hover:bg-secondary hover:text-secondary-foreground'
-              }`}
+              className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
+              style={{
+                background: config.contentType === ct.value ? '#ededed' : '#161616',
+                color: config.contentType === ct.value ? '#0a0a0a' : '#8a8a8a',
+                border: `1px solid ${config.contentType === ct.value ? '#ededed' : '#1f1f1f'}`,
+              }}
             >
               {ct.label}
             </button>
@@ -75,18 +76,19 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
 
       {/* Channel */}
       <div>
-        <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">Channel / Platform</label>
+        <label className="block text-[11px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>Channel / Platform</label>
         <div className="flex flex-wrap gap-2">
           {channels.map((ch) => (
             <button
               key={ch.key}
               type="button"
               onClick={() => set('channel', ch.value)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 ${
-                config.channel === ch.value
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground hover:bg-secondary hover:text-secondary-foreground'
-              }`}
+              className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
+              style={{
+                background: config.channel === ch.value ? '#ededed' : '#161616',
+                color: config.channel === ch.value ? '#0a0a0a' : '#8a8a8a',
+                border: `1px solid ${config.channel === ch.value ? '#ededed' : '#1f1f1f'}`,
+              }}
             >
               {ch.label}
             </button>
@@ -96,29 +98,28 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
 
       {/* Brief */}
       <div>
-        <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2" htmlFor="brief">
+        <label className="block text-[11px] font-semibold uppercase tracking-[0.4px] mb-1" style={{ color: '#8a8a8a' }} htmlFor="brief">
           What should this content be about?
         </label>
-        <p className="text-xs text-muted-foreground mb-2">Give the AI context — a topic, angle, announcement, or goal.</p>
+        <p className="text-[11px] mb-2" style={{ color: '#8a8a8a' }}>Give the AI context — a topic, angle, announcement, or goal.</p>
         <textarea
           id="brief"
           rows={5}
-          className="input-base resize-none text-sm"
-          placeholder="e.g. We just crossed 500 beta signups. Write a LinkedIn post celebrating this milestone and explaining what we learned about getting early users without paid ads…"
+          className="input-base resize-none text-[13px]"
+          placeholder="e.g. We just crossed 500 beta signups. Write a LinkedIn post celebrating this milestone…"
           value={config.brief}
           onChange={(e) => set('brief', e.target.value)}
         />
-        <p className="text-xs text-muted-foreground mt-1">{config.brief.length} characters</p>
+        <p className="text-[11px] mt-1" style={{ color: '#8a8a8a' }}>{config.brief.length} characters</p>
       </div>
 
       {/* Tone override */}
       <div>
-        <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">Tone Override</label>
-        <p className="text-xs text-muted-foreground mb-2">Overrides your default profile tone for this generation</p>
+        <label className="block text-[11px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>Tone Override</label>
         <select
           value={config.toneOverride}
           onChange={(e) => set('toneOverride', e.target.value)}
-          className="input-base text-sm"
+          className="input-base text-[13px]"
         >
           {tones.map((t) => (
             <option key={t.key} value={t.value}>{t.label}</option>
@@ -128,31 +129,32 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
 
       {/* Length */}
       <div>
-        <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">Content Length</label>
+        <label className="block text-[11px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>Content Length</label>
         <div className="grid grid-cols-3 gap-2">
           {lengths.map((l) => (
             <button
               key={l.key}
               type="button"
               onClick={() => set('length', l.value)}
-              className={`flex flex-col items-center px-2 py-2.5 rounded-xl border text-center transition-all duration-150 ${
-                config.length === l.value
-                  ? 'border-primary bg-secondary' :'border-border hover:border-violet-700/50'
-              }`}
+              className="flex flex-col items-center px-2 py-2.5 rounded-[10px] text-center transition-all duration-150"
+              style={{
+                border: `1px solid ${config.length === l.value ? '#5a5a5a' : '#1f1f1f'}`,
+                background: config.length === l.value ? '#1c1c1c' : '#161616',
+              }}
             >
-              <span className={`text-xs font-semibold ${config.length === l.value ? 'text-secondary-foreground' : 'text-foreground'}`}>
+              <span className="text-[12px] font-semibold" style={{ color: config.length === l.value ? '#ededed' : '#8a8a8a' }}>
                 {l.label}
               </span>
-              <span className="text-xs text-muted-foreground mt-0.5">{l.hint}</span>
+              <span className="text-[10px] mt-0.5" style={{ color: '#8a8a8a' }}>{l.hint}</span>
             </button>
           ))}
         </div>
       </div>
 
       {/* Credits indicator */}
-      <div className="bg-muted rounded-xl px-3 py-2.5 flex items-center justify-between">
-        <span className="text-xs text-muted-foreground">This generation uses</span>
-        <span className="text-xs font-bold text-foreground">3 credits · 153 remaining</span>
+      <div className="rounded-[10px] px-3 py-2.5 flex items-center justify-between" style={{ background: '#161616', border: '1px solid #1f1f1f' }}>
+        <span className="text-[11px]" style={{ color: '#8a8a8a' }}>This generation uses</span>
+        <span className="text-[11px] font-bold" style={{ color: '#ededed' }}>3 credits · 153 remaining</span>
       </div>
 
       {/* Generate button */}
@@ -160,7 +162,7 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
         type="button"
         onClick={onGenerate}
         disabled={isGenerating || !config.brief.trim()}
-        className="btn-primary w-full flex items-center justify-center gap-2 text-sm min-h-[44px]"
+        className="btn-primary w-full flex items-center justify-center gap-2 text-[14px] min-h-[44px] rounded-[10px]"
       >
         {isGenerating ? (
           <>

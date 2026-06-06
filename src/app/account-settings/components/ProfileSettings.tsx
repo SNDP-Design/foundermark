@@ -22,12 +22,7 @@ export default function ProfileSettings() {
   const supabase = createClient();
 
   const { register, handleSubmit, reset, formState: { errors, isDirty } } = useForm<ProfileData>({
-    defaultValues: {
-      fullName: '',
-      email: '',
-      company: '',
-      bio: '',
-    },
+    defaultValues: { fullName: '', email: '', company: '', bio: '' },
   });
 
   useEffect(() => {
@@ -39,25 +34,10 @@ export default function ProfileSettings() {
           .select('*')
           .eq('id', user.id)
           .maybeSingle();
-
-        if (error && error.code !== 'PGRST116') {
-          console.log('Load profile error:', error.message);
-        }
-
         if (data) {
-          reset({
-            fullName: data.full_name || '',
-            email: data.email || user.email || '',
-            company: data.company || '',
-            bio: data.bio || '',
-          });
+          reset({ fullName: data.full_name || '', email: data.email || user.email || '', company: data.company || '', bio: data.bio || '' });
         } else {
-          reset({
-            fullName: user.user_metadata?.full_name || '',
-            email: user.email || '',
-            company: '',
-            bio: '',
-          });
+          reset({ fullName: user.user_metadata?.full_name || '', email: user.email || '', company: '', bio: '' });
         }
       } catch (err: any) {
         console.log('Profile load error:', err.message);
@@ -72,22 +52,14 @@ export default function ProfileSettings() {
     if (!user) { toast.error('You must be logged in to update your profile.'); return; }
     setIsSubmitting(true);
     try {
-      const { error } = await supabase
-        .from('user_profiles')
-        .upsert({
-          id: user.id,
-          email: data.email,
-          full_name: data.fullName,
-          company: data.company,
-          bio: data.bio,
-        }, { onConflict: 'id' });
-
+      const { error } = await supabase.from('user_profiles').upsert({
+        id: user.id, email: data.email, full_name: data.fullName, company: data.company, bio: data.bio,
+      }, { onConflict: 'id' });
       if (error) throw error;
-
       setSavedAt('Just now');
       toast.success('Profile updated successfully');
     } catch (error: any) {
-      toast.error(error?.message || 'Failed to update profile. Please try again.');
+      toast.error(error?.message || 'Failed to update profile.');
     } finally {
       setIsSubmitting(false);
     }
@@ -99,118 +71,80 @@ export default function ProfileSettings() {
 
   if (isLoading) {
     return (
-      <div className="card-base p-10 text-center">
-        <Loader2 size={24} className="animate-spin text-primary mx-auto" />
-        <p className="text-sm text-muted-foreground mt-3">Loading profile…</p>
+      <div className="rounded-[14px] p-10 text-center" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+        <Loader2 size={24} className="animate-spin mx-auto" style={{ color: '#8a8a8a' }} />
+        <p className="text-[13px] mt-3" style={{ color: '#8a8a8a' }}>Loading profile…</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="card-base p-6">
-        <h2 className="text-base font-bold text-foreground mb-5">Profile Information</h2>
+      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+        <h2 className="text-[16px] font-bold tracking-[-0.3px] mb-5" style={{ color: '#ededed' }}>Profile Information</h2>
 
-        {/* Avatar upload */}
-        <div className="flex items-center gap-5 mb-6 pb-6 border-b border-border">
+        {/* Avatar */}
+        <div className="flex items-center gap-5 mb-6 pb-6" style={{ borderBottom: '1px solid #1f1f1f' }}>
           <div className="relative">
-            <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center">
-              <span className="text-xl font-bold text-primary-foreground">{initials}</span>
+            <div className="w-[56px] h-[56px] rounded-[12px] flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9a9a9a, #3a3a3a)' }}>
+              <span className="text-[18px] font-bold" style={{ color: '#ededed' }}>{initials}</span>
             </div>
             <button
               type="button"
-              className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-card border border-border flex items-center justify-center hover:bg-muted transition-colors shadow-card"
+              className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center transition-colors"
+              style={{ background: '#0d0d0d', border: '1px solid #1f1f1f', color: '#8a8a8a' }}
               aria-label="Change profile photo"
-              title="Upload a profile photo"
             >
-              <Camera size={11} className="text-muted-foreground" />
+              <Camera size={11} />
             </button>
           </div>
           <div>
-            <p className="text-sm font-semibold text-foreground">Profile photo</p>
-            <p className="text-xs text-muted-foreground mt-0.5">JPG or PNG · Max 2MB</p>
-            <button type="button" className="text-xs text-primary hover:text-violet-700 font-semibold mt-1.5 transition-colors">
+            <p className="text-[13px] font-semibold" style={{ color: '#ededed' }}>Profile photo</p>
+            <p className="text-[11px] mt-[2px]" style={{ color: '#8a8a8a' }}>JPG or PNG · Max 2MB</p>
+            <button type="button" className="text-[11px] font-semibold mt-[6px] transition-opacity hover:opacity-70" style={{ color: '#ededed' }}>
               Upload new photo
             </button>
           </div>
         </div>
 
-        {/* Form fields */}
         <form onSubmit={onSubmit} className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="fullName">
-                Full name
-              </label>
-              <input
-                id="fullName"
-                type="text"
-                className="input-base"
-                {...register('fullName', { required: 'Full name is required' })}
-              />
-              {errors.fullName && <p className="text-xs text-rose-500 mt-1.5">{errors.fullName.message}</p>}
+              <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="fullName">Full name</label>
+              <input id="fullName" type="text" className="input-base" {...register('fullName', { required: 'Full name is required' })} />
+              {errors.fullName && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{errors.fullName.message}</p>}
             </div>
-
             <div>
-              <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="company">
-                Company / Product name
-              </label>
-              <input
-                id="company"
-                type="text"
-                className="input-base"
-                {...register('company')}
-              />
+              <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="company">Company / Product</label>
+              <input id="company" type="text" className="input-base" {...register('company')} />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="email">
-              Email address
-            </label>
-            <p className="text-xs text-muted-foreground mb-1.5">Used for login and notifications</p>
-            <input
-              id="email"
-              type="email"
-              className="input-base"
-              {...register('email', {
-                required: 'Email is required',
-                pattern: { value: /^\S+@\S+\.\S+$/, message: 'Enter a valid email' },
-              })}
-            />
-            {errors.email && <p className="text-xs text-rose-500 mt-1.5">{errors.email.message}</p>}
+            <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="email">Email address</label>
+            <p className="text-[11px] mb-[6px]" style={{ color: '#8a8a8a' }}>Used for login and notifications</p>
+            <input id="email" type="email" className="input-base" {...register('email', { required: 'Email is required', pattern: { value: /^\S+@\S+\.\S+$/, message: 'Enter a valid email' } })} />
+            {errors.email && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{errors.email.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-foreground mb-1.5" htmlFor="bio">
-              Short bio
-            </label>
-            <p className="text-xs text-muted-foreground mb-1.5">Helps personalize AI content — optional</p>
-            <textarea
-              id="bio"
-              rows={3}
-              className="input-base resize-none"
-              {...register('bio')}
-            />
+            <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="bio">Short bio</label>
+            <p className="text-[11px] mb-[6px]" style={{ color: '#8a8a8a' }}>Helps personalize AI content — optional</p>
+            <textarea id="bio" rows={3} className="input-base resize-none" {...register('bio')} />
           </div>
 
           <div className="flex items-center justify-between pt-2">
-            {savedAt && !isDirty && (
-              <span className="text-xs text-emerald-600 flex items-center gap-1.5 font-semibold">
+            {savedAt && !isDirty ? (
+              <span className="text-[12px] flex items-center gap-1.5 font-semibold" style={{ color: '#4ade80' }}>
                 <Check size={13} /> Saved {savedAt}
               </span>
-            )}
-            {!savedAt && <span />}
+            ) : <span />}
             <button
               type="submit"
               disabled={isSubmitting || !isDirty}
-              className="btn-primary text-sm flex items-center gap-2 min-w-[140px] justify-center disabled:opacity-50"
+              className="btn-primary text-[13px] flex items-center gap-2 min-w-[140px] justify-center"
             >
-              {isSubmitting ? (
-                <><Loader2 size={14} className="animate-spin" /> Saving…</>
-              ) : (
-                'Save Profile'
-              )}
+              {isSubmitting ? <><Loader2 size={14} className="animate-spin" /> Saving…</> : 'Save Profile'}
             </button>
           </div>
         </form>
