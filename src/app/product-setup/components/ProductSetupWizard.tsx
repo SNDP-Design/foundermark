@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { Loader2, Check, ChevronRight, ChevronLeft } from 'lucide-react';
 import { toast } from 'sonner';
@@ -51,20 +51,65 @@ export default function ProductSetupWizard() {
     },
   });
 
+  // Ensure user_profiles row exists (required by FK constraint on product_setup)
+  const ensureUserProfile = useCallback(async () => {
+    if (!user) return false;
+    try {
+      const { data: existing } = await supabase
+        .from('user_profiles')
+        .select('id')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (!existing) {
+        const { error } = await supabase.from('user_profiles').insert({
+          id: user.id,
+          email: user.email || '',
+          full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || '',
+          avatar_url: user.user_metadata?.avatar_url || '',
+        });
+        if (error && error.code !== '23505') {
+          // 23505 = unique_violation (already exists, safe to ignore)
+          console.log('Profile ensure error:', error.message);
+          return false;
+        }
+      }
+      return true;
+    } catch (err: any) {
+      console.log('Profile ensure error:', err.message);
+      return false;
+    }
+  }, [user, supabase]);
+
   useEffect(() => {
     const loadExistingSetup = async () => {
       if (!user) { setIsLoading(false); return; }
       try {
-        const { data, error } = await supabase.from('product_setup').select('*').eq('user_id', user.id).maybeSingle();
+        const { data, error } = await supabase
+          .from('product_setup')
+          .select('*')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        if (error) {
+          console.log('Product setup load error:', error.message);
+        }
+
         if (data) {
           setExistingId(data.id);
           form.reset({
-            productName: data.product_name || '', tagline: data.tagline || '',
-            websiteUrl: data.website_url || '', industry: data.industry || 'developer-tools',
-            description: data.description || '', targetAudience: data.target_audience || '',
-            audienceRole: data.audience_role || 'developer', stage: data.stage || 'beta',
-            differentiators: data.differentiators || '', painPoints: data.pain_points || '',
-            tone: data.tone || 'confident', channels: data.channels || ['linkedin', 'twitter'],
+            productName: data.product_name || '',
+            tagline: data.tagline || '',
+            websiteUrl: data.website_url || '',
+            industry: data.industry || 'developer-tools',
+            description: data.description || '',
+            targetAudience: data.target_audience || '',
+            audienceRole: data.audience_role || 'developer',
+            stage: data.stage || 'beta',
+            differentiators: data.differentiators || '',
+            painPoints: data.pain_points || '',
+            tone: data.tone || 'confident',
+            channels: data.channels || ['linkedin', 'twitter'],
             contentGoal: data.content_goal || 'drive-signups',
           });
         }
@@ -77,12 +122,63 @@ export default function ProductSetupWizard() {
     loadExistingSetup();
   }, [user]);
 
+  // Save current step data to Supabase (partial save / auto-persist)
+  const saveProgress = useCallback(async (data: ProductFormData) => {
+    if (!user) return;
+    try {
+      const profileOk = await ensureUserProfile();
+      if (!profileOk) return;
+
+      const payload = {
+        user_id: user.id,
+        product_name: data.productName,
+        tagline: data.tagline,
+        website_url: data.websiteUrl,
+        industry: data.industry,
+        description: data.description,
+        target_audience: data.targetAudience,
+        audience_role: data.audienceRole,
+        stage: data.stage,
+        differentiators: data.differentiators,
+        pain_points: data.painPoints,
+        tone: data.tone,
+        channels: data.channels,
+        content_goal: data.contentGoal,
+      };
+
+      if (existingId) {
+        const { error } = await supabase
+          .from('product_setup')
+          .update(payload)
+          .eq('id', existingId);
+        if (error) console.log('Auto-save error:', error.message);
+      } else {
+        const { data: inserted, error } = await supabase
+          .from('product_setup')
+          .insert(payload)
+          .select('id')
+          .single();
+        if (error) {
+          console.log('Auto-save insert error:', error.message);
+        } else if (inserted) {
+          setExistingId(inserted.id);
+        }
+      }
+    } catch (err: any) {
+      console.log('Auto-save error:', err.message);
+    }
+  }, [user, existingId, ensureUserProfile, supabase]);
+
   const handleNext = async () => {
     let fieldsToValidate: (keyof ProductFormData)[] = [];
     if (currentStep === 0) fieldsToValidate = ['productName', 'tagline', 'industry', 'description'];
     if (currentStep === 1) fieldsToValidate = ['targetAudience', 'stage', 'differentiators'];
     const valid = await form.trigger(fieldsToValidate);
-    if (valid) setCurrentStep(s => s + 1);
+    if (valid) {
+      // Auto-save progress when advancing steps
+      await saveProgress(form.getValues());
+      setCurrentStep(s => s + 1);
+    }
   };
 
   const handleBack = () => setCurrentStep(s => s - 1);
@@ -91,21 +187,45 @@ export default function ProductSetupWizard() {
     if (!user) { toast.error('You must be logged in to save your product profile.'); return; }
     setIsSubmitting(true);
     try {
+      const profileOk = await ensureUserProfile();
+      if (!profileOk) {
+        toast.error('Could not verify your account. Please try again.');
+        return;
+      }
+
       const payload = {
-        user_id: user.id, product_name: data.productName, tagline: data.tagline,
-        website_url: data.websiteUrl, industry: data.industry, description: data.description,
-        target_audience: data.targetAudience, audience_role: data.audienceRole, stage: data.stage,
-        differentiators: data.differentiators, pain_points: data.painPoints, tone: data.tone,
-        channels: data.channels, content_goal: data.contentGoal,
+        user_id: user.id,
+        product_name: data.productName,
+        tagline: data.tagline,
+        website_url: data.websiteUrl,
+        industry: data.industry,
+        description: data.description,
+        target_audience: data.targetAudience,
+        audience_role: data.audienceRole,
+        stage: data.stage,
+        differentiators: data.differentiators,
+        pain_points: data.painPoints,
+        tone: data.tone,
+        channels: data.channels,
+        content_goal: data.contentGoal,
       };
+
       if (existingId) {
-        const { error } = await supabase.from('product_setup').update(payload).eq('id', existingId);
+        const { error } = await supabase
+          .from('product_setup')
+          .update(payload)
+          .eq('id', existingId);
         if (error) throw error;
       } else {
-        const { data: inserted, error } = await supabase.from('product_setup').insert(payload).select('id').single();
+        const { data: inserted, error } = await supabase
+          .from('product_setup')
+          .insert(payload)
+          .select('id')
+          .single();
         if (error) throw error;
         setExistingId(inserted.id);
       }
+
       setCompleted(true);
       toast.success(`Product profile saved! Your AI content will now be tailored to ${data.productName}.`);
     } catch (error: any) {

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormReturn } from 'react-hook-form';
 import { ProductFormData } from './ProductSetupWizard';
 
 const stages = [
@@ -24,7 +24,7 @@ const audienceRoles = [
 ];
 
 interface Props {
-  form: ReturnType<typeof useFormContext<ProductFormData>>;
+  form: useFormReturn<ProductFormData>;
 }
 
 export default function Step2Audience({ form }: Props) {
