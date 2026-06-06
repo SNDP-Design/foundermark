@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import AppLogo from '@/components/ui/AppLogo';
 import {
   LayoutDashboard,
   Sparkles,
@@ -14,6 +13,8 @@ import {
   Zap,
   Package,
 } from 'lucide-react';
+import Icon from '@/components/ui/AppIcon';
+
 
 const navItems = [
   { key: 'nav-dashboard', href: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -25,6 +26,19 @@ const navItems = [
 const bottomItems = [
   { key: 'nav-settings', href: '/account-settings', label: 'Settings', icon: Settings },
 ];
+
+function FounderMarkLogo({ size = 22 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* F lettermark with a spark/mark accent */}
+      <rect x="6" y="6" width="4" height="20" rx="1.5" fill="#ededed" />
+      <rect x="6" y="6" width="14" height="4" rx="1.5" fill="#ededed" />
+      <rect x="6" y="14" width="10" height="3.5" rx="1.5" fill="#ededed" />
+      {/* Green accent dot */}
+      <circle cx="24" cy="8" r="3" fill="#4ade80" />
+    </svg>
+  );
+}
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -46,8 +60,8 @@ export default function Sidebar() {
       <div className={`flex items-center h-[72px] px-4 border-b border-[#1f1f1f] ${
         collapsed ? 'justify-center' : 'gap-3'
       }`}>
-        <div className="w-[30px] h-[30px] rounded-[8px] bg-black border border-[#1f1f1f] flex items-center justify-center shrink-0 overflow-hidden">
-          <AppLogo size={22} />
+        <div className="w-[32px] h-[32px] rounded-[8px] bg-black border border-[#1f1f1f] flex items-center justify-center shrink-0 overflow-hidden">
+          <FounderMarkLogo size={22} />
         </div>
         {!collapsed && (
           <span className="font-bold text-[14px] tracking-[0.2px] text-[#ededed]">
@@ -87,11 +101,11 @@ export default function Sidebar() {
               } ${collapsed ? 'justify-center' : ''}`}
               style={active ? { background: 'linear-gradient(#1c1c1c, #141414)' } : {}}
             >
-              <div
-                className={`w-[14px] h-[14px] rounded-[3px] shrink-0 ${
-                  active ? 'opacity-85' : 'opacity-40 group-hover:opacity-70'
+              <Icon
+                size={15}
+                className={`shrink-0 transition-opacity ${
+                  active ? 'opacity-90' : 'opacity-40 group-hover:opacity-70'
                 }`}
-                style={{ background: 'currentColor' }}
               />
               {!collapsed && (
                 <span className="flex-1 truncate">{item.label}</span>
@@ -131,11 +145,11 @@ export default function Sidebar() {
               } ${collapsed ? 'justify-center' : ''}`}
               style={active ? { background: 'linear-gradient(#1c1c1c, #141414)' } : {}}
             >
-              <div
-                className={`w-[14px] h-[14px] rounded-[3px] shrink-0 ${
-                  active ? 'opacity-85' : 'opacity-40 group-hover:opacity-70'
+              <Icon
+                size={15}
+                className={`shrink-0 transition-opacity ${
+                  active ? 'opacity-90' : 'opacity-40 group-hover:opacity-70'
                 }`}
-                style={{ background: 'currentColor' }}
               />
               {!collapsed && <span>{item.label}</span>}
               {collapsed && (
