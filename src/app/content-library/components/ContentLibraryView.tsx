@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, Grid3X3, List, Loader2 } from 'lucide-react';
+import { Search, Grid3X3, List, Loader2, SlidersHorizontal, X } from 'lucide-react';
 import ContentCard from './ContentCard';
 import ContentPreviewModal from './ContentPreviewModal';
 
@@ -114,7 +114,7 @@ const SAMPLE_ITEMS: LibraryItem[] = [
 ];
 
 const typeFilters = [
-  { key: 'filter-all', value: 'all', label: 'All Types' },
+  { key: 'filter-all', value: 'all', label: 'All' },
   { key: 'filter-social', value: 'social-post', label: 'Social Post' },
   { key: 'filter-ad', value: 'ad-copy', label: 'Ad Copy' },
   { key: 'filter-email', value: 'email-subject', label: 'Email Subject' },
@@ -150,6 +150,7 @@ export default function ContentLibraryView() {
   const [selectedItem, setSelectedItem] = useState<LibraryItem | null>(null);
   const [items, setItems] = useState<LibraryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
   const { user } = useAuth();
   const supabase = createClient();
 
@@ -273,6 +274,8 @@ export default function ContentLibraryView() {
     await supabase.from('library_items').delete().eq('id', id);
   };
 
+  const hasActiveFilters = search || typeFilter !== 'all' || channelFilter !== 'all' || favoritesOnly;
+
   if (isLoading) {
     return (
       <div className="rounded-[14px] p-10 text-center" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
@@ -284,112 +287,217 @@ export default function ContentLibraryView() {
 
   return (
     <>
-      {/* Toolbar */}
-      <div className="rounded-[14px] p-4 mb-5" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
-        <div className="flex flex-col lg:flex-row gap-4">
-          {/* Search */}
-          <div className="relative flex-1">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#8a8a8a' }} />
-            <input
-              type="text"
-              placeholder="Search your saved content…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="input-base pl-9 text-[13px]"
-            />
+      {/* Stats bar */}
+      <div className="grid grid-cols-3 gap-3 mb-5">
+        {[
+          { label: 'Total Saved', value: items.length },
+          { label: 'Favorites', value: items.filter(i => i.favorited).length },
+          { label: 'This Week', value: items.filter(i => i.createdAt.includes('Jun')).length },
+        ].map((stat) => (
+          <div
+            key={stat.label}
+            className="rounded-[12px] px-4 py-3 flex items-center justify-between"
+            style={{ background: '#0d0d0d', border: '1px solid #1f1f1f' }}
+          >
+            <span className="text-[12px]" style={{ color: '#8a8a8a' }}>{stat.label}</span>
+            <span className="text-[18px] font-bold tracking-tight" style={{ color: '#ededed' }}>{stat.value}</span>
           </div>
+        ))}
+      </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            {/* Type filter */}
-            <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-              className="input-base text-[12px] py-2 w-auto min-w-[130px]"
-            >
-              {typeFilters.map(f => <option key={f.key} value={f.value}>{f.label}</option>)}
-            </select>
-
-            {/* Channel filter */}
-            <select
-              value={channelFilter}
-              onChange={(e) => setChannelFilter(e.target.value)}
-              className="input-base text-[12px] py-2 w-auto min-w-[130px]"
-            >
-              {channelFilters.map(f => <option key={f.key} value={f.value}>{f.label}</option>)}
-            </select>
-
-            {/* Sort */}
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="input-base text-[12px] py-2 w-auto min-w-[110px]"
-            >
-              <option value="newest">Newest first</option>
-              <option value="oldest">Oldest first</option>
-            </select>
-
-            {/* Favorites toggle */}
+      {/* Search + controls row */}
+      <div className="flex items-center gap-2 mb-3">
+        {/* Search */}
+        <div className="relative flex-1">
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#8a8a8a' }} />
+          <input
+            type="text"
+            placeholder="Search saved content…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-9 pr-4 py-2.5 rounded-[10px] text-[13px] outline-none transition-colors"
+            style={{
+              background: '#0d0d0d',
+              border: '1px solid #1f1f1f',
+              color: '#ededed',
+            }}
+          />
+          {search && (
             <button
-              onClick={() => setFavoritesOnly(!favoritesOnly)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
-              style={{
-                border: `1px solid ${favoritesOnly ? '#5a5a5a' : '#1f1f1f'}`,
-                background: favoritesOnly ? '#1f1f1f' : 'transparent',
-                color: favoritesOnly ? '#ededed' : '#8a8a8a',
-              }}
+              onClick={() => setSearch('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2"
+              style={{ color: '#8a8a8a' }}
             >
-              ★ Favorites
-            </button>
-
-            {/* View mode */}
-            <div className="flex rounded-[8px] p-[3px]" style={{ background: '#161616', border: '1px solid #1f1f1f' }}>
-              <button
-                onClick={() => setViewMode('grid')}
-                className="w-8 h-8 rounded-[6px] flex items-center justify-center transition-all duration-150"
-                style={{
-                  background: viewMode === 'grid' ? '#0d0d0d' : 'transparent',
-                  color: viewMode === 'grid' ? '#ededed' : '#8a8a8a',
-                }}
-                aria-label="Grid view"
-              >
-                <Grid3X3 size={13} />
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className="w-8 h-8 rounded-[6px] flex items-center justify-center transition-all duration-150"
-                style={{
-                  background: viewMode === 'list' ? '#0d0d0d' : 'transparent',
-                  color: viewMode === 'list' ? '#ededed' : '#8a8a8a',
-                }}
-                aria-label="List view"
-              >
-                <List size={13} />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Results count */}
-        <div className="flex items-center justify-between mt-3 pt-3" style={{ borderTop: '1px solid #1f1f1f' }}>
-          <p className="text-[11px]" style={{ color: '#8a8a8a' }}>
-            Showing <span className="font-semibold" style={{ color: '#ededed' }}>{filtered.length}</span> of{' '}
-            <span className="font-semibold" style={{ color: '#ededed' }}>{items.length}</span> saved pieces
-          </p>
-          {(search || typeFilter !== 'all' || channelFilter !== 'all' || favoritesOnly) && (
-            <button
-              onClick={() => { setSearch(''); setTypeFilter('all'); setChannelFilter('all'); setFavoritesOnly(false); }}
-              className="text-[11px] font-semibold transition-opacity hover:opacity-70"
-              style={{ color: '#ededed' }}
-            >
-              Clear filters
+              <X size={13} />
             </button>
           )}
         </div>
+
+        {/* Filter toggle */}
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          className="flex items-center gap-1.5 px-3 py-2.5 rounded-[10px] text-[12px] font-semibold transition-all"
+          style={{
+            background: showFilters ? '#1f1f1f' : '#0d0d0d',
+            border: `1px solid ${showFilters ? '#3a3a3a' : '#1f1f1f'}`,
+            color: showFilters ? '#ededed' : '#8a8a8a',
+          }}
+        >
+          <SlidersHorizontal size={13} />
+          Filters
+          {hasActiveFilters && (
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#ededed' }} />
+          )}
+        </button>
+
+        {/* Sort */}
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="px-3 py-2.5 rounded-[10px] text-[12px] outline-none transition-colors"
+          style={{
+            background: '#0d0d0d',
+            border: '1px solid #1f1f1f',
+            color: '#8a8a8a',
+          }}
+        >
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+        </select>
+
+        {/* View mode */}
+        <div className="flex rounded-[10px] p-[3px]" style={{ background: '#0d0d0d', border: '1px solid #1f1f1f' }}>
+          <button
+            onClick={() => setViewMode('grid')}
+            className="w-8 h-8 rounded-[7px] flex items-center justify-center transition-all"
+            style={{
+              background: viewMode === 'grid' ? '#1f1f1f' : 'transparent',
+              color: viewMode === 'grid' ? '#ededed' : '#8a8a8a',
+            }}
+            aria-label="Grid view"
+          >
+            <Grid3X3 size={13} />
+          </button>
+          <button
+            onClick={() => setViewMode('list')}
+            className="w-8 h-8 rounded-[7px] flex items-center justify-center transition-all"
+            style={{
+              background: viewMode === 'list' ? '#1f1f1f' : 'transparent',
+              color: viewMode === 'list' ? '#ededed' : '#8a8a8a',
+            }}
+            aria-label="List view"
+          >
+            <List size={13} />
+          </button>
+        </div>
+      </div>
+
+      {/* Expandable filter panel */}
+      {showFilters && (
+        <div
+          className="rounded-[12px] p-4 mb-4"
+          style={{ background: '#0a0a0a', border: '1px solid #1f1f1f' }}
+        >
+          <div className="flex flex-col sm:flex-row gap-4">
+            {/* Type filter pills */}
+            <div className="flex-1">
+              <p className="text-[10px] font-semibold uppercase tracking-wider mb-2" style={{ color: '#5a5a5a' }}>Content Type</p>
+              <div className="flex flex-wrap gap-1.5">
+                {typeFilters.map(f => (
+                  <button
+                    key={f.key}
+                    onClick={() => setTypeFilter(f.value)}
+                    className="px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all"
+                    style={{
+                      background: typeFilter === f.value ? '#ededed' : '#161616',
+                      color: typeFilter === f.value ? '#0a0a0a' : '#8a8a8a',
+                      border: `1px solid ${typeFilter === f.value ? '#ededed' : '#2a2a2a'}`,
+                    }}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Channel filter pills */}
+            <div className="flex-1">
+              <p className="text-[10px] font-semibold uppercase tracking-wider mb-2" style={{ color: '#5a5a5a' }}>Channel</p>
+              <div className="flex flex-wrap gap-1.5">
+                {channelFilters.map(f => (
+                  <button
+                    key={f.key}
+                    onClick={() => setChannelFilter(f.value)}
+                    className="px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all"
+                    style={{
+                      background: channelFilter === f.value ? '#ededed' : '#161616',
+                      color: channelFilter === f.value ? '#0a0a0a' : '#8a8a8a',
+                      border: `1px solid ${channelFilter === f.value ? '#ededed' : '#2a2a2a'}`,
+                    }}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Favorites + clear row */}
+          <div className="flex items-center justify-between mt-3 pt-3" style={{ borderTop: '1px solid #1f1f1f' }}>
+            <button
+              onClick={() => setFavoritesOnly(!favoritesOnly)}
+              className="flex items-center gap-2 text-[12px] font-semibold transition-all"
+              style={{ color: favoritesOnly ? '#fbbf24' : '#8a8a8a' }}
+            >
+              <span
+                className="w-4 h-4 rounded-[4px] flex items-center justify-center"
+                style={{
+                  background: favoritesOnly ? 'rgba(251,191,36,0.15)' : '#161616',
+                  border: `1px solid ${favoritesOnly ? 'rgba(251,191,36,0.4)' : '#2a2a2a'}`,
+                }}
+              >
+                {favoritesOnly && <span style={{ fontSize: 9 }}>★</span>}
+              </span>
+              Favorites only
+            </button>
+            {hasActiveFilters && (
+              <button
+                onClick={() => { setSearch(''); setTypeFilter('all'); setChannelFilter('all'); setFavoritesOnly(false); }}
+                className="text-[11px] font-semibold flex items-center gap-1 transition-opacity hover:opacity-70"
+                style={{ color: '#ededed' }}
+              >
+                <X size={11} /> Clear all
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Type filter quick tabs (always visible) */}
+      <div className="flex items-center gap-1.5 mb-4 overflow-x-auto scrollbar-hide pb-1">
+        {typeFilters.map(f => (
+          <button
+            key={f.key}
+            onClick={() => setTypeFilter(f.value)}
+            className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all whitespace-nowrap"
+            style={{
+              background: typeFilter === f.value ? '#ededed' : 'transparent',
+              color: typeFilter === f.value ? '#0a0a0a' : '#8a8a8a',
+              border: `1px solid ${typeFilter === f.value ? '#ededed' : '#2a2a2a'}`,
+            }}
+          >
+            {f.label}
+          </button>
+        ))}
+        <div className="flex-1" />
+        <span className="flex-shrink-0 text-[11px]" style={{ color: '#5a5a5a' }}>
+          {filtered.length} result{filtered.length !== 1 ? 's' : ''}
+        </span>
       </div>
 
       {/* Content grid/list */}
       {filtered.length === 0 ? (
-        <div className="rounded-[14px] p-10 text-center" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+        <div className="rounded-[14px] p-12 text-center" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
           <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mx-auto mb-4" style={{ background: '#161616', border: '1px solid #1f1f1f' }}>
             <BookOpen size={20} style={{ color: '#8a8a8a' }} />
           </div>
@@ -401,9 +509,18 @@ export default function ContentLibraryView() {
               ? 'Generate content and save your favorites here for easy access and reuse.'
               : 'Try adjusting your search or filters to find what you\'re looking for.'}
           </p>
+          {hasActiveFilters && (
+            <button
+              onClick={() => { setSearch(''); setTypeFilter('all'); setChannelFilter('all'); setFavoritesOnly(false); }}
+              className="mt-4 px-4 py-2 rounded-[8px] text-[12px] font-semibold transition-all hover:opacity-80"
+              style={{ background: '#1f1f1f', color: '#ededed', border: '1px solid #2a2a2a' }}
+            >
+              Clear filters
+            </button>
+          )}
         </div>
       ) : (
-        <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4' : 'space-y-3'}>
+        <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3' : 'space-y-2'}>
           {filtered.map((item) => (
             <ContentCard
               key={item.id}
