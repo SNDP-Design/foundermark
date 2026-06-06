@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useFormReturn } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 import { ProductFormData } from './ProductSetupWizard';
 
 const stages = [
@@ -24,7 +24,7 @@ const audienceRoles = [
 ];
 
 interface Props {
-  form: useFormReturn<ProductFormData>;
+  form: UseFormReturn<ProductFormData>;
 }
 
 export default function Step2Audience({ form }: Props) {
@@ -35,19 +35,6 @@ export default function Step2Audience({ form }: Props) {
       <div>
         <h2 className="text-[17px] font-bold mb-[4px]" style={{ color: '#ededed' }}>Who are you building for?</h2>
         <p className="text-[13px]" style={{ color: '#8a8a8a' }}>Knowing your audience helps the AI write copy that speaks directly to the right people.</p>
-      </div>
-
-      <div>
-        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="targetAudience">
-          Target audience <span style={{ color: '#f87171' }}>*</span>
-        </label>
-        <p className="text-[11px] mb-[6px]" style={{ color: '#8a8a8a' }}>Describe who your ideal customer is in 1–2 sentences</p>
-        <textarea
-          id="targetAudience" rows={3} className="input-base resize-none"
-          placeholder="Indie developers and small teams (1–5 people) who want to launch a SaaS product quickly…"
-          {...register('targetAudience', { required: 'Target audience is required', minLength: { value: 20, message: 'Please be more specific — at least 20 characters' } })}
-        />
-        {errors.targetAudience && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{errors.targetAudience.message}</p>}
       </div>
 
       <div>
@@ -112,15 +99,6 @@ export default function Step2Audience({ form }: Props) {
         {errors.differentiators && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{errors.differentiators.message}</p>}
       </div>
 
-      <div>
-        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="painPoints">Pain points you solve</label>
-        <p className="text-[11px] mb-[6px]" style={{ color: '#8a8a8a' }}>What frustrations or problems does your product eliminate?</p>
-        <textarea
-          id="painPoints" rows={3} className="input-base resize-none"
-          placeholder="Founders waste 2–4 weeks setting up authentication, payment infrastructure, and email…"
-          {...register('painPoints')}
-        />
-      </div>
     </div>
   );
 }

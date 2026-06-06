@@ -172,7 +172,7 @@ export default function ProductSetupWizard() {
   const handleNext = async () => {
     let fieldsToValidate: (keyof ProductFormData)[] = [];
     if (currentStep === 0) fieldsToValidate = ['productName', 'tagline', 'industry', 'description'];
-    if (currentStep === 1) fieldsToValidate = ['targetAudience', 'stage', 'differentiators'];
+    if (currentStep === 1) fieldsToValidate = ['audienceRole', 'stage', 'differentiators'];
     const valid = await form.trigger(fieldsToValidate);
     if (valid) {
       // Auto-save progress when advancing steps
