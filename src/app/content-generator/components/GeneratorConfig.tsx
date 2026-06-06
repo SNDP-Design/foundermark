@@ -84,28 +84,6 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
         </div>
       )}
 
-      {/* Content type */}
-      <div>
-        <label className="block text-[11px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>Content Type</label>
-        <div className="flex flex-wrap gap-2">
-          {contentTypes.map((ct) => (
-            <button
-              key={ct.key}
-              type="button"
-              onClick={() => set('contentType', ct.value)}
-              className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
-              style={{
-                background: config.contentType === ct.value ? '#ededed' : '#161616',
-                color: config.contentType === ct.value ? '#0a0a0a' : '#8a8a8a',
-                border: `1px solid ${config.contentType === ct.value ? '#ededed' : '#1f1f1f'}`,
-              }}
-            >
-              {ct.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Channel */}
       {config.contentType === 'social-post' && (
         <div>
