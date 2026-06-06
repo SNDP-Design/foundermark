@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useFormReturn } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 import { ProductFormData } from './ProductSetupWizard';
 import { Check } from 'lucide-react';
 
@@ -31,7 +31,7 @@ const contentGoals = [
 ];
 
 interface Props {
-  form: useFormReturn<ProductFormData>;
+  form: UseFormReturn<ProductFormData>;
 }
 
 export default function Step3Voice({ form }: Props) {
@@ -56,7 +56,7 @@ export default function Step3Voice({ form }: Props) {
       {/* Tone selector */}
       <div>
         <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>
-          Tone of voice <span style={{ color: '#f87171' }}>*</span>
+          Tone of voice
         </label>
         <div className="space-y-2">
           {tones.map((tone) => {

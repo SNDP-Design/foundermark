@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { useFormReturn } from 'react-hook-form';
 import { ProductFormData } from './ProductSetupWizard';
 
 const stages = [
@@ -24,7 +24,7 @@ const audienceRoles = [
 ];
 
 interface Props {
-  form: UseFormReturn<ProductFormData>;
+  form: useFormReturn<ProductFormData>;
 }
 
 export default function Step2Audience({ form }: Props) {
@@ -39,7 +39,7 @@ export default function Step2Audience({ form }: Props) {
 
       <div>
         <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>
-          Primary audience role <span style={{ color: '#f87171' }}>*</span>
+          Primary audience role
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {audienceRoles.map((role) => (
@@ -63,7 +63,7 @@ export default function Step2Audience({ form }: Props) {
 
       <div>
         <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }}>
-          Current product stage <span style={{ color: '#f87171' }}>*</span>
+          Current product stage
         </label>
         <p className="text-[11px] mb-2" style={{ color: '#8a8a8a' }}>The AI adjusts urgency and messaging based on your stage</p>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
@@ -88,7 +88,7 @@ export default function Step2Audience({ form }: Props) {
 
       <div>
         <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="differentiators">
-          Key differentiators <span style={{ color: '#f87171' }}>*</span>
+          Key differentiators
         </label>
         <p className="text-[11px] mb-[6px]" style={{ color: '#8a8a8a' }}>What makes your product different from alternatives? List 2–3 things.</p>
         <textarea

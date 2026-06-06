@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { useForm, UseFormReturn } from 'react-hook-form';
 import { ProductFormData } from './ProductSetupWizard';
 
 const industries = [
@@ -33,7 +33,7 @@ export default function Step1Basics({ form }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="productName">
-            Product name <span style={{ color: '#f87171' }}>*</span>
+            Product name
           </label>
           <input id="productName" type="text" className="input-base" placeholder="e.g. BuildFast" {...register('productName', { required: 'Product name is required' })} />
           {errors.productName && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{errors.productName.message}</p>}
@@ -46,7 +46,7 @@ export default function Step1Basics({ form }: Props) {
 
       <div>
         <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="description">
-          Product description <span style={{ color: '#f87171' }}>*</span>
+          Product description
         </label>
         <p className="text-[11px] mb-[6px]" style={{ color: '#8a8a8a' }}>2–4 sentences about what your product does and who it's for</p>
         <textarea
@@ -59,7 +59,7 @@ export default function Step1Basics({ form }: Props) {
 
       <div>
         <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }}>
-          Industry <span style={{ color: '#f87171' }}>*</span>
+          Industry
         </label>
         <p className="text-[11px] mb-2" style={{ color: '#8a8a8a' }}>Helps the AI use the right vocabulary and benchmarks</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
