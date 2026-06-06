@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, Grid3X3, List, Loader2, SlidersHorizontal, X } from 'lucide-react';
+import { Search, Grid3X3, List, Loader2, X } from 'lucide-react';
 import ContentCard from './ContentCard';
 import ContentPreviewModal from './ContentPreviewModal';
 
@@ -150,7 +150,6 @@ export default function ContentLibraryView() {
   const [selectedItem, setSelectedItem] = useState<LibraryItem | null>(null);
   const [items, setItems] = useState<LibraryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [showFilters, setShowFilters] = useState(false);
   const { user } = useAuth();
   const supabase = createClient();
 
@@ -287,10 +286,10 @@ export default function ContentLibraryView() {
 
   return (
     <>
-      {/* Search + controls row */}
-      <div className="flex items-center gap-2 mb-3">
+      {/* Search + controls + filters — single row */}
+      <div className="flex items-center gap-2 mb-3 flex-wrap">
         {/* Search */}
-        <div className="relative flex-1">
+        <div className="relative flex-1 min-w-[160px]">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#8a8a8a' }} />
           <input
             type="text"
@@ -315,22 +314,67 @@ export default function ContentLibraryView() {
           )}
         </div>
 
-        {/* Filter toggle */}
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          className="flex items-center gap-1.5 px-3 py-2.5 rounded-[10px] text-[12px] font-semibold transition-all"
+        {/* Type filter pills */}
+        <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
+          {typeFilters.map(f => (
+            <button
+              key={f.key}
+              onClick={() => setTypeFilter(f.value)}
+              className="flex-shrink-0 px-3 py-2.5 rounded-[10px] text-[11px] font-semibold transition-all whitespace-nowrap"
+              style={{
+                background: typeFilter === f.value ? '#ededed' : '#0d0d0d',
+                color: typeFilter === f.value ? '#0a0a0a' : '#8a8a8a',
+                border: `1px solid ${typeFilter === f.value ? '#ededed' : '#1f1f1f'}`,
+              }}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Channel filter */}
+        <select
+          value={channelFilter}
+          onChange={(e) => setChannelFilter(e.target.value)}
+          className="px-3 py-2.5 rounded-[10px] text-[12px] outline-none transition-colors"
           style={{
-            background: showFilters ? '#1f1f1f' : '#0d0d0d',
-            border: `1px solid ${showFilters ? '#3a3a3a' : '#1f1f1f'}`,
-            color: showFilters ? '#ededed' : '#8a8a8a',
+            background: '#0d0d0d',
+            border: '1px solid #1f1f1f',
+            color: '#8a8a8a',
           }}
         >
-          <SlidersHorizontal size={13} />
-          Filters
-          {hasActiveFilters && (
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#ededed' }} />
-          )}
+          {channelFilters.map(f => (
+            <option key={f.key} value={f.value}>{f.label}</option>
+          ))}
+        </select>
+
+        {/* Favorites toggle */}
+        <button
+          onClick={() => setFavoritesOnly(!favoritesOnly)}
+          className="flex items-center gap-1.5 px-3 py-2.5 rounded-[10px] text-[12px] font-semibold transition-all"
+          style={{
+            background: favoritesOnly ? 'rgba(251,191,36,0.1)' : '#0d0d0d',
+            border: `1px solid ${favoritesOnly ? 'rgba(251,191,36,0.4)' : '#1f1f1f'}`,
+            color: favoritesOnly ? '#fbbf24' : '#8a8a8a',
+          }}
+        >
+          ★ Fav
         </button>
+
+        {/* Clear filters */}
+        {hasActiveFilters && (
+          <button
+            onClick={() => { setSearch(''); setTypeFilter('all'); setChannelFilter('all'); setFavoritesOnly(false); }}
+            className="flex items-center gap-1 px-3 py-2.5 rounded-[10px] text-[11px] font-semibold transition-opacity hover:opacity-70"
+            style={{
+              background: '#0d0d0d',
+              border: '1px solid #1f1f1f',
+              color: '#ededed',
+            }}
+          >
+            <X size={11} /> Clear
+          </button>
+        )}
 
         {/* Sort */}
         <select
@@ -372,109 +416,6 @@ export default function ContentLibraryView() {
             <List size={13} />
           </button>
         </div>
-      </div>
-
-      {/* Expandable filter panel */}
-      {showFilters && (
-        <div
-          className="rounded-[12px] p-4 mb-4"
-          style={{ background: '#0a0a0a', border: '1px solid #1f1f1f' }}
-        >
-          <div className="flex flex-col sm:flex-row gap-4">
-            {/* Type filter pills */}
-            <div className="flex-1">
-              <p className="text-[10px] font-semibold uppercase tracking-wider mb-2" style={{ color: '#5a5a5a' }}>Content Type</p>
-              <div className="flex flex-wrap gap-1.5">
-                {typeFilters.map(f => (
-                  <button
-                    key={f.key}
-                    onClick={() => setTypeFilter(f.value)}
-                    className="px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all"
-                    style={{
-                      background: typeFilter === f.value ? '#ededed' : '#161616',
-                      color: typeFilter === f.value ? '#0a0a0a' : '#8a8a8a',
-                      border: `1px solid ${typeFilter === f.value ? '#ededed' : '#2a2a2a'}`,
-                    }}
-                  >
-                    {f.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Channel filter pills */}
-            <div className="flex-1">
-              <p className="text-[10px] font-semibold uppercase tracking-wider mb-2" style={{ color: '#5a5a5a' }}>Channel</p>
-              <div className="flex flex-wrap gap-1.5">
-                {channelFilters.map(f => (
-                  <button
-                    key={f.key}
-                    onClick={() => setChannelFilter(f.value)}
-                    className="px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all"
-                    style={{
-                      background: channelFilter === f.value ? '#ededed' : '#161616',
-                      color: channelFilter === f.value ? '#0a0a0a' : '#8a8a8a',
-                      border: `1px solid ${channelFilter === f.value ? '#ededed' : '#2a2a2a'}`,
-                    }}
-                  >
-                    {f.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Favorites + clear row */}
-          <div className="flex items-center justify-between mt-3 pt-3" style={{ borderTop: '1px solid #1f1f1f' }}>
-            <button
-              onClick={() => setFavoritesOnly(!favoritesOnly)}
-              className="flex items-center gap-2 text-[12px] font-semibold transition-all"
-              style={{ color: favoritesOnly ? '#fbbf24' : '#8a8a8a' }}
-            >
-              <span
-                className="w-4 h-4 rounded-[4px] flex items-center justify-center"
-                style={{
-                  background: favoritesOnly ? 'rgba(251,191,36,0.15)' : '#161616',
-                  border: `1px solid ${favoritesOnly ? 'rgba(251,191,36,0.4)' : '#2a2a2a'}`,
-                }}
-              >
-                {favoritesOnly && <span style={{ fontSize: 9 }}>★</span>}
-              </span>
-              Favorites only
-            </button>
-            {hasActiveFilters && (
-              <button
-                onClick={() => { setSearch(''); setTypeFilter('all'); setChannelFilter('all'); setFavoritesOnly(false); }}
-                className="text-[11px] font-semibold flex items-center gap-1 transition-opacity hover:opacity-70"
-                style={{ color: '#ededed' }}
-              >
-                <X size={11} /> Clear all
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Type filter quick tabs (always visible) */}
-      <div className="flex items-center gap-1.5 mb-4 overflow-x-auto scrollbar-hide pb-1">
-        {typeFilters.map(f => (
-          <button
-            key={f.key}
-            onClick={() => setTypeFilter(f.value)}
-            className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all whitespace-nowrap"
-            style={{
-              background: typeFilter === f.value ? '#ededed' : 'transparent',
-              color: typeFilter === f.value ? '#0a0a0a' : '#8a8a8a',
-              border: `1px solid ${typeFilter === f.value ? '#ededed' : '#2a2a2a'}`,
-            }}
-          >
-            {f.label}
-          </button>
-        ))}
-        <div className="flex-1" />
-        <span className="flex-shrink-0 text-[11px]" style={{ color: '#5a5a5a' }}>
-          {filtered.length} result{filtered.length !== 1 ? 's' : ''}
-        </span>
       </div>
 
       {/* Content grid/list */}
