@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useFormReturn } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 import { ProductFormData } from './ProductSetupWizard';
 import { Check } from 'lucide-react';
 
@@ -31,7 +31,7 @@ const contentGoals = [
 ];
 
 interface Props {
-  form: useFormReturn<ProductFormData>;
+  form: UseFormReturn<ProductFormData>;
 }
 
 export default function Step3Voice({ form }: Props) {

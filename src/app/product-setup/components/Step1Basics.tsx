@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useFormReturn } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 import { ProductFormData } from './ProductSetupWizard';
 
 const industries = [
@@ -17,7 +17,7 @@ const industries = [
 ];
 
 interface Props {
-  form: useFormReturn<ProductFormData>;
+  form: UseFormReturn<ProductFormData>;
 }
 
 export default function Step1Basics({ form }: Props) {
