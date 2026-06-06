@@ -11,7 +11,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Zap,
-  Package } from
+  Package,
+  Share2 } from
 'lucide-react';
 import Icon from '@/components/ui/AppIcon';
 
@@ -20,7 +21,8 @@ const navItems = [
 { key: 'nav-dashboard', href: '/', label: 'Dashboard', icon: LayoutDashboard },
 { key: 'nav-generator', href: '/content-generator', label: 'Generate', icon: Sparkles, badge: null },
 { key: 'nav-library', href: '/content-library', label: 'Library', icon: BookOpen, badge: '24' },
-{ key: 'nav-product', href: '/product-setup', label: 'Product', icon: Package }];
+{ key: 'nav-product', href: '/product-setup', label: 'Product', icon: Package },
+{ key: 'nav-publish', href: '/social-publishing', label: 'Publish', icon: Share2 }];
 
 
 const bottomItems = [
