@@ -287,9 +287,9 @@ export default function ContentLibraryView() {
   return (
     <>
       {/* Search + controls + filters — single row */}
-      <div className="flex items-center gap-2 mb-3 flex-wrap">
+      <div className="flex items-center gap-2 mb-3 flex-wrap justify-start">
         {/* Search */}
-        <div className="relative flex-1 min-w-[160px]">
+        <div className="relative min-w-[160px] w-[220px]">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#8a8a8a' }} />
           <input
             type="text"
