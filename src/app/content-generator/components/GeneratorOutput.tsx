@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Copy, Check, Bookmark, RefreshCw, Sparkles } from 'lucide-react';
+import { Copy, Check, Bookmark, RefreshCw, Sparkles, Loader2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/LoadingSkeleton';
 import { GeneratedVariant } from './GeneratorWorkspace';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 
 const typeLabels: Record<string, string> = {
   'social-post': 'Social Post',
@@ -46,6 +47,8 @@ export default function GeneratorOutput({
   const [savingIds, setSavingIds] = useState<Set<string>>(new Set());
   const [regeneratingId, setRegeneratingId] = useState<string | null>(null);
   const [activeVariant, setActiveVariant] = useState(0);
+  const [isSavingAll, setIsSavingAll] = useState(false);
+  const [allSaved, setAllSaved] = useState(false);
   const { user } = useAuth();
   const supabase = createClient();
 
@@ -79,6 +82,35 @@ export default function GeneratorOutput({
       }
     } finally {
       setSavingIds(prev => { const next = new Set(prev); next.delete(id); return next; });
+    }
+  };
+
+  const handleSaveAll = async () => {
+    if (!user || !variants || isSavingAll || allSaved) return;
+    setIsSavingAll(true);
+    try {
+      const rows = variants.map((variant) => ({
+        user_id: user.id,
+        content_type: contentType,
+        channel: channel,
+        channel_label: channelLabels[channel] || channel,
+        text: variant.text,
+        product: '',
+        favorited: false,
+      }));
+      const { error } = await supabase.from('library_items').insert(rows);
+      if (error) {
+        toast.error('Failed to save variants. Please try again.');
+      } else {
+        const allIds = new Set(variants.map((v) => v.id));
+        setSavedIds(allIds);
+        setAllSaved(true);
+        toast.success('All 3 variants saved to your library!');
+      }
+    } catch {
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setIsSavingAll(false);
     }
   };
 
@@ -146,6 +178,28 @@ export default function GeneratorOutput({
           <span className="inline-flex items-center px-[8px] py-[3px] rounded-full text-[10px] font-semibold" style={{ background: '#161616', border: '1px solid #1f1f1f', color: '#8a8a8a' }}>
             {channelLabels[channel] || channel}
           </span>
+          {/* Save All to Library button */}
+          <button
+            onClick={handleSaveAll}
+            disabled={isSavingAll || allSaved || !user}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[11px] font-semibold transition-all duration-150"
+            style={{
+              background: allSaved ? '#ededed' : '#161616',
+              border: `1px solid ${allSaved ? '#ededed' : '#1f1f1f'}`,
+              color: allSaved ? '#0a0a0a' : '#8a8a8a',
+              opacity: isSavingAll ? 0.7 : 1,
+              cursor: allSaved ? 'default' : 'pointer',
+            }}
+          >
+            {isSavingAll ? (
+              <Loader2 size={11} className="animate-spin" />
+            ) : allSaved ? (
+              <Check size={11} />
+            ) : (
+              <Bookmark size={11} />
+            )}
+            {isSavingAll ? 'Saving…' : allSaved ? 'Saved to Library' : 'Save to Library'}
+          </button>
         </div>
       </div>
 
