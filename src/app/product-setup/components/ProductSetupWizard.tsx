@@ -1,12 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Loader2, Check, ChevronRight, ChevronLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import Step1Basics from './Step1Basics';
 import Step2Audience from './Step2Audience';
 import Step3Voice from './Step3Voice';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 export type ProductFormData = {
   productName: string;
@@ -26,33 +28,78 @@ export type ProductFormData = {
 
 const steps = [
   { key: 'step-basics', label: 'Basics', description: 'Product identity' },
-  { key: 'step-audience', label: 'Audience', description: 'Who you\'re targeting' },
+  { key: 'step-audience', label: 'Audience', description: "Who you\'re targeting" },
   { key: 'step-voice', label: 'Voice & Channels', description: 'Tone and distribution' },
 ];
 
 export default function ProductSetupWizard() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [completed, setCompleted] = useState(false);
+  const [existingId, setExistingId] = useState<string | null>(null);
+  const { user } = useAuth();
+  const supabase = createClient();
 
   const form = useForm<ProductFormData>({
     mode: 'onBlur',
     defaultValues: {
-      productName: 'BuildFast',
-      tagline: 'Ship your SaaS in days, not months',
-      websiteUrl: 'https://buildfast.io',
+      productName: '',
+      tagline: '',
+      websiteUrl: '',
       industry: 'developer-tools',
-      description: 'BuildFast is a boilerplate toolkit for indie developers and small teams who want to launch their SaaS product quickly without reinventing the wheel.',
-      targetAudience: 'Indie developers, solo founders, and small teams building SaaS products',
+      description: '',
+      targetAudience: '',
       audienceRole: 'developer',
       stage: 'beta',
-      differentiators: 'Pre-built auth, payments, and email — all wired together out of the box',
-      painPoints: 'Founders waste weeks on infrastructure instead of building their core product',
+      differentiators: '',
+      painPoints: '',
       tone: 'confident',
       channels: ['linkedin', 'twitter'],
       contentGoal: 'drive-signups',
     },
   });
+
+  useEffect(() => {
+    const loadExistingSetup = async () => {
+      if (!user) { setIsLoading(false); return; }
+      try {
+        const { data, error } = await supabase
+          .from('product_setup')
+          .select('*')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        if (error && error.code !== 'PGRST116') {
+          console.log('Load product setup error:', error.message);
+        }
+
+        if (data) {
+          setExistingId(data.id);
+          form.reset({
+            productName: data.product_name || '',
+            tagline: data.tagline || '',
+            websiteUrl: data.website_url || '',
+            industry: data.industry || 'developer-tools',
+            description: data.description || '',
+            targetAudience: data.target_audience || '',
+            audienceRole: data.audience_role || 'developer',
+            stage: data.stage || 'beta',
+            differentiators: data.differentiators || '',
+            painPoints: data.pain_points || '',
+            tone: data.tone || 'confident',
+            channels: data.channels || ['linkedin', 'twitter'],
+            contentGoal: data.content_goal || 'drive-signups',
+          });
+        }
+      } catch (err: any) {
+        console.log('Product setup load error:', err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadExistingSetup();
+  }, [user]);
 
   const handleNext = async () => {
     let fieldsToValidate: (keyof ProductFormData)[] = [];
@@ -65,14 +112,60 @@ export default function ProductSetupWizard() {
 
   const handleBack = () => setCurrentStep(s => s - 1);
 
-  // Backend integration point: PUT /api/product/profile
-  const handleSubmit = form.handleSubmit(async () => {
+  const handleSubmit = form.handleSubmit(async (data) => {
+    if (!user) { toast.error('You must be logged in to save your product profile.'); return; }
     setIsSubmitting(true);
-    await new Promise(r => setTimeout(r, 1800));
-    setIsSubmitting(false);
-    setCompleted(true);
-    toast.success('Product profile saved! Your AI content will now be tailored to BuildFast.');
+    try {
+      const payload = {
+        user_id: user.id,
+        product_name: data.productName,
+        tagline: data.tagline,
+        website_url: data.websiteUrl,
+        industry: data.industry,
+        description: data.description,
+        target_audience: data.targetAudience,
+        audience_role: data.audienceRole,
+        stage: data.stage,
+        differentiators: data.differentiators,
+        pain_points: data.painPoints,
+        tone: data.tone,
+        channels: data.channels,
+        content_goal: data.contentGoal,
+      };
+
+      if (existingId) {
+        const { error } = await supabase
+          .from('product_setup')
+          .update(payload)
+          .eq('id', existingId);
+        if (error) throw error;
+      } else {
+        const { data: inserted, error } = await supabase
+          .from('product_setup')
+          .insert(payload)
+          .select('id')
+          .single();
+        if (error) throw error;
+        setExistingId(inserted.id);
+      }
+
+      setCompleted(true);
+      toast.success(`Product profile saved! Your AI content will now be tailored to ${data.productName}.`);
+    } catch (error: any) {
+      toast.error(error?.message || 'Failed to save product profile. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   });
+
+  if (isLoading) {
+    return (
+      <div className="card-base p-10 text-center">
+        <Loader2 size={24} className="animate-spin text-primary mx-auto" />
+        <p className="text-sm text-muted-foreground mt-3">Loading your product profile…</p>
+      </div>
+    );
+  }
 
   if (completed) {
     return (

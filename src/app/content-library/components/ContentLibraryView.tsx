@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
-import { Search, Grid3X3, List } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Search, Grid3X3, List, Loader2 } from 'lucide-react';
 import ContentCard from './ContentCard';
 import ContentPreviewModal from './ContentPreviewModal';
 import EmptyState from '@/components/ui/EmptyState';
 import { BookOpen } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 export type LibraryItem = {
   id: string;
@@ -17,24 +19,6 @@ export type LibraryItem = {
   favorited: boolean;
   product: string;
 };
-
-// Backend integration point: fetch /api/content/library
-const allItems: LibraryItem[] = [
-  { id: 'lib-001', type: 'social-post', channel: 'linkedin', channelLabel: 'LinkedIn', text: "We've been building in public for 60 days — and here's the honest truth about what's working.\n\nWe launched BuildFast to solve the problem every solo developer faces: spending 3–4 weeks on auth, payments, and email before you can even start building your real product.\n\nSince launch:\n→ 500+ developers signed up\n→ 12 products shipped using our boilerplate\n→ Average time-to-launch: 4 days (vs. industry average of 3 weeks)", createdAt: 'Jun 6, 2026', favorited: true, product: 'BuildFast' },
-  { id: 'lib-002', type: 'ad-copy', channel: 'facebook', channelLabel: 'Facebook Ads', text: "Stop writing marketing copy from scratch. BuildFast's AI writes your social posts, ad creatives, and email subjects in seconds — trained on what actually converts for B2B SaaS. Try free for 14 days. No credit card required.", createdAt: 'Jun 5, 2026', favorited: false, product: 'BuildFast' },
-  { id: 'lib-003', type: 'email-subject', channel: 'email', channelLabel: 'Email', text: "Your competitors are already using AI to write marketing copy (here's how to catch up)", createdAt: 'Jun 5, 2026', favorited: true, product: 'BuildFast' },
-  { id: 'lib-004', type: 'tagline', channel: 'twitter', channelLabel: 'Twitter / X', text: "Ship faster. Market smarter. BuildFast turns your product vision into words that convert.", createdAt: 'Jun 4, 2026', favorited: false, product: 'BuildFast' },
-  { id: 'lib-005', type: 'blog-intro', channel: 'linkedin', channelLabel: 'LinkedIn', text: "Most first-time founders spend 80% of their time building and 20% on marketing. The problem? That ratio needs to flip the moment you launch. Here's how we changed our approach — and what we learned about getting early traction without a marketing budget.", createdAt: 'Jun 4, 2026', favorited: true, product: 'BuildFast' },
-  { id: 'lib-006', type: 'social-post', channel: 'instagram', channelLabel: 'Instagram', text: "The moment you realize your product solves a real problem is unlike anything else. We saw it when a founder told us she saved 4 hours a week using BuildFast. That's why we build. ✨ #founders #buildinpublic #startuplife", createdAt: 'Jun 3, 2026', favorited: false, product: 'BuildFast' },
-  { id: 'lib-007', type: 'ad-copy', channel: 'twitter', channelLabel: 'Twitter / X', text: "Tired of spending weeks on boilerplate? BuildFast ships with everything: auth, Stripe, email, admin. Your idea deserves to be live — not stuck in setup hell. Free beta. No card required.", createdAt: 'Jun 3, 2026', favorited: true, product: 'BuildFast' },
-  { id: 'lib-008', type: 'social-post', channel: 'linkedin', channelLabel: 'LinkedIn', text: "Hot take: most developers don't have a skills problem. They have a time problem.\n\nYou know how to build auth. You know how to wire up Stripe. You know how to configure email. But doing all of that before you can ship your actual idea? That's 3 weeks of momentum you can't get back.", createdAt: 'Jun 2, 2026', favorited: false, product: 'BuildFast' },
-  { id: 'lib-009', type: 'email-subject', channel: 'email', channelLabel: 'Email', text: "You've been putting off your SaaS launch for 3 months (let's fix that today)", createdAt: 'Jun 2, 2026', favorited: false, product: 'BuildFast' },
-  { id: 'lib-010', type: 'tagline', channel: 'linkedin', channelLabel: 'LinkedIn', text: "From idea to production in 4 days. No boilerplate required.", createdAt: 'Jun 1, 2026', favorited: true, product: 'BuildFast' },
-  { id: 'lib-011', type: 'blog-intro', channel: 'linkedin', channelLabel: 'LinkedIn', text: "I used to think the hardest part of building a SaaS was the idea. Then I spent 3 weeks setting up authentication and realized I was completely wrong. The hardest part is getting past the infrastructure so you can actually build the thing people want.", createdAt: 'May 31, 2026', favorited: false, product: 'BuildFast' },
-  { id: 'lib-012', type: 'social-post', channel: 'twitter', channelLabel: 'Twitter / X', text: "To every developer who has ever set up authentication for the 5th time:\n\nWe see you. We've been you.\n\nBuildFast is the boilerplate we wish existed when we started. Auth, payments, email, admin dashboard — all wired together, production-ready, in one repo.\n\nShip your SaaS in days, not months.", createdAt: 'May 30, 2026', favorited: true, product: 'BuildFast' },
-  { id: 'lib-013', type: 'ad-copy', channel: 'facebook', channelLabel: 'Facebook Ads', text: "500 developers launched their SaaS using BuildFast. Average time from signup to first user: 4 days. What are you waiting for? Start free — no credit card, no lock-in, no boilerplate.", createdAt: 'May 29, 2026', favorited: false, product: 'BuildFast' },
-  { id: 'lib-014', type: 'email-subject', channel: 'email', channelLabel: 'Email', text: "We just made it 3x easier to launch your SaaS (no, really)", createdAt: 'May 28, 2026', favorited: true, product: 'BuildFast' },
-];
 
 const typeFilters = [
   { key: 'filter-all', value: 'all', label: 'All Types' },
@@ -54,6 +38,15 @@ const channelFilters = [
   { key: 'chf-fb', value: 'facebook', label: 'Facebook Ads' },
 ];
 
+function formatDate(dateStr: string): string {
+  try {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  } catch {
+    return dateStr;
+  }
+}
+
 export default function ContentLibraryView() {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -62,7 +55,46 @@ export default function ContentLibraryView() {
   const [sortBy, setSortBy] = useState('newest');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedItem, setSelectedItem] = useState<LibraryItem | null>(null);
-  const [items, setItems] = useState<LibraryItem[]>(allItems);
+  const [items, setItems] = useState<LibraryItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
+  const supabase = createClient();
+
+  useEffect(() => {
+    const loadLibrary = async () => {
+      if (!user) { setIsLoading(false); return; }
+      try {
+        const { data, error } = await supabase
+          .from('library_items')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.log('Load library error:', error.message);
+          setItems([]);
+        } else {
+          const mapped: LibraryItem[] = (data || []).map(row => ({
+            id: row.id,
+            type: row.content_type as LibraryItem['type'],
+            channel: row.channel as LibraryItem['channel'],
+            channelLabel: row.channel_label,
+            text: row.text,
+            createdAt: formatDate(row.created_at),
+            favorited: row.favorited,
+            product: row.product || '',
+          }));
+          setItems(mapped);
+        }
+      } catch (err: any) {
+        console.log('Library load error:', err.message);
+        setItems([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadLibrary();
+  }, [user]);
 
   const filtered = useMemo(() => {
     let result = items;
@@ -78,16 +110,38 @@ export default function ContentLibraryView() {
     return result;
   }, [items, search, typeFilter, channelFilter, favoritesOnly, sortBy]);
 
-  const handleToggleFavorite = (id: string) => {
-    setItems(prev => prev.map(item =>
-      item.id === id ? { ...item, favorited: !item.favorited } : item
-    ));
+  const handleToggleFavorite = async (id: string) => {
+    const item = items.find(i => i.id === id);
+    if (!item) return;
+    const newFavorited = !item.favorited;
+    setItems(prev => prev.map(i => i.id === id ? { ...i, favorited: newFavorited } : i));
+    const { error } = await supabase
+      .from('library_items')
+      .update({ favorited: newFavorited })
+      .eq('id', id);
+    if (error) {
+      console.log('Toggle favorite error:', error.message);
+      setItems(prev => prev.map(i => i.id === id ? { ...i, favorited: item.favorited } : i));
+    }
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     setItems(prev => prev.filter(item => item.id !== id));
     if (selectedItem?.id === id) setSelectedItem(null);
+    const { error } = await supabase.from('library_items').delete().eq('id', id);
+    if (error) {
+      console.log('Delete library item error:', error.message);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="card-base p-10 text-center">
+        <Loader2 size={24} className="animate-spin text-primary mx-auto" />
+        <p className="text-sm text-muted-foreground mt-3">Loading your library…</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -191,11 +245,17 @@ export default function ContentLibraryView() {
       {filtered.length === 0 ? (
         <EmptyState
           icon={BookOpen}
-          title="No content matches your filters"
-          description="Try adjusting your search or filters. Your saved content will appear here once you generate and save pieces from the Content Generator."
+          title={items.length === 0 ? 'Your library is empty' : 'No content matches your filters'}
+          description={
+            items.length === 0
+              ? 'Generate content in the Content Generator and save variants to build your library.'
+              : 'Try adjusting your search or filters. Your saved content will appear here once you generate and save pieces from the Content Generator.'
+          }
           action={{
-            label: 'Clear all filters',
-            onClick: () => { setSearch(''); setTypeFilter('all'); setChannelFilter('all'); setFavoritesOnly(false); },
+            label: items.length === 0 ? 'Go to Content Generator' : 'Clear all filters',
+            onClick: items.length === 0
+              ? () => { window.location.href = '/content-generator'; }
+              : () => { setSearch(''); setTypeFilter('all'); setChannelFilter('all'); setFavoritesOnly(false); },
           }}
         />
       ) : (

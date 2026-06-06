@@ -5,7 +5,8 @@ import { useForm } from 'react-hook-form';
 import AppLogo from '@/components/ui/AppLogo';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 type SignUpData = {
   fullName: string;
@@ -25,24 +26,41 @@ export default function AuthForm() {
   const [tab, setTab] = useState<'login' | 'signup'>('login');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { signIn, signUp } = useAuth();
+  const router = useRouter();
 
   const signupForm = useForm<SignUpData>({ mode: 'onBlur' });
   const loginForm = useForm<LoginData>({ mode: 'onBlur' });
 
-  // Backend integration point: POST /api/auth/signup
   const handleSignup = signupForm.handleSubmit(async (data) => {
+    if (!data.terms) return;
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 1600));
-    setIsLoading(false);
-    toast.success(`Welcome to FounderMark, ${data.fullName.split(' ')[0]}! Let's set up your product.`);
+    try {
+      await signUp(data.email, data.password, {
+        fullName: data.fullName,
+      });
+      toast.success(`Welcome to FounderMark, ${data.fullName.split(' ')[0]}! Let's set up your product.`);
+      router.push('/product-setup');
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error?.message || 'Sign up failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   });
 
-  // Backend integration point: POST /api/auth/login
-  const handleLogin = loginForm.handleSubmit(async () => {
+  const handleLogin = loginForm.handleSubmit(async (data) => {
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 1400));
-    setIsLoading(false);
-    toast.success('Logged in successfully. Welcome back!');
+    try {
+      await signIn(data.email, data.password);
+      toast.success('Logged in successfully. Welcome back!');
+      router.push('/');
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error?.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setIsLoading(false);
+    }
   });
 
   return (
@@ -185,7 +203,7 @@ export default function AuthForm() {
           </button>
 
           <p className="text-center text-sm text-muted-foreground">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <button type="button" onClick={() => setTab('signup')} className="text-primary font-semibold hover:text-violet-700 transition-colors">
               Sign up free
             </button>
@@ -317,7 +335,7 @@ export default function AuthForm() {
               {...signupForm.register('terms', { required: 'You must accept the terms to continue' })}
             />
             <label htmlFor="terms" className="text-sm text-muted-foreground cursor-pointer leading-relaxed">
-              I agree to FounderMark's{' '}
+              I agree to FounderMark&apos;s{' '}
               <a href="#" className="text-primary hover:text-violet-700 font-medium transition-colors">Terms of Service</a>
               {' '}and{' '}
               <a href="#" className="text-primary hover:text-violet-700 font-medium transition-colors">Privacy Policy</a>

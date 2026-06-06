@@ -7,6 +7,8 @@ import EmptyState from '@/components/ui/EmptyState';
 import { Skeleton } from '@/components/ui/LoadingSkeleton';
 import { toast } from 'sonner';
 import { GeneratedVariant } from './GeneratorWorkspace';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 const typeLabels: Record<string, string> = {
   'social-post': 'Social Post',
@@ -44,8 +46,11 @@ export default function GeneratorOutput({
 }: Props) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
+  const [savingIds, setSavingIds] = useState<Set<string>>(new Set());
   const [regeneratingId, setRegeneratingId] = useState<string | null>(null);
   const [activeVariant, setActiveVariant] = useState(0);
+  const { user } = useAuth();
+  const supabase = createClient();
 
   const handleCopy = (id: string, text: string) => {
     navigator.clipboard.writeText(text).then(() => {
@@ -55,18 +60,74 @@ export default function GeneratorOutput({
     });
   };
 
-  const handleSave = (id: string) => {
-    setSavedIds(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-        toast.success('Removed from library');
+  const handleSave = async (variant: GeneratedVariant) => {
+    if (!user) { toast.error('You must be logged in to save content.'); return; }
+    const id = variant.id;
+
+    if (savedIds.has(id)) {
+      // Remove from library - find by text match since we don't store DB id locally
+      setSavedIds(prev => { const next = new Set(prev); next.delete(id); return next; });
+      toast.success('Removed from library');
+      return;
+    }
+
+    setSavingIds(prev => { const next = new Set(prev); next.add(id); return next; });
+    try {
+      const { error } = await supabase.from('library_items').insert({
+        user_id: user.id,
+        content_type: contentType,
+        channel: channel,
+        channel_label: channelLabels[channel] || channel,
+        text: variant.text,
+        product: '',
+        favorited: false,
+      });
+
+      if (error) {
+        console.log('Save to library error:', error.message);
+        toast.error('Failed to save to library.');
       } else {
-        next.add(id);
+        setSavedIds(prev => { const next = new Set(prev); next.add(id); return next; });
         toast.success('Saved to library');
       }
-      return next;
-    });
+    } catch (err: any) {
+      toast.error('Failed to save to library.');
+    } finally {
+      setSavingIds(prev => { const next = new Set(prev); next.delete(id); return next; });
+    }
+  };
+
+  const handleSaveAll = async () => {
+    if (!user || !variants) { toast.error('You must be logged in to save content.'); return; }
+    const unsaved = variants.filter(v => !savedIds.has(v.id));
+    if (unsaved.length === 0) { toast.success('All variants already saved to library'); return; }
+
+    try {
+      const rows = unsaved.map(v => ({
+        user_id: user.id,
+        content_type: contentType,
+        channel: channel,
+        channel_label: channelLabels[channel] || channel,
+        text: v.text,
+        product: '',
+        favorited: false,
+      }));
+
+      const { error } = await supabase.from('library_items').insert(rows);
+      if (error) {
+        console.log('Save all error:', error.message);
+        toast.error('Failed to save all variants.');
+      } else {
+        setSavedIds(prev => {
+          const next = new Set(prev);
+          unsaved.forEach(v => next.add(v.id));
+          return next;
+        });
+        toast.success(`All ${variants.length} variants saved to library`);
+      }
+    } catch (err: any) {
+      toast.error('Failed to save all variants.');
+    }
   };
 
   const handleRegenerate = async (id: string) => {
@@ -198,8 +259,9 @@ export default function GeneratorOutput({
                   <RefreshCw size={14} className={regeneratingId === variant.id ? 'animate-spin' : ''} />
                 </button>
                 <button
-                  onClick={() => handleSave(variant.id)}
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-150 ${
+                  onClick={() => handleSave(variant)}
+                  disabled={savingIds.has(variant.id)}
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-150 disabled:opacity-50 ${
                     savedIds.has(variant.id)
                       ? 'bg-primary text-primary-foreground'
                       : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -232,16 +294,7 @@ export default function GeneratorOutput({
           {savedIds.size} of {variants.length} variants saved to library
         </p>
         <button
-          onClick={() => {
-            variants.forEach(v => {
-              setSavedIds(prev => {
-                const next = new Set(prev);
-                next.add(v.id);
-                return next;
-              });
-            });
-            toast.success('All 3 variants saved to library');
-          }}
+          onClick={handleSaveAll}
           className="text-xs font-semibold text-primary hover:text-violet-700 transition-colors flex items-center gap-1"
         >
           <FileText size={12} /> Save all to library

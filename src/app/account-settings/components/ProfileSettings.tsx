@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Loader2, Camera, Check } from 'lucide-react';
 import { toast } from 'sonner';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 type ProfileData = {
   fullName: string;
@@ -14,25 +16,95 @@ type ProfileData = {
 
 export default function ProfileSettings() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [savedAt, setSavedAt] = useState<string | null>(null);
+  const { user } = useAuth();
+  const supabase = createClient();
 
-  const { register, handleSubmit, formState: { errors, isDirty } } = useForm<ProfileData>({
+  const { register, handleSubmit, reset, formState: { errors, isDirty } } = useForm<ProfileData>({
     defaultValues: {
-      fullName: 'Nadia Patel',
-      email: 'nadia@buildfast.io',
-      company: 'BuildFast',
-      bio: 'Founder of BuildFast — a SaaS boilerplate for indie developers. Building in public.',
+      fullName: '',
+      email: '',
+      company: '',
+      bio: '',
     },
   });
 
-  // Backend integration point: PUT /api/account/profile
-  const onSubmit = handleSubmit(async () => {
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (!user) { setIsLoading(false); return; }
+      try {
+        const { data, error } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', user.id)
+          .maybeSingle();
+
+        if (error && error.code !== 'PGRST116') {
+          console.log('Load profile error:', error.message);
+        }
+
+        if (data) {
+          reset({
+            fullName: data.full_name || '',
+            email: data.email || user.email || '',
+            company: data.company || '',
+            bio: data.bio || '',
+          });
+        } else {
+          reset({
+            fullName: user.user_metadata?.full_name || '',
+            email: user.email || '',
+            company: '',
+            bio: '',
+          });
+        }
+      } catch (err: any) {
+        console.log('Profile load error:', err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadProfile();
+  }, [user]);
+
+  const onSubmit = handleSubmit(async (data) => {
+    if (!user) { toast.error('You must be logged in to update your profile.'); return; }
     setIsSubmitting(true);
-    await new Promise(r => setTimeout(r, 1400));
-    setIsSubmitting(false);
-    setSavedAt('Just now');
-    toast.success('Profile updated successfully');
+    try {
+      const { error } = await supabase
+        .from('user_profiles')
+        .upsert({
+          id: user.id,
+          email: data.email,
+          full_name: data.fullName,
+          company: data.company,
+          bio: data.bio,
+        }, { onConflict: 'id' });
+
+      if (error) throw error;
+
+      setSavedAt('Just now');
+      toast.success('Profile updated successfully');
+    } catch (error: any) {
+      toast.error(error?.message || 'Failed to update profile. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   });
+
+  const initials = user?.user_metadata?.full_name
+    ? user.user_metadata.full_name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
+    : user?.email?.slice(0, 2).toUpperCase() || 'FM';
+
+  if (isLoading) {
+    return (
+      <div className="card-base p-10 text-center">
+        <Loader2 size={24} className="animate-spin text-primary mx-auto" />
+        <p className="text-sm text-muted-foreground mt-3">Loading profile…</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -43,7 +115,7 @@ export default function ProfileSettings() {
         <div className="flex items-center gap-5 mb-6 pb-6 border-b border-border">
           <div className="relative">
             <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center">
-              <span className="text-xl font-bold text-primary-foreground">NP</span>
+              <span className="text-xl font-bold text-primary-foreground">{initials}</span>
             </div>
             <button
               type="button"
