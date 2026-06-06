@@ -5,6 +5,8 @@ import GeneratorConfig from './GeneratorConfig';
 import GeneratorOutput from './GeneratorOutput';
 import { useChat } from '@/lib/hooks/useChat';
 import { toast } from 'sonner';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 export type GeneratorConfig = {
   contentType: string;
@@ -12,6 +14,14 @@ export type GeneratorConfig = {
   brief: string;
   toneOverride: string;
   length: string;
+};
+
+export type ProductSetupData = {
+  productName: string;
+  tone: string;
+  channels: string[];
+  tagline: string;
+  description: string;
 };
 
 export type GeneratedVariant = {
@@ -43,16 +53,20 @@ const lengthInstructions: Record<string, string> = {
   long: 'Aim for 400–800 characters.',
 };
 
-function buildPrompt(config: GeneratorConfig): string {
+function buildPrompt(config: GeneratorConfig, productSetup: ProductSetupData | null): string {
   const contentLabel = contentTypeLabels[config.contentType] || config.contentType;
   const channelLabel = channelLabels[config.channel] || config.channel;
   const lengthHint = lengthInstructions[config.length] || '';
+
+  const productContext = productSetup
+    ? `Product: ${productSetup.productName}${productSetup.tagline ? `\nTagline: ${productSetup.tagline}` : ''}${productSetup.description ? `\nDescription: ${productSetup.description}` : ''}\n`
+    : '';
 
   return `You are an expert marketing copywriter for startups and founders.
 
 Generate exactly 3 distinct variants of a ${contentLabel} for ${channelLabel}.
 
-Brief / Context:
+${productContext}Brief / Context:
 ${config.brief}
 
 Tone: ${config.toneOverride}
@@ -85,6 +99,11 @@ function parseVariants(raw: string): GeneratedVariant[] {
 }
 
 export default function GeneratorWorkspace() {
+  const { user } = useAuth();
+  const supabase = createClient();
+  const [productSetup, setProductSetup] = useState<ProductSetupData | null>(null);
+  const [isLoadingSetup, setIsLoadingSetup] = useState(true);
+
   const [config, setConfig] = useState<GeneratorConfig>({
     contentType: 'social-post',
     channel: 'linkedin',
@@ -102,6 +121,42 @@ export default function GeneratorWorkspace() {
     'gemini/gemini-2.5-flash',
     false
   );
+
+  // Load product setup and pre-populate config
+  useEffect(() => {
+    const loadProductSetup = async () => {
+      if (!user) { setIsLoadingSetup(false); return; }
+      try {
+        const { data, error } = await supabase
+          .from('product_setup')
+          .select('product_name, tone, channels, tagline, description')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        if (data) {
+          const setup: ProductSetupData = {
+            productName: data.product_name || '',
+            tone: data.tone || 'confident',
+            channels: data.channels || ['linkedin'],
+            tagline: data.tagline || '',
+            description: data.description || '',
+          };
+          setProductSetup(setup);
+          // Pre-populate tone and first preferred channel
+          setConfig(prev => ({
+            ...prev,
+            toneOverride: setup.tone,
+            channel: setup.channels?.[0] || prev.channel,
+          }));
+        }
+      } catch (err: any) {
+        console.log('Product setup load error:', err.message);
+      } finally {
+        setIsLoadingSetup(false);
+      }
+    };
+    loadProductSetup();
+  }, [user]);
 
   // Show toast on AI error
   useEffect(() => {
@@ -146,7 +201,7 @@ export default function GeneratorWorkspace() {
     setVariants(null);
     pendingRegenId.current = null;
 
-    const prompt = buildPrompt(config);
+    const prompt = buildPrompt(config, productSetup);
     sendMessage(
       [
         { role: 'system', content: 'You are an expert marketing copywriter for startups and founders. Follow the output format exactly.' },
@@ -163,12 +218,15 @@ export default function GeneratorWorkspace() {
     const contentLabel = contentTypeLabels[config.contentType] || config.contentType;
     const channelLabel = channelLabels[config.channel] || config.channel;
     const lengthHint = lengthInstructions[config.length] || '';
+    const productContext = productSetup
+      ? `Product: ${productSetup.productName}${productSetup.tagline ? `\nTagline: ${productSetup.tagline}` : ''}\n`
+      : '';
 
     const prompt = `You are an expert marketing copywriter for startups and founders.
 
 Write a single fresh variant of a ${contentLabel} for ${channelLabel}.
 
-Brief / Context:
+${productContext}Brief / Context:
 ${config.brief}
 
 Tone: ${config.toneOverride}
@@ -193,6 +251,8 @@ Output only the final copy — no labels, no explanations.`;
           onChange={setConfig}
           onGenerate={handleGenerate}
           isGenerating={isGenerating}
+          productSetup={productSetup}
+          isLoadingSetup={isLoadingSetup}
         />
       </div>
       <div className="lg:col-span-3">
