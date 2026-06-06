@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   title: 'FounderMark — AI Marketing Content for Founders',
   description: 'FounderMark helps first-time founders generate on-brand marketing copy, social posts, and ad creatives in seconds — no marketing experience needed.',
   icons: {
-    icon: [{ url: '/favicon.ico', type: 'image/x-icon' }],
+    icon: [{ url: '/assets/images/favicon.png', type: 'image/png' }],
   },
 };
 
