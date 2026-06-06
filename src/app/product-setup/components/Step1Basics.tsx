@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { useFormReturn } from 'react-hook-form';
 import { ProductFormData } from './ProductSetupWizard';
 
 const industries = [
@@ -17,7 +17,7 @@ const industries = [
 ];
 
 interface Props {
-  form: UseFormReturn<ProductFormData>;
+  form: useFormReturn<ProductFormData>;
 }
 
 export default function Step1Basics({ form }: Props) {
@@ -40,7 +40,6 @@ export default function Step1Basics({ form }: Props) {
         </div>
         <div>
           <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor="websiteUrl">Website URL</label>
-          <p className="text-[11px] mb-[6px]" style={{ color: '#8a8a8a' }}>Optional — helps the AI reference your brand</p>
           <input id="websiteUrl" type="url" className="input-base" placeholder="https://yourproduct.com" {...register('websiteUrl')} />
         </div>
       </div>
