@@ -114,7 +114,7 @@ export default function RecentGenerations() {
         {recentItems.map((item) => (
           <div
             key={item.id}
-            className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-violet-200 hover:bg-violet-50/40 transition-all duration-150"
+            className="group flex items-start gap-4 p-4 rounded-xl border border-border hover:border-violet-700/50 hover:bg-violet-900/10 transition-all duration-150"
           >
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1.5">

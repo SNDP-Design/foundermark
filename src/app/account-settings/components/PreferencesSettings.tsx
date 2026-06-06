@@ -105,7 +105,7 @@ export default function PreferencesSettings() {
 
         <div className="flex items-center justify-between mt-6 pt-4 border-t border-border">
           {savedAt && (
-            <span className="text-xs text-emerald-600 flex items-center gap-1.5 font-semibold">
+            <span className="text-xs text-emerald-400 flex items-center gap-1.5 font-semibold">
               <Check size={13} /> Saved {savedAt}
             </span>
           )}

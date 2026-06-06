@@ -47,8 +47,8 @@ export default function QuickActions() {
               href={action?.href}
               className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-150 group ${
                 action?.primary
-                  ? 'border-primary/30 bg-secondary hover:bg-violet-100'
-                  : 'border-border hover:border-violet-200 hover:bg-violet-50/40'
+                  ? 'border-primary/30 bg-secondary hover:bg-violet-900/40'
+                  : 'border-border hover:border-violet-700/50 hover:bg-violet-900/10'
               }`}
             >
               <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${

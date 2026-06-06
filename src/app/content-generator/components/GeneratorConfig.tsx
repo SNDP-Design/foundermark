@@ -137,7 +137,7 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
               onClick={() => set('length', l.value)}
               className={`flex flex-col items-center px-2 py-2.5 rounded-xl border text-center transition-all duration-150 ${
                 config.length === l.value
-                  ? 'border-primary bg-secondary' :'border-border hover:border-violet-200'
+                  ? 'border-primary bg-secondary' :'border-border hover:border-violet-700/50'
               }`}
             >
               <span className={`text-xs font-semibold ${config.length === l.value ? 'text-secondary-foreground' : 'text-foreground'}`}>

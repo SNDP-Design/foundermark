@@ -170,8 +170,8 @@ export default function ProductSetupWizard() {
   if (completed) {
     return (
       <div className="card-base p-10 text-center slide-up">
-        <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
-          <Check size={28} className="text-emerald-600" />
+        <div className="w-16 h-16 rounded-full bg-emerald-900/40 flex items-center justify-center mx-auto mb-4">
+          <Check size={28} className="text-emerald-400" />
         </div>
         <h2 className="text-xl font-bold text-foreground mb-2">Profile saved!</h2>
         <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">

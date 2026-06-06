@@ -55,7 +55,7 @@ export default function ContentCard({ item, viewMode, onPreview, onToggleFavorit
   if (viewMode === 'list') {
     return (
       <div
-        className="group card-base p-4 flex items-start gap-4 cursor-pointer hover:border-violet-200 hover:bg-violet-50/30 transition-all duration-150"
+        className="group card-base p-4 flex items-start gap-4 cursor-pointer hover:border-violet-700/50 hover:bg-violet-900/10 transition-all duration-150"
         onClick={onPreview}
       >
         <div className="flex-1 min-w-0">
@@ -73,7 +73,7 @@ export default function ContentCard({ item, viewMode, onPreview, onToggleFavorit
           <button onClick={handleCopy} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted text-muted-foreground hover:text-foreground transition-all duration-150" aria-label="Copy content" title="Copy to clipboard">
             {copied ? <Check size={13} className="text-emerald-500" /> : <Copy size={13} />}
           </button>
-          <button onClick={handleDelete} className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150 ${confirmDelete ? 'bg-rose-100 text-rose-600' : 'hover:bg-muted text-muted-foreground hover:text-rose-500'}`} aria-label="Delete content" title={confirmDelete ? 'Click again to confirm deletion' : 'Delete this content'}>
+          <button onClick={handleDelete} className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150 ${confirmDelete ? 'bg-rose-900/40 text-rose-400' : 'hover:bg-muted text-muted-foreground hover:text-rose-400'}`} aria-label="Delete content" title={confirmDelete ? 'Click again to confirm deletion' : 'Delete this content'}>
             <Trash2 size={13} />
           </button>
         </div>
@@ -83,7 +83,7 @@ export default function ContentCard({ item, viewMode, onPreview, onToggleFavorit
 
   return (
     <div
-      className="group card-base p-4 cursor-pointer content-card-hover hover:border-violet-200 transition-all duration-150 flex flex-col"
+      className="group card-base p-4 cursor-pointer content-card-hover hover:border-violet-700/50 transition-all duration-150 flex flex-col"
       onClick={onPreview}
     >
       {/* Type & channel badges */}
@@ -120,7 +120,7 @@ export default function ContentCard({ item, viewMode, onPreview, onToggleFavorit
           <button onClick={handleCopy} className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted text-muted-foreground hover:text-foreground transition-all duration-150" aria-label="Copy content" title="Copy to clipboard">
             {copied ? <Check size={13} className="text-emerald-500" /> : <Copy size={13} />}
           </button>
-          <button onClick={handleDelete} className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150 ${confirmDelete ? 'bg-rose-100 text-rose-600' : 'hover:bg-muted text-muted-foreground hover:text-rose-500'}`} aria-label="Delete content" title={confirmDelete ? 'Click again to confirm deletion' : 'Delete this content'}>
+          <button onClick={handleDelete} className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150 ${confirmDelete ? 'bg-rose-900/40 text-rose-400' : 'hover:bg-muted text-muted-foreground hover:text-rose-400'}`} aria-label="Delete content" title={confirmDelete ? 'Click again to confirm deletion' : 'Delete this content'}>
             <Trash2 size={13} />
           </button>
         </div>

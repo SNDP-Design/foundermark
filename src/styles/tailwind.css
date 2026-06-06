@@ -3,36 +3,36 @@
 @tailwind utilities;
 
 :root {
-  --background: #fafaf9;
-  --foreground: #18181b;
-  --primary: #7C3AED;
+  --background: #0f0f11;
+  --foreground: #f4f4f5;
+  --primary: #8b5cf6;
   --primary-foreground: #ffffff;
-  --secondary: #f4f0fd;
-  --secondary-foreground: #5b21b6;
+  --secondary: #1e1a2e;
+  --secondary-foreground: #c4b5fd;
   --accent: #F59E0B;
   --accent-foreground: #ffffff;
-  --muted: #f4f4f5;
+  --muted: #1c1c22;
   --muted-foreground: #71717a;
-  --card: #ffffff;
-  --card-foreground: #18181b;
-  --border: #e4e4e7;
-  --input: #e4e4e7;
-  --ring: #7C3AED;
+  --card: #18181b;
+  --card-foreground: #f4f4f5;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #8b5cf6;
   --radius: 0.75rem;
   --font-sans: 'Plus Jakarta Sans', sans-serif;
 
-  --violet-50: #f5f3ff;
-  --violet-100: #ede9fe;
-  --violet-200: #ddd6fe;
-  --violet-600: #7C3AED;
-  --violet-700: #6d28d9;
+  --violet-50: #1e1a2e;
+  --violet-100: #2d2540;
+  --violet-200: #3d3060;
+  --violet-600: #8b5cf6;
+  --violet-700: #7C3AED;
   --amber-400: #fbbf24;
   --amber-500: #F59E0B;
   --green-500: #22c55e;
   --red-500: #ef4444;
-  --red-50: #fef2f2;
-  --amber-50: #fffbeb;
-  --green-50: #f0fdf4;
+  --red-50: #2d1515;
+  --amber-50: #2d2010;
+  --green-50: #0f2d1a;
 }
 
 @layer base {
@@ -80,31 +80,31 @@
   }
 
   .gradient-primary {
-    background: linear-gradient(135deg, #7C3AED 0%, #6d28d9 100%);
+    background: linear-gradient(135deg, #8b5cf6 0%, #7C3AED 100%);
   }
 
   .gradient-card-violet {
-    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+    background: linear-gradient(135deg, #1e1a2e 0%, #2d2540 100%);
   }
 
   .gradient-card-amber {
-    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    background: linear-gradient(135deg, #2d2010 0%, #3d2a10 100%);
   }
 
   .gradient-card-green {
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    background: linear-gradient(135deg, #0f2d1a 0%, #1a3d25 100%);
   }
 
   .gradient-card-blue {
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    background: linear-gradient(135deg, #0f1e2d 0%, #1a2d3d 100%);
   }
 
   .gradient-card-rose {
-    background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+    background: linear-gradient(135deg, #2d1015 0%, #3d1520 100%);
   }
 
   .auth-brand-bg {
-    background: linear-gradient(145deg, #5b21b6 0%, #7C3AED 40%, #8b5cf6 100%);
+    background: linear-gradient(145deg, #3b0764 0%, #6d28d9 40%, #8b5cf6 100%);
   }
 
   .content-card-hover {
@@ -112,7 +112,7 @@
   }
 
   .content-card-hover:hover {
-    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.12);
+    box-shadow: 0 8px 30px rgba(139, 92, 246, 0.2);
     transform: translateY(-2px);
   }
 
@@ -144,7 +144,7 @@
 
   @keyframes pulseHighlight {
     0% { background-color: transparent; }
-    30% { background-color: #ede9fe; }
+    30% { background-color: #2d2540; }
     100% { background-color: transparent; }
   }
 
@@ -167,7 +167,7 @@
   }
 
   .skeleton-pulse {
-    background: linear-gradient(90deg, #f4f4f5 25%, #e4e4e7 50%, #f4f4f5 75%);
+    background: linear-gradient(90deg, #27272a 25%, #3f3f46 50%, #27272a 75%);
     background-size: 200% 100%;
     animation: shimmer 1.4s ease infinite;
   }
@@ -182,13 +182,14 @@
   }
 
   .btn-secondary {
-    @apply bg-secondary text-secondary-foreground font-semibold px-5 py-2.5 rounded-xl transition-all duration-150 hover:bg-violet-100 active:scale-95;
+    @apply bg-secondary text-secondary-foreground font-semibold px-5 py-2.5 rounded-xl transition-all duration-150 hover:bg-violet-200 active:scale-95;
   }
 
   .btn-ghost {
     @apply text-muted-foreground font-medium px-4 py-2 rounded-xl transition-all duration-150 hover:bg-muted active:scale-95;
   }
-.input-base  {
+
+  .input-base {
     @apply w-full px-3.5 py-2.5 rounded-xl border border-input bg-card text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:border-primary transition-all duration-150;
   }
 
@@ -201,6 +202,6 @@
   }
 
   .violet-700 {
-    color: #6d28d9;
+    color: #7C3AED;
   }
 }

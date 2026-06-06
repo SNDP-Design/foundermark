@@ -194,7 +194,7 @@ export default function ContentLibraryView() {
               onClick={() => setFavoritesOnly(!favoritesOnly)}
               className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-semibold transition-all duration-150 ${
                 favoritesOnly
-                  ? 'border-amber-400 bg-amber-50 text-amber-700' :'border-border text-muted-foreground hover:border-amber-300'
+                  ? 'border-amber-400 bg-amber-900/30 text-amber-400' :'border-border text-muted-foreground hover:border-amber-600'
               }`}
             >
               ★ Favorites
