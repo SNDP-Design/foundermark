@@ -72,20 +72,6 @@ export default function Sidebar() {
         }
       </div>
 
-      {/* Credits pill */}
-      {!collapsed &&
-      <div className="mx-3 mt-4 mb-1 border border-[#1f1f1f] rounded-[10px] p-[11px] flex items-center gap-[9px]" style={{ background: '#0d0d0d' }}>
-          <img src="https://img.rocket.new/generatedImages/rocket_gen_img_1bee6f5b2-1772814263694.png" alt="Nadia Patel" className="w-[30px] h-[30px] rounded-full flex-shrink-0 object-cover" />
-          <div className="flex-1 min-w-0">
-            <p className="text-[12px] font-semibold text-[#ededed] leading-tight truncate">Nadia Patel</p>
-            <span className="text-[10px] font-medium flex items-center gap-[5px] mt-[3px]" style={{ color: '#4ade80' }}>
-              <span className="w-[6px] h-[6px] rounded-full flex-shrink-0" style={{ background: '#4ade80' }} />
-              Synced
-            </span>
-          </div>
-        </div>
-      }
-
       {/* Nav items */}
       <nav className="flex-1 px-[14px] py-3 flex flex-col gap-[5px]">
         {navItems.map((item) => {
