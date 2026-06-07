@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useFormReturn } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 import { ProductFormData } from './ProductSetupWizard';
 import { Check } from 'lucide-react';
 
@@ -31,7 +31,7 @@ const contentGoals = [
 ];
 
 interface Props {
-  form: useFormReturn<ProductFormData>;
+  form: UseFormReturn<ProductFormData>;
 }
 
 export default function Step3Voice({ form }: Props) {
@@ -50,12 +50,12 @@ export default function Step3Voice({ form }: Props) {
   return (
     <div className="space-y-7">
       <div>
-        <h2 className="text-[17px] font-bold mb-[4px]" style={{ color: '#ededed' }}>Tone of voice & channels</h2>
+        <h2 className="text-[17px] font-bold mb-[4px]" style={{ color: '#111111' }}>Tone of voice &amp; channels</h2>
       </div>
 
       {/* Tone selector */}
       <div>
-        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>
+        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#6b7280' }}>
           Tone of voice
         </label>
         <div className="space-y-2">
@@ -67,25 +67,25 @@ export default function Step3Voice({ form }: Props) {
                 <div
                   className="flex items-start gap-4 p-4 rounded-[10px] transition-all duration-150"
                   style={{
-                    border: `1px solid ${selected ? '#5a5a5a' : '#1f1f1f'}`,
-                    background: selected ? '#1c1c1c' : '#161616',
+                    border: `1px solid ${selected ? '#9ca3af' : '#e5e7eb'}`,
+                    background: selected ? '#f3f4f6' : '#fafafa',
                   }}
                 >
                   <div
                     className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all"
                     style={{
-                      borderColor: selected ? '#ededed' : '#3a3a3a',
-                      background: selected ? '#ededed' : 'transparent',
+                      borderColor: selected ? '#111111' : '#d1d5db',
+                      background: selected ? '#111111' : 'transparent',
                     }}
                   >
-                    {selected && <Check size={10} style={{ color: '#0a0a0a' }} />}
+                    {selected && <Check size={10} style={{ color: '#ffffff' }} />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[13px] font-semibold" style={{ color: selected ? '#ededed' : '#8a8a8a' }}>{tone.label}</span>
-                      <span className="text-[11px]" style={{ color: '#8a8a8a' }}>— {tone.description}</span>
+                      <span className="text-[13px] font-semibold" style={{ color: selected ? '#111111' : '#6b7280' }}>{tone.label}</span>
+                      <span className="text-[11px]" style={{ color: '#9ca3af' }}>— {tone.description}</span>
                     </div>
-                    <p className="text-[11px] italic" style={{ color: '#8a8a8a' }}>{tone.example}</p>
+                    <p className="text-[11px] italic" style={{ color: '#9ca3af' }}>{tone.example}</p>
                   </div>
                 </div>
               </label>
@@ -96,7 +96,7 @@ export default function Step3Voice({ form }: Props) {
 
       {/* Channel preferences */}
       <div>
-        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }}>Primary channels</label>
+        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#6b7280' }}>Primary channels</label>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {channels.map((ch) => {
             const active = selectedChannels.includes(ch.value);
@@ -107,12 +107,12 @@ export default function Step3Voice({ form }: Props) {
                 onClick={() => toggleChannel(ch.value)}
                 className="flex items-center gap-2 px-3 py-2.5 rounded-[8px] text-[12px] font-medium transition-all duration-150"
                 style={{
-                  border: `1px solid ${active ? '#5a5a5a' : '#1f1f1f'}`,
-                  background: active ? '#1c1c1c' : '#161616',
-                  color: active ? '#ededed' : '#8a8a8a',
+                  border: `1px solid ${active ? '#9ca3af' : '#e5e7eb'}`,
+                  background: active ? '#f3f4f6' : '#fafafa',
+                  color: active ? '#111111' : '#6b7280',
                 }}
               >
-                {active && <Check size={12} style={{ color: '#4ade80' }} />}
+                {active && <Check size={12} style={{ color: '#16a34a' }} />}
                 {ch.label}
               </button>
             );
@@ -122,7 +122,7 @@ export default function Step3Voice({ form }: Props) {
 
       {/* Content goal */}
       <div>
-        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }}>Primary content goal</label>
+        <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#6b7280' }}>Primary content goal</label>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {contentGoals.map((goal) => (
             <label key={goal.key} className="cursor-pointer">
@@ -130,9 +130,9 @@ export default function Step3Voice({ form }: Props) {
               <span
                 className="block px-3 py-2.5 rounded-[8px] text-[12px] font-medium text-center transition-all duration-150"
                 style={{
-                  border: `1px solid ${form.watch('contentGoal') === goal.value ? '#5a5a5a' : '#1f1f1f'}`,
-                  background: form.watch('contentGoal') === goal.value ? '#1c1c1c' : '#161616',
-                  color: form.watch('contentGoal') === goal.value ? '#ededed' : '#8a8a8a',
+                  border: `1px solid ${form.watch('contentGoal') === goal.value ? '#9ca3af' : '#e5e7eb'}`,
+                  background: form.watch('contentGoal') === goal.value ? '#f3f4f6' : '#fafafa',
+                  color: form.watch('contentGoal') === goal.value ? '#111111' : '#6b7280',
                 }}
               >
                 {goal.label}

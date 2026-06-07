@@ -33,14 +33,14 @@ export default function SecuritySettings() {
   return (
     <div className="space-y-5">
       {/* Password change */}
-      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-8 h-8 rounded-[8px] flex items-center justify-center" style={{ background: '#161616', border: '1px solid #1f1f1f' }}>
-            <Shield size={14} style={{ color: '#ededed' }} />
+          <div className="w-8 h-8 rounded-[8px] flex items-center justify-center" style={{ background: '#f3f4f6', border: '1px solid #e5e7eb' }}>
+            <Shield size={14} style={{ color: '#111111' }} />
           </div>
           <div>
-            <h2 className="text-[15px] font-bold" style={{ color: '#ededed' }}>Change Password</h2>
-            <p className="text-[11px]" style={{ color: '#8a8a8a' }}>Use a strong password you don't use elsewhere</p>
+            <h2 className="text-[15px] font-bold" style={{ color: '#111111' }}>Change Password</h2>
+            <p className="text-[11px]" style={{ color: '#9ca3af' }}>Use a strong password you don't use elsewhere</p>
           </div>
         </div>
 
@@ -51,7 +51,7 @@ export default function SecuritySettings() {
             { id: 'confirmPassword', label: 'Confirm new password', show: showConfirm, toggle: () => setShowConfirm(!showConfirm), placeholder: 'Repeat your new password', rules: { required: 'Please confirm your new password', validate: (v: string) => v === watch('newPassword') || 'Passwords do not match' }, error: errors.confirmPassword },
           ].map((field) => (
             <div key={field.id}>
-              <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#8a8a8a' }} htmlFor={field.id}>{field.label}</label>
+              <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-[6px]" style={{ color: '#6b7280' }} htmlFor={field.id}>{field.label}</label>
               <div className="relative">
                 <input
                   id={field.id}
@@ -60,11 +60,11 @@ export default function SecuritySettings() {
                   placeholder={field.placeholder}
                   {...register(field.id as keyof PasswordData, field.rules)}
                 />
-                <button type="button" onClick={field.toggle} className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors" style={{ color: '#8a8a8a' }} aria-label="Toggle visibility">
+                <button type="button" onClick={field.toggle} className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors" style={{ color: '#9ca3af' }} aria-label="Toggle visibility">
                   {field.show ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
-              {field.error && <p className="text-[11px] mt-1" style={{ color: '#f87171' }}>{field.error.message}</p>}
+              {field.error && <p className="text-[11px] mt-1" style={{ color: '#dc2626' }}>{field.error.message}</p>}
             </div>
           ))}
 
@@ -77,11 +77,11 @@ export default function SecuritySettings() {
       </div>
 
       {/* 2FA */}
-      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-[14px] font-bold" style={{ color: '#ededed' }}>Two-factor authentication</h3>
-            <p className="text-[11px] mt-[2px]" style={{ color: '#8a8a8a' }}>Add an extra layer of security with an authenticator app</p>
+            <h3 className="text-[14px] font-bold" style={{ color: '#111111' }}>Two-factor authentication</h3>
+            <p className="text-[11px] mt-[2px]" style={{ color: '#9ca3af' }}>Add an extra layer of security with an authenticator app</p>
           </div>
           <Toggle
             checked={twoFAEnabled}
@@ -93,48 +93,48 @@ export default function SecuritySettings() {
           />
         </div>
         {twoFAEnabled && (
-          <div className="mt-4 p-3 rounded-[10px]" style={{ background: 'rgba(74, 222, 128, 0.08)', border: '1px solid rgba(74, 222, 128, 0.2)' }}>
-            <p className="text-[12px] font-semibold" style={{ color: '#86efac' }}>2FA is active · Your account is more secure</p>
+          <div className="mt-4 p-3 rounded-[10px]" style={{ background: 'rgba(22, 163, 74, 0.06)', border: '1px solid rgba(22, 163, 74, 0.2)' }}>
+            <p className="text-[12px] font-semibold" style={{ color: '#16a34a' }}>2FA is active · Your account is more secure</p>
           </div>
         )}
       </div>
 
       {/* Danger zone */}
-      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #2a1515' }}>
+      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid rgba(220,38,38,0.2)' }}>
         <div className="flex items-center gap-2 mb-4">
-          <AlertTriangle size={14} style={{ color: '#f87171' }} />
-          <h3 className="text-[13px] font-bold" style={{ color: '#f87171' }}>Danger Zone</h3>
+          <AlertTriangle size={14} style={{ color: '#dc2626' }} />
+          <h3 className="text-[13px] font-bold" style={{ color: '#dc2626' }}>Danger Zone</h3>
         </div>
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[13px] font-semibold" style={{ color: '#ededed' }}>Delete account</p>
-            <p className="text-[11px] mt-[2px]" style={{ color: '#8a8a8a' }}>Permanently delete your account and all content. This cannot be undone.</p>
+            <p className="text-[13px] font-semibold" style={{ color: '#111111' }}>Delete account</p>
+            <p className="text-[11px] mt-[2px]" style={{ color: '#9ca3af' }}>Permanently delete your account and all content. This cannot be undone.</p>
           </div>
           <button
             onClick={() => setShowDeleteConfirm(true)}
             className="px-4 py-2 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
-            style={{ border: '1px solid #3a1515', color: '#f87171', background: 'transparent' }}
+            style={{ border: '1px solid rgba(220,38,38,0.3)', color: '#dc2626', background: 'transparent' }}
           >
             Delete Account
           </button>
         </div>
 
         {showDeleteConfirm && (
-          <div className="mt-4 p-4 rounded-[10px] slide-up" style={{ background: 'rgba(248, 113, 113, 0.06)', border: '1px solid rgba(248, 113, 113, 0.2)' }}>
-            <p className="text-[13px] font-semibold mb-2" style={{ color: '#f87171' }}>Are you absolutely sure?</p>
-            <p className="text-[11px] mb-4" style={{ color: '#8a8a8a' }}>This will permanently delete your account, all generated content, and your product profile.</p>
+          <div className="mt-4 p-4 rounded-[10px] slide-up" style={{ background: 'rgba(220, 38, 38, 0.04)', border: '1px solid rgba(220, 38, 38, 0.2)' }}>
+            <p className="text-[13px] font-semibold mb-2" style={{ color: '#dc2626' }}>Are you absolutely sure?</p>
+            <p className="text-[11px] mb-4" style={{ color: '#9ca3af' }}>This will permanently delete your account, all generated content, and your product profile.</p>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
                 className="px-4 py-2 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
-                style={{ border: '1px solid #1f1f1f', color: '#8a8a8a', background: 'transparent' }}
+                style={{ border: '1px solid #e5e7eb', color: '#6b7280', background: 'transparent' }}
               >
                 Cancel
               </button>
               <button
                 onClick={() => { setShowDeleteConfirm(false); toast.error('Account deletion is disabled in demo mode'); }}
                 className="px-4 py-2 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
-                style={{ background: '#f87171', color: '#0a0a0a' }}
+                style={{ background: '#dc2626', color: '#ffffff' }}
               >
                 Yes, delete my account
               </button>

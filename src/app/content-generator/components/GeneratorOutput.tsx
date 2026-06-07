@@ -140,13 +140,13 @@ export default function GeneratorOutput({
 
   if (!hasGenerated && !isGenerating) {
     return (
-      <div className="rounded-[14px] min-h-[480px] flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+      <div className="rounded-[14px] min-h-[480px] flex items-center justify-center" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
         <div className="text-center px-8">
-          <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mx-auto mb-4" style={{ background: '#161616', border: '1px solid #1f1f1f' }}>
-            <Sparkles size={20} style={{ color: '#8a8a8a' }} />
+          <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mx-auto mb-4" style={{ background: '#f3f4f6', border: '1px solid #e5e7eb' }}>
+            <Sparkles size={20} style={{ color: '#9ca3af' }} />
           </div>
-          <h3 className="text-[16px] font-bold mb-2" style={{ color: '#ededed' }}>No content generated yet</h3>
-          <p className="text-[13px] max-w-[280px]" style={{ color: '#8a8a8a' }}>
+          <h3 className="text-[16px] font-bold mb-2" style={{ color: '#111111' }}>No content generated yet</h3>
+          <p className="text-[13px] max-w-[280px]" style={{ color: '#6b7280' }}>
             Fill in the config on the left and click Generate Content. The AI will create 3 unique variants for you.
           </p>
         </div>
@@ -156,15 +156,15 @@ export default function GeneratorOutput({
 
   if (isGenerating) {
     return (
-      <div className="rounded-[14px] p-6 space-y-5" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+      <div className="rounded-[14px] p-6 space-y-5" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: '#1f1f1f' }}>
-            <Sparkles size={13} className="animate-pulse" style={{ color: '#ededed' }} />
+          <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: '#f3f4f6' }}>
+            <Sparkles size={13} className="animate-pulse" style={{ color: '#111111' }} />
           </div>
-          <span className="text-[13px] font-semibold" style={{ color: '#ededed' }}>Generating 3 variants…</span>
+          <span className="text-[13px] font-semibold" style={{ color: '#111111' }}>Generating 3 variants…</span>
         </div>
         {[0, 1, 2].map((i) => (
-          <div key={`skel-${i}`} className="rounded-[12px] p-5 space-y-3" style={{ border: '1px solid #1f1f1f' }}>
+          <div key={`skel-${i}`} className="rounded-[12px] p-5 space-y-3" style={{ border: '1px solid #e5e7eb' }}>
             <div className="flex items-center gap-2">
               <Skeleton className="h-5 w-24 rounded-full" />
               <Skeleton className="h-5 w-20 rounded-full" />
@@ -181,18 +181,18 @@ export default function GeneratorOutput({
   if (!variants) return null;
 
   return (
-    <div className="rounded-[14px] p-6 space-y-5 fade-in" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+    <div className="rounded-[14px] p-6 space-y-5 fade-in" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-[15px] font-bold tracking-[-0.2px]" style={{ color: '#ededed' }}>3 variants generated</h2>
-          <p className="text-[12px] mt-[2px]" style={{ color: '#8a8a8a' }}>Pick the one that fits best, or regenerate any variant</p>
+          <h2 className="text-[15px] font-bold tracking-[-0.2px]" style={{ color: '#111111' }}>3 variants generated</h2>
+          <p className="text-[12px] mt-[2px]" style={{ color: '#6b7280' }}>Pick the one that fits best, or regenerate any variant</p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center px-[8px] py-[3px] rounded-full text-[10px] font-semibold" style={{ background: '#161616', border: '1px solid #1f1f1f', color: '#8a8a8a' }}>
+          <span className="inline-flex items-center px-[8px] py-[3px] rounded-full text-[10px] font-semibold" style={{ background: '#f3f4f6', border: '1px solid #e5e7eb', color: '#6b7280' }}>
             {typeLabels[contentType] || contentType}
           </span>
-          <span className="inline-flex items-center px-[8px] py-[3px] rounded-full text-[10px] font-semibold" style={{ background: '#161616', border: '1px solid #1f1f1f', color: '#8a8a8a' }}>
+          <span className="inline-flex items-center px-[8px] py-[3px] rounded-full text-[10px] font-semibold" style={{ background: '#f3f4f6', border: '1px solid #e5e7eb', color: '#6b7280' }}>
             {channelLabels[channel] || channel}
           </span>
           {/* Save All to Library button */}
@@ -201,9 +201,9 @@ export default function GeneratorOutput({
             disabled={isSavingAll || allSaved || !user}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[11px] font-semibold transition-all duration-150"
             style={{
-              background: allSaved ? '#ededed' : '#161616',
-              border: `1px solid ${allSaved ? '#ededed' : '#1f1f1f'}`,
-              color: allSaved ? '#0a0a0a' : '#8a8a8a',
+              background: allSaved ? '#111111' : '#f3f4f6',
+              border: `1px solid ${allSaved ? '#111111' : '#e5e7eb'}`,
+              color: allSaved ? '#ffffff' : '#6b7280',
               opacity: isSavingAll ? 0.7 : 1,
               cursor: allSaved ? 'default' : 'pointer',
             }}
@@ -221,21 +221,21 @@ export default function GeneratorOutput({
       </div>
 
       {/* Variant tabs */}
-      <div className="flex rounded-[10px] p-[3px] gap-[2px]" style={{ background: '#161616', border: '1px solid #1f1f1f' }}>
+      <div className="flex rounded-[10px] p-[3px] gap-[2px]" style={{ background: '#f3f4f6', border: '1px solid #e5e7eb' }}>
         {variants.map((v, i) => (
           <button
             key={`vtab-${v.id}`}
             onClick={() => setActiveVariant(i)}
             className="flex-1 py-2 text-[12px] font-semibold rounded-[8px] transition-all duration-150"
             style={{
-              background: activeVariant === i ? 'linear-gradient(#1c1c1c, #141414)' : 'transparent',
-              color: activeVariant === i ? '#ededed' : '#8a8a8a',
-              boxShadow: activeVariant === i ? 'inset 0 0 0 1px rgba(255,255,255,0.08)' : 'none',
+              background: activeVariant === i ? '#ffffff' : 'transparent',
+              color: activeVariant === i ? '#111111' : '#6b7280',
+              boxShadow: activeVariant === i ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
             }}
           >
             Variant {i + 1}
             {savedIds.has(v.id) && (
-              <span className="ml-1.5 w-1.5 h-1.5 rounded-full inline-block" style={{ background: '#4ade80' }} />
+              <span className="ml-1.5 w-1.5 h-1.5 rounded-full inline-block" style={{ background: '#16a34a' }} />
             )}
           </button>
         ))}
@@ -247,15 +247,15 @@ export default function GeneratorOutput({
           key={variant.id}
           className={`${activeVariant === i ? 'block fade-in' : 'hidden'}`}
         >
-          <div className="rounded-[12px] overflow-hidden" style={{ border: '1px solid #1f1f1f' }}>
+          <div className="rounded-[12px] overflow-hidden" style={{ border: '1px solid #e5e7eb' }}>
             <div className="p-5">
-              <p className="text-[13px] leading-relaxed whitespace-pre-wrap" style={{ color: '#ededed' }}>{variant.text}</p>
+              <p className="text-[13px] leading-relaxed whitespace-pre-wrap" style={{ color: '#111111' }}>{variant.text}</p>
             </div>
-            <div className="px-5 py-3 flex items-center justify-between" style={{ background: '#0a0a0a', borderTop: '1px solid #1f1f1f' }}>
+            <div className="px-5 py-3 flex items-center justify-between" style={{ background: '#f9fafb', borderTop: '1px solid #e5e7eb' }}>
               <div className="flex items-center gap-3">
-                <span className="text-[11px] font-tabular" style={{ color: '#8a8a8a' }}>{variant.characterCount} chars</span>
+                <span className="text-[11px] font-tabular" style={{ color: '#9ca3af' }}>{variant.characterCount} chars</span>
                 {savedIds.has(variant.id) && (
-                  <span className="text-[11px] font-semibold flex items-center gap-1" style={{ color: '#4ade80' }}>
+                  <span className="text-[11px] font-semibold flex items-center gap-1" style={{ color: '#16a34a' }}>
                     <Check size={11} /> Saved
                   </span>
                 )}
@@ -265,7 +265,7 @@ export default function GeneratorOutput({
                   onClick={() => handleRegenerate(variant.id)}
                   disabled={regeneratingId === variant.id}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[11px] font-semibold transition-all duration-150"
-                  style={{ background: '#161616', border: '1px solid #1f1f1f', color: '#8a8a8a' }}
+                  style={{ background: '#f3f4f6', border: '1px solid #e5e7eb', color: '#6b7280' }}
                 >
                   <RefreshCw size={11} className={regeneratingId === variant.id ? 'animate-spin' : ''} />
                   Regenerate
@@ -274,9 +274,9 @@ export default function GeneratorOutput({
                   onClick={() => handleSave(variant)}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[11px] font-semibold transition-all duration-150"
                   style={{
-                    background: savedIds.has(variant.id) ? '#ededed' : '#161616',
-                    border: `1px solid ${savedIds.has(variant.id) ? '#ededed' : '#1f1f1f'}`,
-                    color: savedIds.has(variant.id) ? '#0a0a0a' : '#8a8a8a',
+                    background: savedIds.has(variant.id) ? '#111111' : '#f3f4f6',
+                    border: `1px solid ${savedIds.has(variant.id) ? '#111111' : '#e5e7eb'}`,
+                    color: savedIds.has(variant.id) ? '#ffffff' : '#6b7280',
                   }}
                 >
                   <Bookmark size={11} />
@@ -285,9 +285,9 @@ export default function GeneratorOutput({
                 <button
                   onClick={() => handleCopy(variant.id, variant.text)}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[11px] font-semibold transition-all duration-150"
-                  style={{ background: '#161616', border: '1px solid #1f1f1f', color: '#8a8a8a' }}
+                  style={{ background: '#f3f4f6', border: '1px solid #e5e7eb', color: '#6b7280' }}
                 >
-                  {copiedId === variant.id ? <Check size={11} style={{ color: '#4ade80' }} /> : <Copy size={11} />}
+                  {copiedId === variant.id ? <Check size={11} style={{ color: '#16a34a' }} /> : <Copy size={11} />}
                   {copiedId === variant.id ? 'Copied!' : 'Copy'}
                 </button>
               </div>

@@ -56,13 +56,13 @@ export default function PreferencesSettings() {
   return (
     <div className="space-y-5">
       {/* Default generation settings */}
-      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
-        <h2 className="text-[15px] font-bold mb-[4px]" style={{ color: '#ededed' }}>Generation Defaults</h2>
-        <p className="text-[11px] mb-5" style={{ color: '#8a8a8a' }}>These defaults pre-fill the Content Generator each time you open it</p>
+      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
+        <h2 className="text-[15px] font-bold mb-[4px]" style={{ color: '#111111' }}>Generation Defaults</h2>
+        <p className="text-[11px] mb-5" style={{ color: '#9ca3af' }}>These defaults pre-fill the Content Generator each time you open it</p>
 
         <div className="space-y-5">
           <div>
-            <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>Default tone of voice</label>
+            <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#6b7280' }}>Default tone of voice</label>
             <div className="flex flex-wrap gap-2">
               {tones.map((t) => (
                 <button
@@ -71,9 +71,9 @@ export default function PreferencesSettings() {
                   onClick={() => setDefaultTone(t.value)}
                   className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
                   style={{
-                    background: defaultTone === t.value ? '#ededed' : '#161616',
-                    color: defaultTone === t.value ? '#0a0a0a' : '#8a8a8a',
-                    border: `1px solid ${defaultTone === t.value ? '#ededed' : '#1f1f1f'}`,
+                    background: defaultTone === t.value ? '#111111' : '#f3f4f6',
+                    color: defaultTone === t.value ? '#ffffff' : '#6b7280',
+                    border: `1px solid ${defaultTone === t.value ? '#111111' : '#e5e7eb'}`,
                   }}
                 >
                   {t.label}
@@ -83,7 +83,7 @@ export default function PreferencesSettings() {
           </div>
 
           <div>
-            <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>Default channel</label>
+            <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#6b7280' }}>Default channel</label>
             <div className="flex flex-wrap gap-2">
               {channels.map((ch) => (
                 <button
@@ -92,9 +92,9 @@ export default function PreferencesSettings() {
                   onClick={() => setDefaultChannel(ch.value)}
                   className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
                   style={{
-                    background: defaultChannel === ch.value ? '#ededed' : '#161616',
-                    color: defaultChannel === ch.value ? '#0a0a0a' : '#8a8a8a',
-                    border: `1px solid ${defaultChannel === ch.value ? '#ededed' : '#1f1f1f'}`,
+                    background: defaultChannel === ch.value ? '#111111' : '#f3f4f6',
+                    color: defaultChannel === ch.value ? '#ffffff' : '#6b7280',
+                    border: `1px solid ${defaultChannel === ch.value ? '#111111' : '#e5e7eb'}`,
                   }}
                 >
                   {ch.label}
@@ -104,9 +104,9 @@ export default function PreferencesSettings() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between mt-6 pt-4" style={{ borderTop: '1px solid #1f1f1f' }}>
+        <div className="flex items-center justify-between mt-6 pt-4" style={{ borderTop: '1px solid #e5e7eb' }}>
           {savedAt ? (
-            <span className="text-[12px] flex items-center gap-1.5 font-semibold" style={{ color: '#4ade80' }}>
+            <span className="text-[12px] flex items-center gap-1.5 font-semibold" style={{ color: '#16a34a' }}>
               <Check size={13} /> Saved {savedAt}
             </span>
           ) : <span />}
@@ -122,16 +122,16 @@ export default function PreferencesSettings() {
       </div>
 
       {/* Notifications */}
-      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
-        <h2 className="text-[15px] font-bold mb-[4px]" style={{ color: '#ededed' }}>Email Notifications</h2>
-        <p className="text-[11px] mb-5" style={{ color: '#8a8a8a' }}>Control which emails FounderMark sends to nadia@buildfast.io</p>
+      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
+        <h2 className="text-[15px] font-bold mb-[4px]" style={{ color: '#111111' }}>Email Notifications</h2>
+        <p className="text-[11px] mb-5" style={{ color: '#9ca3af' }}>Control which emails FounderMark sends to nadia@buildfast.io</p>
 
         <div className="space-y-4">
           {notifications.map((notif) => (
-            <div key={notif.key} className="flex items-start justify-between gap-4 py-3" style={{ borderBottom: '1px solid #1f1f1f' }}>
+            <div key={notif.key} className="flex items-start justify-between gap-4 py-3" style={{ borderBottom: '1px solid #e5e7eb' }}>
               <div className="flex-1">
-                <p className="text-[13px] font-semibold" style={{ color: '#ededed' }}>{notif.label}</p>
-                <p className="text-[11px] mt-[2px]" style={{ color: '#8a8a8a' }}>{notif.description}</p>
+                <p className="text-[13px] font-semibold" style={{ color: '#111111' }}>{notif.label}</p>
+                <p className="text-[11px] mt-[2px]" style={{ color: '#9ca3af' }}>{notif.description}</p>
               </div>
               <Toggle
                 checked={notif.enabled}

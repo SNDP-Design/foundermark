@@ -53,7 +53,7 @@ export default function ContentPreviewModal({ item, onClose, onToggleFavorite, o
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop"
-      style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}
+      style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -61,24 +61,24 @@ export default function ContentPreviewModal({ item, onClose, onToggleFavorite, o
     >
       <div
         className="w-full max-w-2xl modal-content rounded-[16px] overflow-hidden"
-        style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #2a2a2a', boxShadow: '0 20px 60px rgba(0,0,0,0.7)' }}
+        style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb', boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid #1f1f1f' }}>
+        <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '1px solid #e5e7eb' }}>
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="inline-flex items-center px-[8px] py-[3px] rounded-full text-[10px] font-semibold" style={{ background: '#161616', border: '1px solid #1f1f1f', color: '#8a8a8a' }}>
+            <span className="inline-flex items-center px-[8px] py-[3px] rounded-full text-[10px] font-semibold" style={{ background: '#f3f4f6', border: '1px solid #e5e7eb', color: '#6b7280' }}>
               {typeLabels[item.type]}
             </span>
-            <span className="inline-flex items-center px-[8px] py-[3px] rounded-full text-[10px] font-semibold" style={{ background: '#161616', border: '1px solid #1f1f1f', color: '#8a8a8a' }}>
+            <span className="inline-flex items-center px-[8px] py-[3px] rounded-full text-[10px] font-semibold" style={{ background: '#f3f4f6', border: '1px solid #e5e7eb', color: '#6b7280' }}>
               {item.channelLabel}
             </span>
-            <span className="text-[11px]" style={{ color: '#8a8a8a' }}>{item.createdAt}</span>
+            <span className="text-[11px]" style={{ color: '#9ca3af' }}>{item.createdAt}</span>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-[8px] flex items-center justify-center transition-colors"
-            style={{ background: '#161616', border: '1px solid #1f1f1f', color: '#8a8a8a' }}
+            className="w-8 h-8 rounded-[8px] flex items-center justify-center transition-colors hover:bg-[#f3f4f6]"
+            style={{ background: '#f9fafb', border: '1px solid #e5e7eb', color: '#6b7280' }}
             aria-label="Close preview"
           >
             <X size={14} />
@@ -87,39 +87,39 @@ export default function ContentPreviewModal({ item, onClose, onToggleFavorite, o
 
         {/* Content */}
         <div className="px-6 py-5">
-          <p className="text-[13px] leading-relaxed whitespace-pre-wrap" style={{ color: '#ededed' }}>{item.text}</p>
+          <p className="text-[13px] leading-relaxed whitespace-pre-wrap" style={{ color: '#111111' }}>{item.text}</p>
         </div>
 
         {/* Stats */}
         <div className="px-6 pb-4">
-          <div className="rounded-[10px] px-4 py-3 flex items-center gap-6" style={{ background: '#161616', border: '1px solid #1f1f1f' }}>
+          <div className="rounded-[10px] px-4 py-3 flex items-center gap-6" style={{ background: '#f9fafb', border: '1px solid #e5e7eb' }}>
             <div>
-              <p className="text-[10px] uppercase tracking-[0.4px] font-semibold" style={{ color: '#8a8a8a' }}>Characters</p>
-              <p className="text-[14px] font-bold font-tabular" style={{ color: '#ededed' }}>{item.text.length}</p>
+              <p className="text-[10px] uppercase tracking-[0.4px] font-semibold" style={{ color: '#9ca3af' }}>Characters</p>
+              <p className="text-[14px] font-bold font-tabular" style={{ color: '#111111' }}>{item.text.length}</p>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-[0.4px] font-semibold" style={{ color: '#8a8a8a' }}>Words</p>
-              <p className="text-[14px] font-bold font-tabular" style={{ color: '#ededed' }}>{item.text.split(/\s+/).filter(Boolean).length}</p>
+              <p className="text-[10px] uppercase tracking-[0.4px] font-semibold" style={{ color: '#9ca3af' }}>Words</p>
+              <p className="text-[14px] font-bold font-tabular" style={{ color: '#111111' }}>{item.text.split(/\s+/).filter(Boolean).length}</p>
             </div>
             {item.product && (
               <div>
-                <p className="text-[10px] uppercase tracking-[0.4px] font-semibold" style={{ color: '#8a8a8a' }}>Product</p>
-                <p className="text-[14px] font-bold" style={{ color: '#ededed' }}>{item.product}</p>
+                <p className="text-[10px] uppercase tracking-[0.4px] font-semibold" style={{ color: '#9ca3af' }}>Product</p>
+                <p className="text-[14px] font-bold" style={{ color: '#111111' }}>{item.product}</p>
               </div>
             )}
           </div>
         </div>
 
         {/* Actions */}
-        <div className="px-6 py-4 flex items-center justify-between" style={{ borderTop: '1px solid #1f1f1f' }}>
+        <div className="px-6 py-4 flex items-center justify-between" style={{ borderTop: '1px solid #e5e7eb' }}>
           <div className="flex items-center gap-2">
             <button
               onClick={handleFavorite}
               className="flex items-center gap-1.5 px-3 py-2 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
               style={{
-                border: `1px solid ${item.favorited ? '#fbbf24' : '#1f1f1f'}`,
+                border: `1px solid ${item.favorited ? '#fbbf24' : '#e5e7eb'}`,
                 background: item.favorited ? 'rgba(251, 191, 36, 0.08)' : 'transparent',
-                color: item.favorited ? '#fbbf24' : '#8a8a8a',
+                color: item.favorited ? '#d97706' : '#6b7280',
               }}
             >
               <Star size={12} fill={item.favorited ? 'currentColor' : 'none'} />
@@ -129,9 +129,9 @@ export default function ContentPreviewModal({ item, onClose, onToggleFavorite, o
               onClick={handleDelete}
               className="flex items-center gap-1.5 px-3 py-2 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
               style={{
-                border: `1px solid ${confirmDelete ? 'rgba(248, 113, 113, 0.3)' : '#1f1f1f'}`,
-                background: confirmDelete ? 'rgba(248, 113, 113, 0.08)' : 'transparent',
-                color: confirmDelete ? '#f87171' : '#8a8a8a',
+                border: `1px solid ${confirmDelete ? 'rgba(220, 38, 38, 0.3)' : '#e5e7eb'}`,
+                background: confirmDelete ? 'rgba(220, 38, 38, 0.06)' : 'transparent',
+                color: confirmDelete ? '#dc2626' : '#6b7280',
               }}
             >
               <Trash2 size={12} />
