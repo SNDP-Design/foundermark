@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 import { ProductFormData } from './ProductSetupWizard';
 
 const industries = [

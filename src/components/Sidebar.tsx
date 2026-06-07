@@ -33,11 +33,11 @@ function FounderMarkLogo({ size = 22 }: {size?: number;}) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       {/* F lettermark with a spark/mark accent */}
-      <rect x="6" y="6" width="4" height="20" rx="1.5" fill="#ededed" />
-      <rect x="6" y="6" width="14" height="4" rx="1.5" fill="#ededed" />
-      <rect x="6" y="14" width="10" height="3.5" rx="1.5" fill="#ededed" />
+      <rect x="6" y="6" width="4" height="20" rx="1.5" fill="#111111" />
+      <rect x="6" y="6" width="14" height="4" rx="1.5" fill="#111111" />
+      <rect x="6" y="14" width="10" height="3.5" rx="1.5" fill="#111111" />
       {/* Green accent dot */}
-      <circle cx="24" cy="8" r="3" fill="#4ade80" />
+      <circle cx="24" cy="8" r="3" fill="#16a34a" />
     </svg>);
 
 }
@@ -53,20 +53,20 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`sidebar-transition flex flex-col shrink-0 relative z-20 border-r border-[#1f1f1f] ${
+      className={`sidebar-transition flex flex-col shrink-0 relative z-20 border-r border-[#e5e7eb] ${
       collapsed ? 'w-16' : 'w-[220px]'}`
       }
-      style={{ background: 'linear-gradient(#0a0a0a, #050505)' }}>
+      style={{ background: 'linear-gradient(#ffffff, #fafafa)' }}>
       
       {/* Logo */}
-      <div className={`flex items-center h-[72px] px-4 border-b border-[#1f1f1f] ${
+      <div className={`flex items-center h-[72px] px-4 border-b border-[#e5e7eb] ${
       collapsed ? 'justify-center' : 'gap-3'}`
       }>
-        <div className="w-[32px] h-[32px] rounded-[8px] bg-black border border-[#1f1f1f] flex items-center justify-center shrink-0 overflow-hidden">
+        <div className="w-[32px] h-[32px] rounded-[8px] bg-white border border-[#e5e7eb] flex items-center justify-center shrink-0 overflow-hidden">
           <FounderMarkLogo size={22} />
         </div>
         {!collapsed &&
-        <span className="font-bold text-[14px] tracking-[0.2px] text-[#ededed]">
+        <span className="font-bold text-[14px] tracking-[0.2px] text-[#111111]">
             FounderMark
           </span>
         }
@@ -84,10 +84,10 @@ export default function Sidebar() {
               title={collapsed ? item.label : undefined}
               className={`flex items-center gap-[11px] px-[11px] py-[9px] text-[12.5px] border rounded-[8px] transition-all duration-200 group relative ${
               active ?
-              'text-[#ededed] border-[#1f1f1f]' :
-              'text-[#8a8a8a] border-transparent hover:text-[#ededed] hover:bg-[#0d0d0d]'} ${
+              'text-[#111111] border-[#e5e7eb]' :
+              'text-[#6b7280] border-transparent hover:text-[#111111] hover:bg-[#f3f4f6]'} ${
               collapsed ? 'justify-center' : ''}`}
-              style={active ? { background: 'linear-gradient(#1c1c1c, #141414)' } : {}}>
+              style={active ? { background: 'linear-gradient(#f9fafb, #f3f4f6)' } : {}}>
               
               <Icon
                 size={15}
@@ -99,15 +99,15 @@ export default function Sidebar() {
               <span className="flex-1 truncate">{item.label}</span>
               }
               {!collapsed && item.badge &&
-              <span className="text-[10px] font-semibold px-[6px] py-[2px] rounded-full" style={{ background: '#1f1f1f', color: '#8a8a8a' }}>
+              <span className="text-[10px] font-semibold px-[6px] py-[2px] rounded-full" style={{ background: '#e5e7eb', color: '#6b7280' }}>
                   {item.badge}
                 </span>
               }
               {collapsed && item.badge &&
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ background: '#4ade80' }} />
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ background: '#16a34a' }} />
               }
               {collapsed &&
-              <span className="absolute left-full ml-3 px-2 py-1 text-[11px] rounded-[8px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50" style={{ background: '#ededed', color: '#0a0a0a' }}>
+              <span className="absolute left-full ml-3 px-2 py-1 text-[11px] rounded-[8px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50" style={{ background: '#111111', color: '#ffffff' }}>
                   {item.label}
                 </span>
               }
@@ -117,7 +117,7 @@ export default function Sidebar() {
       </nav>
 
       {/* Bottom items */}
-      <div className="px-[14px] py-3 border-t border-[#1f1f1f] flex flex-col gap-[5px]">
+      <div className="px-[14px] py-3 border-t border-[#e5e7eb] flex flex-col gap-[5px]">
         {bottomItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href);
@@ -128,10 +128,10 @@ export default function Sidebar() {
               title={collapsed ? item.label : undefined}
               className={`flex items-center gap-[11px] px-[11px] py-[9px] text-[12.5px] border rounded-[8px] transition-all duration-200 group relative ${
               active ?
-              'text-[#ededed] border-[#1f1f1f]' :
-              'text-[#8a8a8a] border-transparent hover:text-[#ededed] hover:bg-[#0d0d0d]'} ${
+              'text-[#111111] border-[#e5e7eb]' :
+              'text-[#6b7280] border-transparent hover:text-[#111111] hover:bg-[#f3f4f6]'} ${
               collapsed ? 'justify-center' : ''}`}
-              style={active ? { background: 'linear-gradient(#1c1c1c, #141414)' } : {}}>
+              style={active ? { background: 'linear-gradient(#f9fafb, #f3f4f6)' } : {}}>
               
               <Icon
                 size={15}
@@ -141,7 +141,7 @@ export default function Sidebar() {
               
               {!collapsed && <span>{item.label}</span>}
               {collapsed &&
-              <span className="absolute left-full ml-3 px-2 py-1 text-[11px] rounded-[8px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50" style={{ background: '#ededed', color: '#0a0a0a' }}>
+              <span className="absolute left-full ml-3 px-2 py-1 text-[11px] rounded-[8px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50" style={{ background: '#111111', color: '#ffffff' }}>
                   {item.label}
                 </span>
               }
@@ -151,18 +151,18 @@ export default function Sidebar() {
 
         {/* Credits indicator */}
         {!collapsed &&
-        <div className="mt-2 px-[11px] py-[9px] border border-[#1f1f1f] rounded-[8px]" style={{ background: '#0d0d0d' }}>
+        <div className="mt-2 px-[11px] py-[9px] border border-[#e5e7eb] rounded-[8px]" style={{ background: '#f9fafb' }}>
             <div className="flex items-center justify-between mb-[6px]">
-              <span className="text-[11px] font-semibold text-[#8a8a8a] flex items-center gap-[5px]">
-                <Zap size={10} style={{ color: '#4ade80' }} />
+              <span className="text-[11px] font-semibold text-[#6b7280] flex items-center gap-[5px]">
+                <Zap size={10} style={{ color: '#16a34a' }} />
                 Credits
               </span>
-              <span className="text-[11px] font-bold text-[#ededed] font-tabular">47 / 200</span>
+              <span className="text-[11px] font-bold text-[#111111] font-tabular">47 / 200</span>
             </div>
-            <div className="h-[3px] rounded-full overflow-hidden" style={{ background: '#1f1f1f' }}>
-              <div className="h-full rounded-full" style={{ width: '23.5%', background: '#ededed' }} />
+            <div className="h-[3px] rounded-full overflow-hidden" style={{ background: '#e5e7eb' }}>
+              <div className="h-full rounded-full" style={{ width: '23.5%', background: '#111111' }} />
             </div>
-            <p className="text-[10px] mt-[5px]" style={{ color: '#8a8a8a' }}>153 credits left</p>
+            <p className="text-[10px] mt-[5px]" style={{ color: '#6b7280' }}>153 credits left</p>
           </div>
         }
       </div>
@@ -171,7 +171,7 @@ export default function Sidebar() {
       <button
         onClick={() => setCollapsed(!collapsed)}
         className="absolute -right-3 top-20 w-6 h-6 rounded-full flex items-center justify-center z-30 transition-all duration-150 hover:scale-110"
-        style={{ background: '#0d0d0d', border: '1px solid #1f1f1f', color: '#8a8a8a' }}
+        style={{ background: '#ffffff', border: '1px solid #e5e7eb', color: '#6b7280' }}
         aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
         
         {collapsed ? <ChevronRight size={11} /> : <ChevronLeft size={11} />}
