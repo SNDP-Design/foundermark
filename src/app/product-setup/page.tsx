@@ -7,8 +7,9 @@ export default function ProductSetupPage() {
     <AppLayout>
       <div className="max-w-2xl mx-auto fade-in">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-foreground tracking-tight">Product Profile</h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-[12px] font-medium mb-[6px]" style={{ color: '#8a8a8a' }}>Brand Kit · Product Setup</p>
+          <h1 className="text-[22px] font-bold tracking-[-0.4px]" style={{ color: '#ededed' }}>Product Profile</h1>
+          <p className="text-[13px] mt-[4px]" style={{ color: '#8a8a8a' }}>
             Tell FounderMark about your product so the AI can generate content that sounds like you.
           </p>
         </div>

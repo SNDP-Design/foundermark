@@ -2,53 +2,56 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import Icon from '@/components/ui/AppIcon';
 
 export default function NotFound() {
-    const router = useRouter();
+  const router = useRouter();
 
-    const handleGoHome = () => {
-        router?.push('/');
-    };
+  const handleGoHome = () => {
+    router?.push('/');
+  };
 
-    const handleGoBack = () => {
-        if (typeof window !== 'undefined') {
-            window.history?.back();
-        }
-    };
+  const handleGoBack = () => {
+    if (typeof window !== 'undefined') {
+      window.history?.back();
+    }
+  };
 
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
-            <div className="text-center max-w-md">
-                <div className="flex justify-center mb-6">
-                    <div className="relative">
-                        <h1 className="text-9xl font-bold text-primary opacity-20">404</h1>
-                    </div>
-                </div>
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-4" style={{ background: '#000000' }}>
+      <div className="text-center max-w-md">
+        {/* 404 number */}
+        <h1
+          className="text-[120px] font-bold leading-none mb-6 tracking-[-4px]"
+          style={{
+            background: 'linear-gradient(90deg, #ededed 0%, #3a3a3a 50%, #ededed 100%) 0% 0% / 200% 100% text',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}
+        >
+          404
+        </h1>
 
-                <h2 className="text-2xl font-medium text-onBackground mb-2">Page Not Found</h2>
-                <p className="text-onBackground/70 mb-8">
-                    The page you're looking for doesn't exist. Let's get you back!
-                </p>
+        <h2 className="text-[22px] font-bold mb-2 tracking-[-0.4px]" style={{ color: '#ededed' }}>Page Not Found</h2>
+        <p className="text-[14px] mb-8" style={{ color: '#8a8a8a' }}>
+          The page you&apos;re looking for doesn&apos;t exist. Let&apos;s get you back!
+        </p>
 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button
-                        onClick={handleGoBack}
-                        className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200"
-                    >
-                        <Icon name="ArrowLeftIcon" size={16} />
-                        Go Back
-                    </button>
-
-                    <button
-                        onClick={handleGoHome}
-                        className="inline-flex items-center justify-center gap-2 border border-border bg-background text-foreground px-6 py-3 rounded-lg font-medium hover:bg-accent hover:text-accent-foreground transition-colors duration-200"
-                    >
-                        <Icon name="HomeIcon" size={16} />
-                        Back to Home
-                    </button>
-                </div>
-            </div>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <button
+            onClick={handleGoBack}
+            className="btn-primary flex items-center justify-center gap-2 text-[14px] px-6 py-3 rounded-[10px]"
+          >
+            ← Go Back
+          </button>
+          <button
+            onClick={handleGoHome}
+            className="btn-secondary flex items-center justify-center gap-2 text-[14px] px-6 py-3 rounded-[10px]"
+          >
+            ⌂ Back to Home
+          </button>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

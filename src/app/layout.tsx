@@ -1,10 +1,11 @@
 import React from 'react';
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import { Toaster } from 'sonner';
 import '../styles/tailwind.css';
+import { AuthProvider } from '@/contexts/AuthContext';
 
-const plusJakartaSans = Plus_Jakarta_Sans({
+const inter = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
   variable: '--font-sans',
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   title: 'FounderMark — AI Marketing Content for Founders',
   description: 'FounderMark helps first-time founders generate on-brand marketing copy, social posts, and ad creatives in seconds — no marketing experience needed.',
   icons: {
-    icon: [{ url: '/favicon.ico', type: 'image/x-icon' }],
+    icon: [{ url: '/assets/images/favicon.png', type: 'image/png' }],
   },
 };
 
@@ -28,16 +29,20 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={plusJakartaSans.variable}>
-      <body className={plusJakartaSans.className}>
-        {children}
+    <html lang="en" className={`${inter.variable} dark`}>
+      <body className={inter.className} suppressHydrationWarning>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
         <Toaster
           position="bottom-right"
           toastOptions={{
             style: {
               fontFamily: 'var(--font-sans)',
-              borderRadius: '12px',
-              border: '1px solid var(--border)',
+              borderRadius: '10px',
+              border: '1px solid #1f1f1f',
+              background: '#0d0d0d',
+              color: '#ededed',
             },
           }}
         />

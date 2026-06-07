@@ -23,7 +23,7 @@ export default function AccountSettingsView() {
     <div className="flex flex-col lg:flex-row gap-6 items-start">
       {/* Left nav */}
       <div className="lg:w-56 xl:w-64 shrink-0">
-        <div className="card-base p-2 space-y-0.5">
+        <div className="rounded-[14px] p-2 flex flex-col gap-[3px]" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
           {sections?.map((section) => {
             const Icon = section?.icon;
             const active = activeSection === section?.id;
@@ -31,18 +31,18 @@ export default function AccountSettingsView() {
               <button
                 key={section?.key}
                 onClick={() => setActiveSection(section?.id)}
-                className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl text-left transition-all duration-150 ${
-                  active
-                    ? 'bg-secondary text-secondary-foreground'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                }`}
+                className="w-full flex items-center gap-3 px-3 py-3 rounded-[10px] text-left transition-all duration-150"
+                style={{
+                  background: active ? 'linear-gradient(#1c1c1c, #141414)' : 'transparent',
+                  border: `1px solid ${active ? '#1f1f1f' : 'transparent'}`,
+                }}
               >
-                <Icon size={16} className={active ? 'text-primary' : ''} />
+                <Icon size={15} style={{ color: active ? '#ededed' : '#8a8a8a' }} />
                 <div>
-                  <p className={`text-sm font-semibold ${active ? 'text-secondary-foreground' : 'text-foreground'}`}>
+                  <p className="text-[13px] font-semibold" style={{ color: active ? '#ededed' : '#8a8a8a' }}>
                     {section?.label}
                   </p>
-                  <p className="text-xs text-muted-foreground">{section?.description}</p>
+                  <p className="text-[11px]" style={{ color: '#8a8a8a' }}>{section?.description}</p>
                 </div>
               </button>
             );

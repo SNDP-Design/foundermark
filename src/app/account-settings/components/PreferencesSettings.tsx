@@ -29,7 +29,6 @@ export default function PreferencesSettings() {
     setNotifications(prev => prev.map(n => n.key === key ? { ...n, enabled: !n.enabled } : n));
   };
 
-  // Backend integration point: PUT /api/account/preferences
   const handleSave = async () => {
     setIsSaving(true);
     await new Promise(r => setTimeout(r, 1200));
@@ -57,24 +56,25 @@ export default function PreferencesSettings() {
   return (
     <div className="space-y-5">
       {/* Default generation settings */}
-      <div className="card-base p-6">
-        <h2 className="text-base font-bold text-foreground mb-1">Generation Defaults</h2>
-        <p className="text-xs text-muted-foreground mb-5">These defaults pre-fill the Content Generator each time you open it</p>
+      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+        <h2 className="text-[15px] font-bold mb-[4px]" style={{ color: '#ededed' }}>Generation Defaults</h2>
+        <p className="text-[11px] mb-5" style={{ color: '#8a8a8a' }}>These defaults pre-fill the Content Generator each time you open it</p>
 
         <div className="space-y-5">
           <div>
-            <label className="block text-sm font-semibold text-foreground mb-2">Default tone of voice</label>
+            <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>Default tone of voice</label>
             <div className="flex flex-wrap gap-2">
               {tones.map((t) => (
                 <button
                   key={t.key}
                   type="button"
                   onClick={() => setDefaultTone(t.value)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 ${
-                    defaultTone === t.value
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted text-muted-foreground hover:bg-secondary hover:text-secondary-foreground'
-                  }`}
+                  className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
+                  style={{
+                    background: defaultTone === t.value ? '#ededed' : '#161616',
+                    color: defaultTone === t.value ? '#0a0a0a' : '#8a8a8a',
+                    border: `1px solid ${defaultTone === t.value ? '#ededed' : '#1f1f1f'}`,
+                  }}
                 >
                   {t.label}
                 </button>
@@ -83,18 +83,19 @@ export default function PreferencesSettings() {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-foreground mb-2">Default channel</label>
+            <label className="block text-[12px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>Default channel</label>
             <div className="flex flex-wrap gap-2">
               {channels.map((ch) => (
                 <button
                   key={ch.key}
                   type="button"
                   onClick={() => setDefaultChannel(ch.value)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 ${
-                    defaultChannel === ch.value
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted text-muted-foreground hover:bg-secondary hover:text-secondary-foreground'
-                  }`}
+                  className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold transition-all duration-150"
+                  style={{
+                    background: defaultChannel === ch.value ? '#ededed' : '#161616',
+                    color: defaultChannel === ch.value ? '#0a0a0a' : '#8a8a8a',
+                    border: `1px solid ${defaultChannel === ch.value ? '#ededed' : '#1f1f1f'}`,
+                  }}
                 >
                   {ch.label}
                 </button>
@@ -103,18 +104,17 @@ export default function PreferencesSettings() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between mt-6 pt-4 border-t border-border">
-          {savedAt && (
-            <span className="text-xs text-emerald-600 flex items-center gap-1.5 font-semibold">
+        <div className="flex items-center justify-between mt-6 pt-4" style={{ borderTop: '1px solid #1f1f1f' }}>
+          {savedAt ? (
+            <span className="text-[12px] flex items-center gap-1.5 font-semibold" style={{ color: '#4ade80' }}>
               <Check size={13} /> Saved {savedAt}
             </span>
-          )}
-          {!savedAt && <span />}
+          ) : <span />}
           <button
             type="button"
             onClick={handleSave}
             disabled={isSaving}
-            className="btn-primary text-sm flex items-center gap-2 min-w-[130px] justify-center"
+            className="btn-primary text-[13px] flex items-center gap-2 min-w-[130px] justify-center"
           >
             {isSaving ? <><Loader2 size={14} className="animate-spin" /> Saving…</> : 'Save Defaults'}
           </button>
@@ -122,16 +122,16 @@ export default function PreferencesSettings() {
       </div>
 
       {/* Notifications */}
-      <div className="card-base p-6">
-        <h2 className="text-base font-bold text-foreground mb-1">Email Notifications</h2>
-        <p className="text-xs text-muted-foreground mb-5">Control which emails FounderMark sends to nadia@buildfast.io</p>
+      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+        <h2 className="text-[15px] font-bold mb-[4px]" style={{ color: '#ededed' }}>Email Notifications</h2>
+        <p className="text-[11px] mb-5" style={{ color: '#8a8a8a' }}>Control which emails FounderMark sends to nadia@buildfast.io</p>
 
         <div className="space-y-4">
           {notifications.map((notif) => (
-            <div key={notif.key} className="flex items-start justify-between gap-4 py-3 border-b border-border last:border-0">
+            <div key={notif.key} className="flex items-start justify-between gap-4 py-3" style={{ borderBottom: '1px solid #1f1f1f' }}>
               <div className="flex-1">
-                <p className="text-sm font-semibold text-foreground">{notif.label}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">{notif.description}</p>
+                <p className="text-[13px] font-semibold" style={{ color: '#ededed' }}>{notif.label}</p>
+                <p className="text-[11px] mt-[2px]" style={{ color: '#8a8a8a' }}>{notif.description}</p>
               </div>
               <Toggle
                 checked={notif.enabled}
