@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 import { UseFormReturn } from 'react-hook-form';
 import { ProductFormData } from './ProductSetupWizard';
 

@@ -12,10 +12,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <header className="flex items-center justify-end h-[56px] px-6 border-b border-[#e5e7eb] shrink-0 z-30" style={{ background: '#ffffff' }}>
         <div className="flex items-center gap-[10px] border border-[#e5e7eb] rounded-[10px] px-[11px] py-[7px]" style={{ background: '#f9fafb' }}>
           <img
-            src="https://img.rocket.new/generatedImages/rocket_gen_img_1bee6f5b2-1772814263694.png"
+            src="https://img.rocket.new/generatedImages/rocket_gen_img_194dd6e12-1772523673868.png"
             alt="Nadia Patel"
-            className="w-[28px] h-[28px] rounded-full flex-shrink-0 object-cover"
-          />
+            className="w-[28px] h-[28px] rounded-full flex-shrink-0 object-cover" />
+          
           <div className="flex flex-col min-w-0">
             <p className="text-[12px] font-semibold text-[#111111] leading-tight">Nadia Patel</p>
             <span className="text-[10px] font-medium flex items-center gap-[5px]" style={{ color: '#16a34a' }}>
@@ -35,6 +35,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </div>
         </main>
       </div>
-    </div>
-  );
+    </div>);
+
 }
