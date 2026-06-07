@@ -241,24 +241,24 @@ export default function ProductSetupWizard() {
 
   if (isLoading) {
     return (
-      <div className="rounded-[14px] p-10 text-center" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
-        <Loader2 size={24} className="animate-spin mx-auto" style={{ color: '#8a8a8a' }} />
-        <p className="text-[13px] mt-3" style={{ color: '#8a8a8a' }}>Loading your product profile…</p>
+      <div className="rounded-[14px] p-10 text-center" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
+        <Loader2 size={24} className="animate-spin mx-auto" style={{ color: '#9ca3af' }} />
+        <p className="text-[13px] mt-3" style={{ color: '#9ca3af' }}>Loading your product profile…</p>
       </div>
     );
   }
 
   if (completed) {
     return (
-      <div className="rounded-[14px] p-10 text-center slide-up" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+      <div className="rounded-[14px] p-10 text-center slide-up" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
         <div
           className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-          style={{ background: 'rgba(74, 222, 128, 0.1)', border: '1px solid rgba(74, 222, 128, 0.3)' }}
+          style={{ background: 'rgba(22, 163, 74, 0.08)', border: '1px solid rgba(22, 163, 74, 0.25)' }}
         >
-          <Check size={28} style={{ color: '#4ade80' }} />
+          <Check size={28} style={{ color: '#16a34a' }} />
         </div>
-        <h2 className="text-[20px] font-bold mb-2" style={{ color: '#ededed' }}>Profile saved!</h2>
-        <p className="text-[13px] mb-6 max-w-sm mx-auto" style={{ color: '#8a8a8a' }}>
+        <h2 className="text-[20px] font-bold mb-2" style={{ color: '#111111' }}>Profile saved!</h2>
+        <p className="text-[13px] mb-6 max-w-sm mx-auto" style={{ color: '#6b7280' }}>
           FounderMark now knows your product, audience, and voice. Head to the Content Generator to create your first batch.
         </p>
         <a href="/content-generator" className="btn-primary text-[13px] inline-flex items-center gap-2">
@@ -271,7 +271,7 @@ export default function ProductSetupWizard() {
   return (
     <div className="space-y-6">
       {/* Progress bar */}
-      <div className="rounded-[14px] p-5" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+      <div className="rounded-[14px] p-5" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
         <div className="flex items-center justify-between mb-4">
           {steps.map((step, i) => (
             <React.Fragment key={step.key}>
@@ -279,38 +279,38 @@ export default function ProductSetupWizard() {
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold transition-all duration-200 cursor-pointer"
                   style={{
-                    background: i < currentStep ? '#ededed' : i === currentStep ? '#ededed' : '#1f1f1f',
-                    color: i <= currentStep ? '#0a0a0a' : '#8a8a8a',
-                    boxShadow: i === currentStep ? '0 0 0 4px rgba(237,237,237,0.1)' : 'none',
+                    background: i < currentStep ? '#111111' : i === currentStep ? '#111111' : '#f3f4f6',
+                    color: i <= currentStep ? '#ffffff' : '#9ca3af',
+                    boxShadow: i === currentStep ? '0 0 0 4px rgba(17,17,17,0.08)' : 'none',
                   }}
                   onClick={() => setCurrentStep(i)}
                 >
                   {i < currentStep ? <Check size={13} /> : i + 1}
                 </div>
                 <div className="hidden sm:block cursor-pointer" onClick={() => setCurrentStep(i)}>
-                  <p className="text-[12px] font-semibold" style={{ color: i <= currentStep ? '#ededed' : '#8a8a8a' }}>{step.label}</p>
-                  <p className="text-[11px]" style={{ color: '#8a8a8a' }}>{step.description}</p>
+                  <p className="text-[12px] font-semibold" style={{ color: i <= currentStep ? '#111111' : '#9ca3af' }}>{step.label}</p>
+                  <p className="text-[11px]" style={{ color: '#9ca3af' }}>{step.description}</p>
                 </div>
               </div>
               {i < steps.length - 1 && (
                 <div
                   className="flex-1 h-[1px] mx-4 rounded-full transition-all duration-300"
-                  style={{ background: i < currentStep ? '#ededed' : '#1f1f1f' }}
+                  style={{ background: i < currentStep ? '#111111' : '#e5e7eb' }}
                 />
               )}
             </React.Fragment>
           ))}
         </div>
-        <div className="h-[3px] rounded-full overflow-hidden" style={{ background: '#1f1f1f' }}>
+        <div className="h-[3px] rounded-full overflow-hidden" style={{ background: '#e5e7eb' }}>
           <div
             className="h-full rounded-full transition-all duration-500"
-            style={{ width: `${((currentStep + 1) / steps.length) * 100}%`, background: '#ededed' }}
+            style={{ width: `${((currentStep + 1) / steps.length) * 100}%`, background: '#111111' }}
           />
         </div>
       </div>
 
       {/* Step content */}
-      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+      <div className="rounded-[14px] p-6" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
         {currentStep === 0 && <Step1Basics form={form} />}
         {currentStep === 1 && <Step2Audience form={form} />}
         {currentStep === 2 && <Step3Voice form={form} />}
@@ -323,19 +323,19 @@ export default function ProductSetupWizard() {
           onClick={handleBack}
           disabled={currentStep === 0}
           className="btn-ghost flex items-center gap-2 text-[13px] disabled:opacity-40 disabled:cursor-not-allowed"
-          style={{ color: '#8a8a8a' }}
+          style={{ color: '#6b7280' }}
         >
           <ChevronLeft size={14} /> Back
         </button>
         <div className="flex items-center gap-2">
-          <span className="text-[11px]" style={{ color: '#8a8a8a' }}>Step {currentStep + 1} of {steps.length}</span>
+          <span className="text-[11px]" style={{ color: '#9ca3af' }}>Step {currentStep + 1} of {steps.length}</span>
           {currentStep < steps.length - 1 ? (
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={handleSkip}
                 className="btn-ghost text-[13px] flex items-center gap-1"
-                style={{ color: '#8a8a8a' }}
+                style={{ color: '#6b7280' }}
               >
                 Skip
               </button>

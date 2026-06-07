@@ -277,9 +277,9 @@ export default function ContentLibraryView() {
 
   if (isLoading) {
     return (
-      <div className="rounded-[14px] p-10 text-center" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
-        <Loader2 size={24} className="animate-spin mx-auto" style={{ color: '#8a8a8a' }} />
-        <p className="text-[13px] mt-3" style={{ color: '#8a8a8a' }}>Loading your library…</p>
+      <div className="rounded-[14px] p-10 text-center" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
+        <Loader2 size={24} className="animate-spin mx-auto" style={{ color: '#6b7280' }} />
+        <p className="text-[13px] mt-3" style={{ color: '#6b7280' }}>Loading your library…</p>
       </div>
     );
   }
@@ -290,7 +290,7 @@ export default function ContentLibraryView() {
       <div className="flex items-center gap-2 mb-3 flex-wrap justify-start">
         {/* Search */}
         <div className="relative min-w-[160px] w-[220px]">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#8a8a8a' }} />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#9ca3af' }} />
           <input
             type="text"
             placeholder="Search saved content…"
@@ -298,16 +298,16 @@ export default function ContentLibraryView() {
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-9 pr-4 py-2.5 rounded-[10px] text-[13px] outline-none transition-colors"
             style={{
-              background: '#0d0d0d',
-              border: '1px solid #1f1f1f',
-              color: '#ededed',
+              background: '#ffffff',
+              border: '1px solid #e5e7eb',
+              color: '#111111',
             }}
           />
           {search && (
             <button
               onClick={() => setSearch('')}
               className="absolute right-3 top-1/2 -translate-y-1/2"
-              style={{ color: '#8a8a8a' }}
+              style={{ color: '#9ca3af' }}
             >
               <X size={13} />
             </button>
@@ -322,9 +322,9 @@ export default function ContentLibraryView() {
               onClick={() => setTypeFilter(f.value)}
               className="flex-shrink-0 px-3 py-2.5 rounded-[10px] text-[11px] font-semibold transition-all whitespace-nowrap"
               style={{
-                background: typeFilter === f.value ? '#ededed' : '#0d0d0d',
-                color: typeFilter === f.value ? '#0a0a0a' : '#8a8a8a',
-                border: `1px solid ${typeFilter === f.value ? '#ededed' : '#1f1f1f'}`,
+                background: typeFilter === f.value ? '#111111' : '#ffffff',
+                color: typeFilter === f.value ? '#ffffff' : '#6b7280',
+                border: `1px solid ${typeFilter === f.value ? '#111111' : '#e5e7eb'}`,
               }}
             >
               {f.label}
@@ -338,9 +338,9 @@ export default function ContentLibraryView() {
           onChange={(e) => setChannelFilter(e.target.value)}
           className="px-3 py-2.5 rounded-[10px] text-[12px] outline-none transition-colors"
           style={{
-            background: '#0d0d0d',
-            border: '1px solid #1f1f1f',
-            color: '#8a8a8a',
+            background: '#ffffff',
+            border: '1px solid #e5e7eb',
+            color: '#6b7280',
           }}
         >
           {channelFilters.map(f => (
@@ -353,9 +353,9 @@ export default function ContentLibraryView() {
           onClick={() => setFavoritesOnly(!favoritesOnly)}
           className="flex items-center gap-1.5 px-3 py-2.5 rounded-[10px] text-[12px] font-semibold transition-all"
           style={{
-            background: favoritesOnly ? 'rgba(251,191,36,0.1)' : '#0d0d0d',
-            border: `1px solid ${favoritesOnly ? 'rgba(251,191,36,0.4)' : '#1f1f1f'}`,
-            color: favoritesOnly ? '#fbbf24' : '#8a8a8a',
+            background: favoritesOnly ? 'rgba(251,191,36,0.08)' : '#ffffff',
+            border: `1px solid ${favoritesOnly ? 'rgba(251,191,36,0.4)' : '#e5e7eb'}`,
+            color: favoritesOnly ? '#d97706' : '#6b7280',
           }}
         >
           ★ Fav
@@ -367,9 +367,9 @@ export default function ContentLibraryView() {
             onClick={() => { setSearch(''); setTypeFilter('all'); setChannelFilter('all'); setFavoritesOnly(false); }}
             className="flex items-center gap-1 px-3 py-2.5 rounded-[10px] text-[11px] font-semibold transition-opacity hover:opacity-70"
             style={{
-              background: '#0d0d0d',
-              border: '1px solid #1f1f1f',
-              color: '#ededed',
+              background: '#ffffff',
+              border: '1px solid #e5e7eb',
+              color: '#111111',
             }}
           >
             <X size={11} /> Clear
@@ -382,9 +382,9 @@ export default function ContentLibraryView() {
           onChange={(e) => setSortBy(e.target.value)}
           className="px-3 py-2.5 rounded-[10px] text-[12px] outline-none transition-colors"
           style={{
-            background: '#0d0d0d',
-            border: '1px solid #1f1f1f',
-            color: '#8a8a8a',
+            background: '#ffffff',
+            border: '1px solid #e5e7eb',
+            color: '#6b7280',
           }}
         >
           <option value="newest">Newest</option>
@@ -392,13 +392,13 @@ export default function ContentLibraryView() {
         </select>
 
         {/* View mode */}
-        <div className="flex rounded-[10px] p-[3px]" style={{ background: '#0d0d0d', border: '1px solid #1f1f1f' }}>
+        <div className="flex rounded-[10px] p-[3px]" style={{ background: '#f3f4f6', border: '1px solid #e5e7eb' }}>
           <button
             onClick={() => setViewMode('grid')}
             className="w-8 h-8 rounded-[7px] flex items-center justify-center transition-all"
             style={{
-              background: viewMode === 'grid' ? '#1f1f1f' : 'transparent',
-              color: viewMode === 'grid' ? '#ededed' : '#8a8a8a',
+              background: viewMode === 'grid' ? '#ffffff' : 'transparent',
+              color: viewMode === 'grid' ? '#111111' : '#9ca3af',
             }}
             aria-label="Grid view"
           >
@@ -408,8 +408,8 @@ export default function ContentLibraryView() {
             onClick={() => setViewMode('list')}
             className="w-8 h-8 rounded-[7px] flex items-center justify-center transition-all"
             style={{
-              background: viewMode === 'list' ? '#1f1f1f' : 'transparent',
-              color: viewMode === 'list' ? '#ededed' : '#8a8a8a',
+              background: viewMode === 'list' ? '#ffffff' : 'transparent',
+              color: viewMode === 'list' ? '#111111' : '#9ca3af',
             }}
             aria-label="List view"
           >
@@ -420,14 +420,14 @@ export default function ContentLibraryView() {
 
       {/* Content grid/list */}
       {filtered.length === 0 ? (
-        <div className="rounded-[14px] p-12 text-center" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
-          <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mx-auto mb-4" style={{ background: '#161616', border: '1px solid #1f1f1f' }}>
-            <BookOpen size={20} style={{ color: '#8a8a8a' }} />
+        <div className="rounded-[14px] p-12 text-center" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
+          <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mx-auto mb-4" style={{ background: '#f3f4f6', border: '1px solid #e5e7eb' }}>
+            <BookOpen size={20} style={{ color: '#9ca3af' }} />
           </div>
-          <h3 className="text-[15px] font-bold mb-2" style={{ color: '#ededed' }}>
+          <h3 className="text-[15px] font-bold mb-2" style={{ color: '#111111' }}>
             {items.length === 0 ? 'Your library is empty' : 'No content matches your filters'}
           </h3>
-          <p className="text-[13px] max-w-[320px] mx-auto" style={{ color: '#8a8a8a' }}>
+          <p className="text-[13px] max-w-[320px] mx-auto" style={{ color: '#6b7280' }}>
             {items.length === 0
               ? 'Generate content and save your favorites here for easy access and reuse.'
               : 'Try adjusting your search or filters to find what you\'re looking for.'}
@@ -436,7 +436,7 @@ export default function ContentLibraryView() {
             <button
               onClick={() => { setSearch(''); setTypeFilter('all'); setChannelFilter('all'); setFavoritesOnly(false); }}
               className="mt-4 px-4 py-2 rounded-[8px] text-[12px] font-semibold transition-all hover:opacity-80"
-              style={{ background: '#1f1f1f', color: '#ededed', border: '1px solid #2a2a2a' }}
+              style={{ background: '#f3f4f6', color: '#111111', border: '1px solid #e5e7eb' }}
             >
               Clear filters
             </button>

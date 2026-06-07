@@ -16,7 +16,7 @@ import {
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
-// SVG icons for social platforms (lucide-react doesn't export Linkedin/Twitter/Instagram in this version)
+// SVG icons for social platforms
 function LinkedInIcon({ size = 16, color = 'currentColor' }: { size?: number; color?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
@@ -84,8 +84,8 @@ const PLATFORMS: Platform[] = [
     id: 'linkedin',
     label: 'LinkedIn',
     icon: LinkedInIcon,
-    color: '#5b9bd5',
-    bg: 'rgba(10,102,194,0.12)',
+    color: '#0a66c2',
+    bg: 'rgba(10,102,194,0.08)',
     dot: '#0a66c2',
     charLimit: 3000,
     hint: 'Professional tone works best. Use line breaks for readability. Hashtags at the end.',
@@ -94,8 +94,8 @@ const PLATFORMS: Platform[] = [
     id: 'twitter',
     label: 'Twitter / X',
     icon: TwitterIcon,
-    color: '#5bb8f5',
-    bg: 'rgba(29,161,242,0.10)',
+    color: '#1da1f2',
+    bg: 'rgba(29,161,242,0.08)',
     dot: '#1da1f2',
     charLimit: 280,
     hint: 'Keep it punchy. Max 280 characters. 1–2 hashtags max. Threads work great for longer content.',
@@ -105,7 +105,7 @@ const PLATFORMS: Platform[] = [
     label: 'Instagram',
     icon: InstagramIcon,
     color: '#e1306c',
-    bg: 'rgba(225,48,108,0.10)',
+    bg: 'rgba(225,48,108,0.08)',
     dot: '#e1306c',
     charLimit: 2200,
     hint: 'Visual-first. Lead with a hook. Use line breaks. 5–10 hashtags in caption or first comment.',
@@ -286,31 +286,31 @@ export default function SocialPublishingView() {
             <div
               key={p.id}
               className="rounded-[14px] p-4 flex items-center gap-3"
-              style={{ background: '#0d0d0d', border: `1px solid ${account.connected ? p.dot + '33' : '#1a1a1a'}` }}
+              style={{ background: '#ffffff', border: `1px solid ${account.connected ? p.dot + '33' : '#e5e7eb'}` }}
             >
               <div
                 className="w-9 h-9 rounded-[10px] flex items-center justify-center flex-shrink-0"
-                style={{ background: account.connected ? p.bg : '#141414' }}
+                style={{ background: account.connected ? p.bg : '#f3f4f6' }}
               >
-                <PIcon size={16} color={account.connected ? p.color : '#5a5a5a'} />
+                <PIcon size={16} color={account.connected ? p.color : '#9ca3af'} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[12.5px] font-semibold truncate" style={{ color: account.connected ? '#ededed' : '#8a8a8a' }}>
+                <p className="text-[12.5px] font-semibold truncate" style={{ color: account.connected ? '#111111' : '#6b7280' }}>
                   {p.label}
                 </p>
                 {account.connected ? (
                   <p className="text-[11px] truncate" style={{ color: p.color }}>{account.handle}</p>
                 ) : (
-                  <p className="text-[11px]" style={{ color: '#5a5a5a' }}>Not connected</p>
+                  <p className="text-[11px]" style={{ color: '#9ca3af' }}>Not connected</p>
                 )}
               </div>
               {account.connected ? (
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  <CheckCircle2 size={13} style={{ color: '#4ade80' }} />
+                  <CheckCircle2 size={13} style={{ color: '#16a34a' }} />
                   <button
                     onClick={() => handleDisconnect(p.id)}
                     className="text-[10px] px-2 py-1 rounded-[6px] transition-all hover:opacity-80"
-                    style={{ background: '#1a1a1a', color: '#8a8a8a', border: '1px solid #2a2a2a' }}
+                    style={{ background: '#f3f4f6', color: '#6b7280', border: '1px solid #e5e7eb' }}
                   >
                     Disconnect
                   </button>
@@ -332,15 +332,15 @@ export default function SocialPublishingView() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 p-1 rounded-[10px] w-fit" style={{ background: '#0d0d0d', border: '1px solid #1a1a1a' }}>
+      <div className="flex items-center gap-1 p-1 rounded-[10px] w-fit" style={{ background: '#f3f4f6', border: '1px solid #e5e7eb' }}>
         {(['compose', 'queue'] as const).map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className="px-4 py-1.5 rounded-[8px] text-[12px] font-semibold capitalize transition-all"
             style={activeTab === tab
-              ? { background: 'linear-gradient(#1c1c1c, #141414)', color: '#ededed', border: '1px solid #2a2a2a' }
-              : { color: '#5a5a5a', border: '1px solid transparent' }}
+              ? { background: '#ffffff', color: '#111111', border: '1px solid #e5e7eb', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }
+              : { color: '#6b7280', border: '1px solid transparent' }}
           >
             {tab === 'queue' ? `Queue (${scheduledPosts.length})` : 'Compose'}
           </button>
@@ -350,10 +350,10 @@ export default function SocialPublishingView() {
       {activeTab === 'compose' && (
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-5">
           {/* Compose Panel */}
-          <div className="rounded-[16px] p-5 space-y-4" style={{ background: '#0d0d0d', border: '1px solid #1a1a1a' }}>
+          <div className="rounded-[16px] p-5 space-y-4" style={{ background: '#ffffff', border: '1px solid #e5e7eb' }}>
             {/* Platform selector */}
             <div>
-              <p className="text-[11px] font-semibold mb-2" style={{ color: '#5a5a5a' }}>PLATFORM</p>
+              <p className="text-[11px] font-semibold mb-2" style={{ color: '#9ca3af' }}>PLATFORM</p>
               <div className="flex gap-2 flex-wrap">
                 {PLATFORMS.map(p => {
                   const PIcon = p.icon;
@@ -365,9 +365,9 @@ export default function SocialPublishingView() {
                       className="flex items-center gap-2 px-3 py-2 rounded-[10px] text-[12px] font-semibold transition-all"
                       style={active
                         ? { background: p.bg, color: p.color, border: `1px solid ${p.dot}55` }
-                        : { background: '#141414', color: '#5a5a5a', border: '1px solid #1f1f1f' }}
+                        : { background: '#f9fafb', color: '#6b7280', border: '1px solid #e5e7eb' }}
                     >
-                      <PIcon size={13} color={active ? p.color : '#5a5a5a'} />
+                      <PIcon size={13} color={active ? p.color : '#9ca3af'} />
                       {p.label}
                     </button>
                   );
@@ -384,11 +384,11 @@ export default function SocialPublishingView() {
             {/* Text area */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <p className="text-[11px] font-semibold" style={{ color: '#5a5a5a' }}>CONTENT</p>
+                <p className="text-[11px] font-semibold" style={{ color: '#9ca3af' }}>CONTENT</p>
                 <button
                   onClick={() => setShowLibraryPicker(true)}
                   className="flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-[7px] transition-all hover:opacity-80"
-                  style={{ background: '#141414', color: '#8a8a8a', border: '1px solid #1f1f1f' }}
+                  style={{ background: '#f3f4f6', color: '#6b7280', border: '1px solid #e5e7eb' }}
                 >
                   <RefreshCw size={10} />
                   Pull from Library
@@ -401,17 +401,17 @@ export default function SocialPublishingView() {
                 rows={7}
                 className="w-full resize-none rounded-[12px] px-4 py-3 text-[13px] leading-relaxed outline-none transition-all"
                 style={{
-                  background: '#0a0a0a',
-                  border: `1px solid ${charOver ? '#f87171' : '#1f1f1f'}`,
-                  color: '#ededed',
+                  background: '#f9fafb',
+                  border: `1px solid ${charOver ? '#dc2626' : '#e5e7eb'}`,
+                  color: '#111111',
                   caretColor: platform.color,
                 }}
               />
               <div className="flex items-center justify-between mt-1.5">
                 <span className="text-[11px]">
-                  {charOver && <span style={{ color: '#f87171' }}>Over limit by {charCount - platform.charLimit} chars</span>}
+                  {charOver && <span style={{ color: '#dc2626' }}>Over limit by {charCount - platform.charLimit} chars</span>}
                 </span>
-                <span className="text-[11px] font-tabular" style={{ color: charOver ? '#f87171' : '#5a5a5a' }}>
+                <span className="text-[11px] font-tabular" style={{ color: charOver ? '#dc2626' : '#9ca3af' }}>
                   {charCount} / {platform.charLimit}
                 </span>
               </div>
@@ -419,7 +419,7 @@ export default function SocialPublishingView() {
 
             {/* Schedule */}
             <div>
-              <p className="text-[11px] font-semibold mb-2" style={{ color: '#5a5a5a' }}>PUBLISH TIME</p>
+              <p className="text-[11px] font-semibold mb-2" style={{ color: '#9ca3af' }}>PUBLISH TIME</p>
               <div className="flex gap-2 mb-3">
                 {(['now', 'schedule'] as const).map(mode => (
                   <button
@@ -427,8 +427,8 @@ export default function SocialPublishingView() {
                     onClick={() => setScheduleMode(mode)}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[12px] font-semibold transition-all"
                     style={scheduleMode === mode
-                      ? { background: '#1c1c1c', color: '#ededed', border: '1px solid #2a2a2a' }
-                      : { background: 'transparent', color: '#5a5a5a', border: '1px solid #1a1a1a' }}
+                      ? { background: '#111111', color: '#ffffff', border: '1px solid #111111' }
+                      : { background: 'transparent', color: '#6b7280', border: '1px solid #e5e7eb' }}
                   >
                     {mode === 'now' ? <Send size={11} /> : <Calendar size={11} />}
                     {mode === 'now' ? 'Publish Now' : 'Schedule'}
@@ -442,14 +442,14 @@ export default function SocialPublishingView() {
                     value={scheduledDate}
                     onChange={e => setScheduledDate(e.target.value)}
                     className="flex-1 px-3 py-2 rounded-[10px] text-[12px] outline-none"
-                    style={{ background: '#0a0a0a', border: '1px solid #1f1f1f', color: '#ededed' }}
+                    style={{ background: '#f9fafb', border: '1px solid #e5e7eb', color: '#111111' }}
                   />
                   <input
                     type="time"
                     value={scheduledTime}
                     onChange={e => setScheduledTime(e.target.value)}
                     className="flex-1 px-3 py-2 rounded-[10px] text-[12px] outline-none"
-                    style={{ background: '#0a0a0a', border: '1px solid #1f1f1f', color: '#ededed' }}
+                    style={{ background: '#f9fafb', border: '1px solid #e5e7eb', color: '#111111' }}
                   />
                 </div>
               )}
@@ -457,9 +457,9 @@ export default function SocialPublishingView() {
 
             {/* Connect warning */}
             {!currentAccount?.connected && (
-              <div className="flex items-center gap-2 px-3 py-2.5 rounded-[10px]" style={{ background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.2)' }}>
-                <AlertCircle size={13} style={{ color: '#f87171', flexShrink: 0 }} />
-                <p className="text-[12px]" style={{ color: '#f87171' }}>Connect your {platform.label} account above to publish.</p>
+              <div className="flex items-center gap-2 px-3 py-2.5 rounded-[10px]" style={{ background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.2)' }}>
+                <AlertCircle size={13} style={{ color: '#dc2626', flexShrink: 0 }} />
+                <p className="text-[12px]" style={{ color: '#dc2626' }}>Connect your {platform.label} account above to publish.</p>
               </div>
             )}
 
@@ -468,7 +468,7 @@ export default function SocialPublishingView() {
               onClick={handlePublish}
               disabled={!postText.trim() || charOver || !currentAccount?.connected || isPublishing}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[10px] text-[13px] font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{ background: currentAccount?.connected ? platform.bg : '#141414', color: currentAccount?.connected ? platform.color : '#5a5a5a', border: `1px solid ${currentAccount?.connected ? platform.dot + '44' : '#1f1f1f'}` }}
+              style={{ background: currentAccount?.connected ? platform.bg : '#f3f4f6', color: currentAccount?.connected ? platform.color : '#9ca3af', border: `1px solid ${currentAccount?.connected ? platform.dot + '44' : '#e5e7eb'}` }}
             >
               {isPublishing ? (
                 <><Loader2 size={14} className="animate-spin" /> Publishing…</>
@@ -481,35 +481,35 @@ export default function SocialPublishingView() {
           </div>
 
           {/* Preview Panel */}
-          <div className="rounded-[16px] p-5 space-y-4" style={{ background: '#0d0d0d', border: '1px solid #1a1a1a' }}>
-            <p className="text-[11px] font-semibold" style={{ color: '#5a5a5a' }}>PREVIEW</p>
-            <div className="rounded-[12px] p-4 space-y-3" style={{ background: '#0a0a0a', border: '1px solid #1f1f1f' }}>
+          <div className="rounded-[16px] p-5 space-y-4" style={{ background: '#ffffff', border: '1px solid #e5e7eb' }}>
+            <p className="text-[11px] font-semibold" style={{ color: '#9ca3af' }}>PREVIEW</p>
+            <div className="rounded-[12px] p-4 space-y-3" style={{ background: '#f9fafb', border: '1px solid #e5e7eb' }}>
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: platform.bg }}>
                   <platform.icon size={14} color={platform.color} />
                 </div>
                 <div>
-                  <p className="text-[12px] font-semibold" style={{ color: '#ededed' }}>
+                  <p className="text-[12px] font-semibold" style={{ color: '#111111' }}>
                     {currentAccount?.connected ? currentAccount.handle : 'Your Name'}
                   </p>
-                  <p className="text-[10px]" style={{ color: '#5a5a5a' }}>{platform.label}</p>
+                  <p className="text-[10px]" style={{ color: '#9ca3af' }}>{platform.label}</p>
                 </div>
               </div>
-              <p className="text-[12.5px] leading-relaxed whitespace-pre-wrap" style={{ color: postText ? '#c8c8c8' : '#3a3a3a' }}>
+              <p className="text-[12.5px] leading-relaxed whitespace-pre-wrap" style={{ color: postText ? '#374151' : '#9ca3af' }}>
                 {postText || `Your ${platform.label} post will appear here…`}
               </p>
               {postText && (
-                <div className="pt-2" style={{ borderTop: '1px solid #1a1a1a' }}>
-                  <div className="h-[2px] rounded-full overflow-hidden" style={{ background: '#1f1f1f' }}>
+                <div className="pt-2" style={{ borderTop: '1px solid #e5e7eb' }}>
+                  <div className="h-[2px] rounded-full overflow-hidden" style={{ background: '#e5e7eb' }}>
                     <div
                       className="h-full rounded-full transition-all"
                       style={{
                         width: `${Math.min((charCount / platform.charLimit) * 100, 100)}%`,
-                        background: charOver ? '#f87171' : platform.dot,
+                        background: charOver ? '#dc2626' : platform.dot,
                       }}
                     />
                   </div>
-                  <p className="text-[10px] mt-1 text-right" style={{ color: charOver ? '#f87171' : '#5a5a5a' }}>
+                  <p className="text-[10px] mt-1 text-right" style={{ color: charOver ? '#dc2626' : '#9ca3af' }}>
                     {charCount}/{platform.charLimit}
                   </p>
                 </div>
@@ -518,12 +518,12 @@ export default function SocialPublishingView() {
 
             {/* Formatting tips */}
             <div className="space-y-2">
-              <p className="text-[11px] font-semibold" style={{ color: '#5a5a5a' }}>FORMATTING TIPS</p>
+              <p className="text-[11px] font-semibold" style={{ color: '#9ca3af' }}>FORMATTING TIPS</p>
               {selectedPlatform === 'linkedin' && (
                 <ul className="space-y-1.5">
                   {['Use line breaks every 1–2 sentences', 'Add hashtags at the end (3–5 max)', 'Start with a hook or bold statement', 'Tag people with @mention'].map((tip, i) => (
-                    <li key={i} className="flex items-start gap-2 text-[11.5px]" style={{ color: '#8a8a8a' }}>
-                      <span className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#5b9bd5' }} />
+                    <li key={i} className="flex items-start gap-2 text-[11.5px]" style={{ color: '#6b7280' }}>
+                      <span className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#0a66c2' }} />
                       {tip}
                     </li>
                   ))}
@@ -532,7 +532,7 @@ export default function SocialPublishingView() {
               {selectedPlatform === 'twitter' && (
                 <ul className="space-y-1.5">
                   {['Stay under 280 characters', 'Use 1–2 hashtags max', 'Add a clear CTA or question', 'Use threads for longer content'].map((tip, i) => (
-                    <li key={i} className="flex items-start gap-2 text-[11.5px]" style={{ color: '#8a8a8a' }}>
+                    <li key={i} className="flex items-start gap-2 text-[11.5px]" style={{ color: '#6b7280' }}>
                       <span className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#1da1f2' }} />
                       {tip}
                     </li>
@@ -542,7 +542,7 @@ export default function SocialPublishingView() {
               {selectedPlatform === 'instagram' && (
                 <ul className="space-y-1.5">
                   {['Lead with a strong first line', 'Use emojis to break up text', '5–10 hashtags in caption', 'Add a CTA before hashtags'].map((tip, i) => (
-                    <li key={i} className="flex items-start gap-2 text-[11.5px]" style={{ color: '#8a8a8a' }}>
+                    <li key={i} className="flex items-start gap-2 text-[11.5px]" style={{ color: '#6b7280' }}>
                       <span className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0" style={{ background: '#e1306c' }} />
                       {tip}
                     </li>
@@ -555,33 +555,33 @@ export default function SocialPublishingView() {
       )}
 
       {activeTab === 'queue' && (
-        <div className="rounded-[16px] overflow-hidden" style={{ border: '1px solid #1a1a1a' }}>
-          <div className="px-5 py-4" style={{ background: '#0d0d0d', borderBottom: '1px solid #1a1a1a' }}>
-            <p className="text-[13px] font-semibold" style={{ color: '#ededed' }}>Scheduled & Published Posts</p>
-            <p className="text-[11.5px] mt-0.5" style={{ color: '#5a5a5a' }}>
+        <div className="rounded-[16px] overflow-hidden" style={{ border: '1px solid #e5e7eb' }}>
+          <div className="px-5 py-4" style={{ background: '#ffffff', borderBottom: '1px solid #e5e7eb' }}>
+            <p className="text-[13px] font-semibold" style={{ color: '#111111' }}>Scheduled & Published Posts</p>
+            <p className="text-[11.5px] mt-0.5" style={{ color: '#9ca3af' }}>
               {scheduledPosts.filter(p => p.status === 'scheduled').length} scheduled · {scheduledPosts.filter(p => p.status === 'published').length} published
             </p>
           </div>
           {scheduledPosts.length === 0 ? (
-            <div className="py-16 flex flex-col items-center gap-3" style={{ background: '#0a0a0a' }}>
-              <Calendar size={28} style={{ color: '#2a2a2a' }} />
-              <p className="text-[13px]" style={{ color: '#5a5a5a' }}>No posts scheduled yet</p>
+            <div className="py-16 flex flex-col items-center gap-3" style={{ background: '#fafafa' }}>
+              <Calendar size={28} style={{ color: '#d1d5db' }} />
+              <p className="text-[13px]" style={{ color: '#9ca3af' }}>No posts scheduled yet</p>
             </div>
           ) : (
-            <div className="divide-y" style={{ background: '#0a0a0a', borderColor: '#1a1a1a' }}>
+            <div className="divide-y" style={{ background: '#fafafa', borderColor: '#e5e7eb' }}>
               {scheduledPosts.map(post => {
                 const p = PLATFORMS.find(pl => pl.id === post.platform)!;
                 const PIcon = p.icon;
-                const statusColors: Record<string, string> = { scheduled: '#fbbf24', published: '#4ade80', failed: '#f87171' };
+                const statusColors: Record<string, string> = { scheduled: '#d97706', published: '#16a34a', failed: '#dc2626' };
                 return (
-                  <div key={post.id} className="px-5 py-4 flex items-start gap-4" style={{ borderColor: '#1a1a1a' }}>
+                  <div key={post.id} className="px-5 py-4 flex items-start gap-4" style={{ borderColor: '#e5e7eb' }}>
                     <div className="w-8 h-8 rounded-[9px] flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: p.bg }}>
                       <PIcon size={14} color={p.color} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[12.5px] leading-relaxed line-clamp-2" style={{ color: '#c8c8c8' }}>{post.text}</p>
+                      <p className="text-[12.5px] leading-relaxed line-clamp-2" style={{ color: '#374151' }}>{post.text}</p>
                       <div className="flex items-center gap-3 mt-1.5">
-                        <span className="flex items-center gap-1 text-[11px]" style={{ color: '#5a5a5a' }}>
+                        <span className="flex items-center gap-1 text-[11px]" style={{ color: '#9ca3af' }}>
                           <Clock size={10} />
                           {formatScheduledDate(post.scheduledAt)}
                         </span>
@@ -603,26 +603,26 @@ export default function SocialPublishingView() {
 
       {/* Library Picker Modal */}
       {showLibraryPicker && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.7)' }}>
-          <div className="w-full max-w-lg rounded-[18px] overflow-hidden" style={{ background: '#0d0d0d', border: '1px solid #1f1f1f' }}>
-            <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid #1a1a1a' }}>
-              <p className="text-[14px] font-semibold" style={{ color: '#ededed' }}>Pick from Library</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.4)' }}>
+          <div className="w-full max-w-lg rounded-[18px] overflow-hidden" style={{ background: '#ffffff', border: '1px solid #e5e7eb', boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}>
+            <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid #e5e7eb' }}>
+              <p className="text-[14px] font-semibold" style={{ color: '#111111' }}>Pick from Library</p>
               <button
                 onClick={() => setShowLibraryPicker(false)}
-                className="w-7 h-7 rounded-[7px] flex items-center justify-center transition-all hover:bg-[#1a1a1a]"
-                style={{ color: '#5a5a5a' }}
+                className="w-7 h-7 rounded-[7px] flex items-center justify-center transition-all hover:bg-[#f3f4f6]"
+                style={{ color: '#9ca3af' }}
               >
                 <X size={14} />
               </button>
             </div>
-            <div className="max-h-[400px] overflow-y-auto divide-y" style={{ borderColor: '#1a1a1a' }}>
+            <div className="max-h-[400px] overflow-y-auto divide-y" style={{ borderColor: '#e5e7eb' }}>
               {libraryItems.map(item => {
                 const p = PLATFORMS.find(pl => pl.id === item.channel);
                 return (
                   <button
                     key={item.id}
                     onClick={() => handlePickFromLibrary(item)}
-                    className="w-full text-left px-5 py-4 transition-all hover:bg-[#141414] flex items-start gap-3"
+                    className="w-full text-left px-5 py-4 transition-all hover:bg-[#f9fafb] flex items-start gap-3"
                   >
                     {p && (
                       <div className="w-7 h-7 rounded-[8px] flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: p.bg }}>
@@ -630,8 +630,8 @@ export default function SocialPublishingView() {
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="text-[12.5px] leading-relaxed line-clamp-2" style={{ color: '#c8c8c8' }}>{item.text}</p>
-                      <p className="text-[11px] mt-1" style={{ color: '#5a5a5a' }}>{item.channelLabel} · {item.createdAt}</p>
+                      <p className="text-[12.5px] leading-relaxed line-clamp-2" style={{ color: '#374151' }}>{item.text}</p>
+                      <p className="text-[11px] mt-1" style={{ color: '#9ca3af' }}>{item.channelLabel} · {item.createdAt}</p>
                     </div>
                   </button>
                 );

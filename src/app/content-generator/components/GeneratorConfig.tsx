@@ -51,34 +51,34 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
   const isToneFromSetup = productSetup?.tone === config.toneOverride;
 
   return (
-    <div className="rounded-[14px] p-6 space-y-6 sticky top-6" style={{ background: 'linear-gradient(180deg, #0d0d0d 0%, #141414 100%)', border: '1px solid #1f1f1f' }}>
+    <div className="rounded-[14px] p-6 space-y-6 sticky top-6" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)', border: '1px solid #e5e7eb' }}>
       <div>
-        <h2 className="text-[15px] font-bold tracking-[-0.2px] mb-[4px]" style={{ color: '#ededed' }}>What do you want to create?</h2>
-        <p className="text-[12px]" style={{ color: '#8a8a8a' }}>Configure your content below, then generate.</p>
+        <h2 className="text-[15px] font-bold tracking-[-0.2px] mb-[4px]" style={{ color: '#111111' }}>What do you want to create?</h2>
+        <p className="text-[12px]" style={{ color: '#6b7280' }}>Configure your content below, then generate.</p>
       </div>
 
       {/* Product Setup banner */}
       {isLoadingSetup ? (
-        <div className="rounded-[10px] px-3 py-2.5 flex items-center gap-2" style={{ background: '#161616', border: '1px solid #1f1f1f' }}>
-          <Loader2 size={12} className="animate-spin shrink-0" style={{ color: '#8a8a8a' }} />
-          <span className="text-[11px]" style={{ color: '#8a8a8a' }}>Loading your product profile…</span>
+        <div className="rounded-[10px] px-3 py-2.5 flex items-center gap-2" style={{ background: '#f9fafb', border: '1px solid #e5e7eb' }}>
+          <Loader2 size={12} className="animate-spin shrink-0" style={{ color: '#9ca3af' }} />
+          <span className="text-[11px]" style={{ color: '#9ca3af' }}>Loading your product profile…</span>
         </div>
       ) : productSetup?.productName ? (
-        <div className="rounded-[10px] px-3 py-2.5 flex items-start gap-2" style={{ background: 'rgba(74, 222, 128, 0.06)', border: '1px solid rgba(74, 222, 128, 0.18)' }}>
-          <Zap size={12} className="shrink-0 mt-0.5" style={{ color: '#4ade80' }} />
+        <div className="rounded-[10px] px-3 py-2.5 flex items-start gap-2" style={{ background: 'rgba(22, 163, 74, 0.06)', border: '1px solid rgba(22, 163, 74, 0.18)' }}>
+          <Zap size={12} className="shrink-0 mt-0.5" style={{ color: '#16a34a' }} />
           <div className="min-w-0">
-            <p className="text-[11px] font-semibold" style={{ color: '#4ade80' }}>Auto-filled from Product Setup</p>
-            <p className="text-[11px] mt-0.5 truncate" style={{ color: '#8a8a8a' }}>
-              Generating for <span style={{ color: '#ededed' }}>{productSetup.productName}</span> · tone &amp; channel pre-selected
+            <p className="text-[11px] font-semibold" style={{ color: '#16a34a' }}>Auto-filled from Product Setup</p>
+            <p className="text-[11px] mt-0.5 truncate" style={{ color: '#6b7280' }}>
+              Generating for <span style={{ color: '#111111' }}>{productSetup.productName}</span> · tone &amp; channel pre-selected
             </p>
           </div>
         </div>
       ) : (
-        <div className="rounded-[10px] px-3 py-2.5 flex items-start gap-2" style={{ background: '#161616', border: '1px solid #1f1f1f' }}>
-          <Zap size={12} className="shrink-0 mt-0.5" style={{ color: '#8a8a8a' }} />
-          <p className="text-[11px]" style={{ color: '#8a8a8a' }}>
+        <div className="rounded-[10px] px-3 py-2.5 flex items-start gap-2" style={{ background: '#f9fafb', border: '1px solid #e5e7eb' }}>
+          <Zap size={12} className="shrink-0 mt-0.5" style={{ color: '#9ca3af' }} />
+          <p className="text-[11px]" style={{ color: '#6b7280' }}>
             Complete the{' '}
-            <a href="/product-setup" className="underline" style={{ color: '#ededed' }}>Product Setup</a>
+            <a href="/product-setup" className="underline" style={{ color: '#111111' }}>Product Setup</a>
             {' '}to auto-fill tone &amp; channel preferences.
           </p>
         </div>
@@ -88,9 +88,9 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
       {config.contentType === 'social-post' && (
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <label className="block text-[11px] font-semibold uppercase tracking-[0.4px]" style={{ color: '#8a8a8a' }}>Channel / Platform</label>
+            <label className="block text-[11px] font-semibold uppercase tracking-[0.4px]" style={{ color: '#9ca3af' }}>Channel / Platform</label>
             {isChannelFromSetup && (
-              <span className="text-[10px] px-1.5 py-0.5 rounded-[4px] font-medium" style={{ background: 'rgba(74, 222, 128, 0.1)', color: '#4ade80' }}>
+              <span className="text-[10px] px-1.5 py-0.5 rounded-[4px] font-medium" style={{ background: 'rgba(22, 163, 74, 0.1)', color: '#16a34a' }}>
                 from setup
               </span>
             )}
@@ -105,9 +105,9 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
                   onClick={() => set('channel', ch.value)}
                   className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold transition-all duration-150 relative"
                   style={{
-                    background: config.channel === ch.value ? '#ededed' : '#161616',
-                    color: config.channel === ch.value ? '#0a0a0a' : isPreferred ? '#ededed' : '#8a8a8a',
-                    border: `1px solid ${config.channel === ch.value ? '#ededed' : isPreferred ? '#3a3a3a' : '#1f1f1f'}`,
+                    background: config.channel === ch.value ? '#111111' : '#f3f4f6',
+                    color: config.channel === ch.value ? '#ffffff' : isPreferred ? '#111111' : '#6b7280',
+                    border: `1px solid ${config.channel === ch.value ? '#111111' : isPreferred ? '#d1d5db' : '#e5e7eb'}`,
                   }}
                 >
                   {ch.label}
@@ -116,7 +116,7 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
             })}
           </div>
           {productSetup?.channels && productSetup.channels.length > 0 && (
-            <p className="text-[10px] mt-1.5" style={{ color: '#8a8a8a' }}>
+            <p className="text-[10px] mt-1.5" style={{ color: '#9ca3af' }}>
               Highlighted channels are from your Product Setup preferences.
             </p>
           )}
@@ -125,10 +125,10 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
 
       {/* Brief */}
       <div>
-        <label className="block text-[11px] font-semibold uppercase tracking-[0.4px] mb-1" style={{ color: '#8a8a8a' }} htmlFor="brief">
+        <label className="block text-[11px] font-semibold uppercase tracking-[0.4px] mb-1" style={{ color: '#9ca3af' }} htmlFor="brief">
           What should this content be about?
         </label>
-        <p className="text-[11px] mb-2" style={{ color: '#8a8a8a' }}>Give the AI context — a topic, angle, announcement, or goal.</p>
+        <p className="text-[11px] mb-2" style={{ color: '#9ca3af' }}>Give the AI context — a topic, angle, announcement, or goal.</p>
         <textarea
           id="brief"
           rows={5}
@@ -141,15 +141,15 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
           value={config.brief}
           onChange={(e) => set('brief', e.target.value)}
         />
-        <p className="text-[11px] mt-1" style={{ color: '#8a8a8a' }}>{config.brief.length} characters</p>
+        <p className="text-[11px] mt-1" style={{ color: '#9ca3af' }}>{config.brief.length} characters</p>
       </div>
 
       {/* Tone override */}
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <label className="block text-[11px] font-semibold uppercase tracking-[0.4px]" style={{ color: '#8a8a8a' }}>Tone Override</label>
+          <label className="block text-[11px] font-semibold uppercase tracking-[0.4px]" style={{ color: '#9ca3af' }}>Tone Override</label>
           {isToneFromSetup && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded-[4px] font-medium" style={{ background: 'rgba(74, 222, 128, 0.1)', color: '#4ade80' }}>
+            <span className="text-[10px] px-1.5 py-0.5 rounded-[4px] font-medium" style={{ background: 'rgba(22, 163, 74, 0.1)', color: '#16a34a' }}>
               from setup
             </span>
           )}
@@ -167,7 +167,7 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
 
       {/* Length */}
       <div>
-        <label className="block text-[11px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#8a8a8a' }}>Content Length</label>
+        <label className="block text-[11px] font-semibold uppercase tracking-[0.4px] mb-2" style={{ color: '#9ca3af' }}>Content Length</label>
         <div className="grid grid-cols-3 gap-2">
           {lengths.map((l) => (
             <button
@@ -176,23 +176,23 @@ export default function GeneratorConfig({ config, onChange, onGenerate, isGenera
               onClick={() => set('length', l.value)}
               className="flex flex-col items-center px-2 py-2.5 rounded-[10px] text-center transition-all duration-150"
               style={{
-                border: `1px solid ${config.length === l.value ? '#5a5a5a' : '#1f1f1f'}`,
-                background: config.length === l.value ? '#1c1c1c' : '#161616',
+                border: `1px solid ${config.length === l.value ? '#9ca3af' : '#e5e7eb'}`,
+                background: config.length === l.value ? '#f3f4f6' : '#fafafa',
               }}
             >
-              <span className="text-[12px] font-semibold" style={{ color: config.length === l.value ? '#ededed' : '#8a8a8a' }}>
+              <span className="text-[12px] font-semibold" style={{ color: config.length === l.value ? '#111111' : '#6b7280' }}>
                 {l.label}
               </span>
-              <span className="text-[10px] mt-0.5" style={{ color: '#8a8a8a' }}>{l.hint}</span>
+              <span className="text-[10px] mt-0.5" style={{ color: '#9ca3af' }}>{l.hint}</span>
             </button>
           ))}
         </div>
       </div>
 
       {/* Credits indicator */}
-      <div className="rounded-[10px] px-3 py-2.5 flex items-center justify-between" style={{ background: '#161616', border: '1px solid #1f1f1f' }}>
-        <span className="text-[11px]" style={{ color: '#8a8a8a' }}>This generation uses</span>
-        <span className="text-[11px] font-bold" style={{ color: '#ededed' }}>3 credits · 153 remaining</span>
+      <div className="rounded-[10px] px-3 py-2.5 flex items-center justify-between" style={{ background: '#f9fafb', border: '1px solid #e5e7eb' }}>
+        <span className="text-[11px]" style={{ color: '#9ca3af' }}>This generation uses</span>
+        <span className="text-[11px] font-bold" style={{ color: '#111111' }}>3 credits · 153 remaining</span>
       </div>
 
       {/* Generate button */}
